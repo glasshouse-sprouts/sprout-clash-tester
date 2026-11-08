@@ -350,7 +350,7 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | zod | 4.4.3 | MIT |
 | zod-to-json-schema | 3.25.2 | ISC |
 
-## Development-only npm packages (246)
+## Development-only npm packages (297)
 
 Build, test and lint tools — not shipped, listed for completeness. Some
 of them still end up in the desktop app's renderer bundle when it is
@@ -359,13 +359,15 @@ the packaged Electron runtime brings its own Chromium licence file.
 
 | Licence | Packages |
 |---|---|
-| MIT | 201 |
-| Apache-2.0 | 16 |
-| ISC | 10 |
-| BSD-2-Clause | 8 |
-| BSD-3-Clause | 5 |
+| MIT | 243 |
+| Apache-2.0 | 18 |
+| ISC | 11 |
+| BSD-2-Clause | 10 |
+| BSD-3-Clause | 6 |
+| MIT-0 | 2 |
 | MPL-2.0 | 2 |
 | Python-2.0 | 1 |
 | CC-BY-4.0 | 1 |
+| CC0-1.0 | 1 |
 | BlueOak-1.0.0 | 1 |
 | (MIT OR CC0-1.0) | 1 |

@@ -77,8 +77,10 @@ optional ifc-lite narrow phase).
 
 ## Platforms
 
-Developed and tested on macOS. Electron, Node and Rust all run on Linux
-and Windows, but those are not tested yet. No packaged installers yet.
+Developed on macOS; CI runs on macOS and Linux
+([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)). Electron, Node
+and Rust also run on Windows, but that is not tested yet. No packaged
+installers yet.
 
 ## Repository layout
 

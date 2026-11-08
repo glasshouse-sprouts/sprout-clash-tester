@@ -3,6 +3,8 @@ name = "clash"
 version = "0.2.0"
 license = "Apache-2.0"
 edition = "2024"
+# Oldest Rust the dependencies build with (nalgebra, wide).
+rust-version = "1.89"
 
 [dependencies]
 ifc-lite-core = "=27.0.0"

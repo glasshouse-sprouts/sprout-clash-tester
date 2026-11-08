@@ -86,7 +86,7 @@ async function runClashDetection(args: Args | undefined): Promise<ToolResponse> 
     typeof args?.output_dir === "string"
       ? args.output_dir
       : path.join(path.dirname(statePath), "outputs");
-  const { mkdir, writeFile } = await import("node:fs/promises");
+  const { mkdir } = await import("node:fs/promises");
   await mkdir(outputDir, { recursive: true });
   const bcfPath = path.join(outputDir, "report.bcf");
   const jsonPath = path.join(outputDir, "clashes.json");

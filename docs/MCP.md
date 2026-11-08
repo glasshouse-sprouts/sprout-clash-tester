@@ -13,7 +13,7 @@ agent picks the right one from the tool names and descriptions.
 
 1. Build what the servers need (once, and after pulling changes):
    ```bash
-   npm run build --workspaces --if-present
+   npm run build
    ```
    ```bash
    cd engine && cargo build --release

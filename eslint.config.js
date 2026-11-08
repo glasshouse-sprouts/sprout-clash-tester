@@ -2,6 +2,7 @@
 // Kept intentionally small — rules are added as the codebase grows.
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
+import reactHooks from "eslint-plugin-react-hooks";
 
 export default [
   {
@@ -10,6 +11,7 @@ export default [
       "**/dist/**",
       "**/build/**",
       "**/out/**",
+      "packages/desktop/out-types-*/**",
       "engine/target/**",
       "coverage/**",
     ],
@@ -34,6 +36,15 @@ export default [
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "no-console": "off",
+    },
+  },
+  {
+    // Desktop renderer: the rules of hooks.
+    files: ["packages/desktop/src/renderer/**/*.tsx"],
+    plugins: { "react-hooks": reactHooks },
+    rules: {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
 ];

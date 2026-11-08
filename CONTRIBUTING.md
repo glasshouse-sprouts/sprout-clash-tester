@@ -26,24 +26,26 @@ templates ask for the details below). For a bug, please include:
 
 ## Build from source
 
-You need Rust 1.85 or newer, Node.js 20 or newer, and git.
+You need Rust 1.89 or newer, Node.js 20.19 or newer (22 recommended), and
+git.
 
 ```bash
 git clone https://github.com/3dbyggeri/clash-tester.git
 cd clash-tester
 cd engine && cargo build --release && cd ..
 npm install
-npm run build --workspaces --if-present
+npm run build
 ```
 
 Then try the example:
 `node packages/cli/dist/index.js run examples/tiny-project/sample.clashproj`.
 The desktop app runs with `npm run dev` in `packages/desktop`.
 
-**Stale build?** If the CLI or tests fail with "Cannot find module
-…/dist/index.js" after copying or moving the repository, delete the
-packages' `dist/` folders and `*.tsbuildinfo` files and build again —
-`tsc -b` trusts the build info and skips the rebuild.
+`npm run build` builds the TypeScript packages the CLI and the MCP server
+need (clash-core, cli, mcp-server). **Stale build?** If the CLI or tests
+fail with "Cannot find module …/dist/index.js" (typically after copying
+or moving the repository), run `npm run clean` and then `npm run build`:
+`tsc -b` trusts its `*.tsbuildinfo` files and skips a rebuild otherwise.
 
 ## Tests and checks
 
@@ -59,8 +61,15 @@ npm run lint
 - `npm test` runs the Vitest suites of all packages. With `CLASH_BINARY`
   set it also runs the end-to-end tests against the real engine; without
   it those are skipped.
-- The desktop UI has no automated click tests yet. If you change a view,
-  say in the PR what you clicked to check it.
+- **Desktop payload tests** (`App.payload.test.tsx`) drive the real
+  controls in a simulated browser and check what the app sends to its
+  main process with Run and Save. A new control that changes the project
+  needs a case there. Everything else in the UI (layout, drag and drop
+  from the OS, dialogs) is checked by hand: say in the PR what you
+  clicked.
+- **CI** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs all
+  of the above on Linux and macOS for every push and pull request, plus a
+  secret scan (gitleaks) and the licence check (`npm run licenses`).
 
 ## Pull requests
 
@@ -70,7 +79,7 @@ npm run lint
 - **Tests are required** for new or changed behaviour: Rust tests in
   `engine/tests/`, Vitest tests next to the TypeScript code. If a test
   isn't possible, say why in the PR.
-- **All checks green:** the commands above.
+- **All checks green:** the commands above, and CI on the pull request.
 - **Docs current:** if you change behaviour, update the matching file in
   [`docs/`](docs) and add a line under _Unreleased_ in
   [`CHANGELOG.md`](CHANGELOG.md).

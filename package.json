@@ -2,13 +2,15 @@
   "name": "clash-tester",
   "version": "0.0.1",
   "license": "Apache-2.0",
-  "description": "Standalone IFC clash detection tool \u2014 CLI, desktop app, MCP server.",
+  "description": "Standalone IFC clash detection tool — CLI, desktop app, MCP server.",
   "private": true,
   "type": "module",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "build": "tsc -b packages/clash-core packages/cli packages/mcp-server",
+    "clean": "node scripts/clean.mjs",
     "typecheck": "tsc -b",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -23,11 +25,12 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "prettier": "^3.4.0",
     "typescript": "^5.7.0",
     "vitest": "^4.1.5"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19"
   }
 }

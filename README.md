@@ -48,9 +48,9 @@ Three ways to use it, all on the same engine:
 
 ## Quick start
 
-You need [Rust](https://rustup.rs) 1.85 or newer, [Node.js](https://nodejs.org)
-20 or newer, and git. Developed on macOS; Linux and Windows should work
-but are not tested yet.
+You need [Rust](https://rustup.rs) 1.89 or newer,
+[Node.js](https://nodejs.org) 20.19 or newer (22 recommended), and git.
+CI runs on macOS and Linux; Windows should work but is not tested yet.
 
 ```bash
 git clone https://github.com/3dbyggeri/clash-tester.git
@@ -70,7 +70,7 @@ npm install
 ```
 
 ```bash
-npm run build --workspaces --if-present
+npm run build
 ```
 
 Run the example (two small buildingSMART sample models, ducts against

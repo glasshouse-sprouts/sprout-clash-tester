@@ -1,7 +1,7 @@
 // Unit tests for project file load / save / validate / expand.
 // No engine spawning here — pure data shaping.
 
-import { mkdtemp, writeFile, readFile } from "node:fs/promises";
+import { mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, it, expect } from "vitest";

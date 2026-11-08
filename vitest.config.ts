@@ -3,9 +3,12 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  // Desktop renderer tests (*.test.tsx) use the automatic JSX runtime,
+  // like the app's own build.
+  esbuild: { jsx: "automatic" },
   test: {
     // Run tests from any workspace package + project-level tests.
-    include: ["packages/**/*.test.ts", "tests/**/*.test.ts"],
+    include: ["packages/**/*.test.{ts,tsx}", "tests/**/*.test.ts"],
     // 30 s default — engine e2e tests can be slow.
     testTimeout: 30_000,
     // Show full output even when many tests run.
