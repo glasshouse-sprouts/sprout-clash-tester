@@ -72,8 +72,9 @@ pub struct LoadedIfc {
     pub elements: Vec<IfcElement>,
     pub related_pairs: HashSet<(String, String)>,
     pub opening_cuts: OpeningCutStats,
-    /// Generic MEP elements (`IfcFlowSegment`, …) with no type object:
-    /// presets can't classify them (docs/PROJECT-FILE.md#ifc2x3-type-objects).
+    /// Generic MEP elements (`IfcFlowSegment`, …) whose type object doesn't
+    /// give them a specific class (or that have none): presets can't
+    /// classify them (docs/PROJECT-FILE.md#ifc2x3-type-objects).
     pub untyped_generic: usize,
 }
 
@@ -119,7 +120,7 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
     let (mut metadata_map, pset_relationships, _, relations) =
         extract_basic_metadata(&mut decoder, &mut scanner);
     extract_properties(&mut decoder, pset_relationships, &mut metadata_map);
-    let typed = apply_type_objects(&mut decoder, &relations.typed_by, &mut metadata_map);
+    apply_type_objects(&mut decoder, &relations.typed_by, &mut metadata_map);
     let related_pairs = related_guid_pairs(&relations, &metadata_map);
 
     // Override the length_unit set by the scanner with the authoritative value
@@ -190,7 +191,13 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
                             metadata.predefined_type = Some(p);
                         }
                         let generic = is_generic_distribution_class(&metadata.ifc_type);
-                        untyped_generic += (generic && !typed.contains(&(id as u64))) as usize;
+                        // Unclassified: no type object, or one that doesn't
+                        // say what the element is (e.g. `IfcFlowSegmentType`).
+                        let classified = metadata
+                            .type_class
+                            .as_deref()
+                            .is_some_and(|c| !is_generic_distribution_class(c));
+                        untyped_generic += (generic && !classified) as usize;
                         index_by_id.insert(id as u32, elements.len());
                         elements.push(IfcElement {
                             metadata,
@@ -206,7 +213,7 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
     check_cuts(&elements, &index_by_id, &voids, &metadata_map, 0.001, &mut opening_cuts);
     println!("  {}", opening_cuts.summary_line());
     if untyped_generic > 0 {
-        println!("  {untyped_generic} generic MEP element(s) without a type object");
+        println!("  {untyped_generic} generic MEP element(s) without a type object that says what they are");
     }
     Ok(LoadedIfc { elements, related_pairs, opening_cuts, untyped_generic })
 }

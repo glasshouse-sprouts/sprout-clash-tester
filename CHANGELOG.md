@@ -33,7 +33,7 @@ contain.
   wall, parts of an assembly (can be turned off).
 - **IFC2X3 MEP:** generic flow elements are classified by their type
   object, so `IfcDuct*` finds IFC2X3 ducts.
-- **Possible double modelling:** same type, same place, same size —
+- **Possible double modelling** (experimental): same type, same place, same size —
   flagged and grouped separately, with a per-criterion breakdown in the
   desktop app.
 - **Grouping:** clashes grouped into issues (element pairs, one element

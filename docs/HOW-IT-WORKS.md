@@ -134,7 +134,8 @@ wall around it, which means nothing here.
 
 ## Double modelling
 
-A clash is flagged as **possible double modelling** when all three hold:
+**Experimental** — the rule and its thresholds may still change. A clash
+is flagged as **possible double modelling** when all three hold:
 
 1. **Same IFC type** after normalising (`IfcWall` = `IFCWALLSTANDARDCASE`).
 2. **Same place:** the two mesh centres are at most 2 cm apart.

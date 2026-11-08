@@ -102,3 +102,23 @@ fn test_untyped_generic_elements_are_reported() {
     assert_eq!(w[0].files, vec!["ifc2x3-mep-types.ifc"]);
     assert!(w[0].message.contains("1 generic MEP element(s) without a type object"));
 }
+
+/// A type object that is itself generic (`IfcFlowSegmentType` → class
+/// `IfcFlowSegment`) doesn't classify the element either, so it counts
+/// as unclassified and is warned about — not silently left generic.
+#[test]
+fn test_generic_type_object_counts_as_unclassified() {
+    let text = std::fs::read_to_string(fixture()).unwrap();
+    let extra = "#90=IFCFLOWSEGMENT('0GENTYPED000000002X3MEP',$,'Generically typed',$,$,#7,#55,$);\n\
+                 #91=IFCFLOWSEGMENTTYPE('0FLOWSEGTYPE00002X3MEP0',$,'Generic',$,$,$,$,$,$,.NOTDEFINED.);\n\
+                 #92=IFCRELDEFINESBYTYPE('0RELTYPEGEN00002X3MEP00',$,$,$,(#90),#91);\n";
+    let data_end = text.rfind("ENDSEC;").unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("generic-type.ifc");
+    std::fs::write(&path, format!("{}{}{}", &text[..data_end], extra, &text[data_end..])).unwrap();
+
+    let loaded = load_ifc_file(&path).unwrap();
+    let el = loaded.elements.iter().find(|e| e.metadata.guid == "0GENTYPED000000002X3MEP");
+    assert_eq!(el.unwrap().metadata.type_class.as_deref(), Some("IfcFlowSegment"));
+    assert_eq!(loaded.untyped_generic, 2, "the untyped segment and the generically typed one");
+}

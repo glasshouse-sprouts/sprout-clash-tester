@@ -145,8 +145,8 @@ fn untyped_generic_warnings(cache: &HashMap<PathBuf, LoadedIfc>) -> Vec<EngineWa
             EngineWarning {
                 kind: "untyped_generic_mep".to_string(),
                 message: format!(
-                    "{}: {} generic MEP element(s) without a type object — \
-                     presets can't classify them",
+                    "{}: {} generic MEP element(s) without a type object that says what they \
+                     are — presets can't classify them",
                     name, loaded.untyped_generic
                 ),
                 files: vec![name],

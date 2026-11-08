@@ -65,7 +65,8 @@ npm run lint
   controls in a simulated browser and check what the app sends to its
   main process with Run and Save. A new control that changes the project
   needs a case there. Everything else in the UI (layout, drag and drop
-  from the OS, dialogs) is checked by hand: say in the PR what you
+  from the OS, dialogs) is checked by hand with
+  [`docs/CLICK-LIST.md`](docs/CLICK-LIST.md): say in the PR what you
   clicked.
 - **CI** ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs all
   of the above on Linux and macOS for every push and pull request, plus a

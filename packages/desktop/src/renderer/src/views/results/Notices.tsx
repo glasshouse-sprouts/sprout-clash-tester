@@ -106,7 +106,8 @@ export function DuplicateNotice({
   return (
     <section className="space-y-1 rounded border border-amber-800 bg-amber-950/40 p-3 text-xs text-amber-100">
       <h3 className="font-semibold text-amber-200">
-        Possible double modelling ({count})
+        Possible double modelling ({count}){" "}
+        <span className="font-normal text-amber-300/80">· experimental</span>
       </h3>
       <p>
         Same IFC type, same volume (within {fmtPct(thresholds.maxVolumeDifference)}) and the

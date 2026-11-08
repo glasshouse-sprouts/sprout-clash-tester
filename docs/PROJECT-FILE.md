@@ -109,8 +109,9 @@ finds IFC2X3 ducts, and `IfcFlowSegment` still finds every flow segment.
 This also works for IFC4 files that use generic occurrences.
 
 `PredefinedType` (from the occurrence, else from its type object) is shown
-but not matched. Generic occurrences without a type object can't be
-classified; each such file gets an `untyped_generic_mep` warning. Results
+but not matched. Generic occurrences without a type object — or with one
+that is itself generic, like `IfcFlowSegmentType` — can't be classified;
+each such file gets an `untyped_generic_mep` warning. Results
 carry `typeClassA/B` and `predefinedTypeA/B`, and the desktop app shows
 e.g. `IFCFLOWSEGMENT → IfcDuctSegment · RIGIDSEGMENT`.
 
@@ -126,7 +127,7 @@ All optional.
 | `bcfTopics` | `"clash"` | `"group"`: one BCF topic per group ([details](HOW-IT-WORKS.md#bcf-topics)). |
 | `grouping.minElementClashes` | `2` | Pairs an element needs to lead a clash group. |
 | `grouping.proximity` | off | `{ "enabled": true, "radiusMetres": 2 }` merges nearby groups into areas. |
-| `grouping.duplicate` | `0.05` / `0.02` | `{ "maxVolumeDifference", "maxCentroidDistanceMetres" }` for double modelling ([details](HOW-IT-WORKS.md#double-modelling)). |
+| `grouping.duplicate` | `0.05` / `0.02` | `{ "maxVolumeDifference", "maxCentroidDistanceMetres" }` for double modelling, experimental ([details](HOW-IT-WORKS.md#double-modelling)). |
 | `narrowPhase` | `"parry"` | `"ifclite"`: the experimental ifc-lite narrow phase ([details](HOW-IT-WORKS.md#ifc-lite-narrow-phase)). |
 | `reportTouch` | `false` | ifc-lite only: also list touching and unconfirmed pairs. |
 

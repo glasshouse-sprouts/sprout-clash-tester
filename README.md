@@ -25,7 +25,8 @@ Three ways to use it, all on the same engine:
   beams and columns) match your files by discipline tag. Custom rules take
   an IFC type selector per side (`IfcDuct*`, `IfcWall|IfcSlab`, `*`).
 - **Self check.** A model tested against itself: internal clashes and
-  elements that are probably modelled twice.
+  elements that are probably modelled twice (double-modelling detection
+  is experimental).
 - **Fewer false clashes.** Openings are cut out of walls and slabs before
   testing, and elements that belong together in the IFC (a door in its
   wall, parts of an assembly) are skipped.
@@ -126,6 +127,10 @@ starts with it, and it is the first CSV column. Details:
   side of the bounding-box overlap, not the true penetration.
 - **The ifc-lite narrow phase is experimental** (`--narrow-phase ifclite`).
   It separates touching faces from real clashes, but is not the default.
+- **Double-modelling detection is experimental.** It flags same type,
+  same place, same size; it misses shifted copies, copies of a different
+  length and copies modelled as another type, and its thresholds may
+  change.
 - **No installers yet.** The desktop app runs from source
   (`npm run dev`).
 
