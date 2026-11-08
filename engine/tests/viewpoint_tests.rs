@@ -45,7 +45,7 @@ fn test_viewpoint_calculation() {
     let mut found = false;
     for i in 0..archive.len() {
         let mut file = archive.by_index(i).unwrap();
-        if file.name().ends_with(".bcfv") {
+        if file.name().unwrap().ends_with(".bcfv") {
             file.read_to_string(&mut bcfv_content).unwrap();
             found = true;
             break;
@@ -112,7 +112,7 @@ fn test_viewpoint_calculation_default() {
     let mut found = false;
     for i in 0..archive.len() {
         let mut file = archive.by_index(i).unwrap();
-        if file.name().ends_with(".bcfv") {
+        if file.name().unwrap().ends_with(".bcfv") {
             file.read_to_string(&mut bcfv_content).unwrap();
             found = true;
             break;

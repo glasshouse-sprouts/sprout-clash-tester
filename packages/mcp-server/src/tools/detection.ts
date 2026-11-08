@@ -12,6 +12,7 @@ import {
 } from "@clash-tester/core";
 import { saveState } from "../state.js";
 import { err, loadWorking, ok, type Args, type ToolDef, type ToolResponse } from "./common.js";
+import { readRunResult } from "./guards.js";
 
 export function detectionTools(): ToolDef[] {
   return [
@@ -184,11 +185,9 @@ async function runClashDetection(args: Args | undefined): Promise<ToolResponse> 
 async function getResults(args: Args | undefined): Promise<ToolResponse> {
   // 1. Explicit `json_path` always wins.
   if (typeof args?.json_path === "string" && args.json_path.length > 0) {
-    if (!existsSync(args.json_path)) {
-      return err(`json_path does not exist: ${args.json_path}`);
-    }
-    const raw = readFileSync(args.json_path, "utf-8");
-    return ok(`Reading from explicit path: ${args.json_path}\n${raw}`);
+    const read = readRunResult(args.json_path);
+    if (!read.ok) return err(`json_path: ${read.error}`);
+    return ok(`Reading from explicit path: ${args.json_path}\n${read.text}`);
   }
 
   // 2. Working project's `lastResults` (set by MCP-driven runs).
@@ -196,11 +195,9 @@ async function getResults(args: Args | undefined): Promise<ToolResponse> {
   const last = project.lastResults;
   if (last) {
     const jsonPath = last.outputs.json;
-    if (jsonPath && existsSync(jsonPath)) {
-      const raw = readFileSync(jsonPath, "utf-8");
-      return ok(
-        `Ran at ${last.ranAt}. Total clashes ${last.totalClashes}.\n${raw}`,
-      );
+    const read = jsonPath ? readRunResult(jsonPath) : null;
+    if (read?.ok) {
+      return ok(`Ran at ${last.ranAt}. Total clashes ${last.totalClashes}.\n${read.text}`);
     }
   }
 
@@ -216,11 +213,9 @@ async function getResults(args: Args | undefined): Promise<ToolResponse> {
         outputs: { json?: string };
       };
       const jsonPath = pointer.outputs?.json;
-      if (jsonPath && existsSync(jsonPath)) {
-        const raw = readFileSync(jsonPath, "utf-8");
-        return ok(
-          `Reading from last desktop/CLI run (${pointer.ran_at}):\n${raw}`,
-        );
+      const read = jsonPath ? readRunResult(jsonPath) : null;
+      if (read?.ok) {
+        return ok(`Reading from last desktop/CLI run (${pointer.ran_at}):\n${read.text}`);
       }
     } catch {
       // Fall through to the "no results" message below.

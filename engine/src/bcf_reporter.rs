@@ -8,7 +8,7 @@ use std::io::{Cursor, Write};
 use std::path::Path;
 use uuid::Uuid;
 use zip::ZipWriter;
-use zip::write::FileOptions;
+use zip::write::SimpleFileOptions;
 
 /// Minimal 1×1 grey PNG — satisfies BIMcollab's snapshot.png requirement.
 /// BIMcollab refuses to load issues without a snapshot file in the topic folder.
@@ -160,7 +160,7 @@ pub fn generate_bcf<P: AsRef<Path>>(path: P, clashes: &[ClashInfo]) -> Result<()
 pub fn generate_bcf_topics<P: AsRef<Path>>(path: P, topics: &[BcfTopic]) -> Result<()> {
     let file = File::create(path)?;
     let mut zip = ZipWriter::new(file);
-    let options: FileOptions<'_, ()> = FileOptions::default()
+    let options = SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
 

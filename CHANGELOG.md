@@ -51,3 +51,12 @@ contain.
   points; `--compare-narrow-phase` compares it with the default.
 - **Docs:** architecture, how detection works, the project file format,
   MCP setup.
+
+### Security
+
+- The desktop app runs on Electron 45, with the renderer sandboxed; the
+  window can't navigate away or open new windows, and browser permission
+  requests are denied.
+- The headless MCP server only uses project files (`.clashproj`, `.json`)
+  for `project_path`, and `get_results` only returns Clash Tester result
+  files.

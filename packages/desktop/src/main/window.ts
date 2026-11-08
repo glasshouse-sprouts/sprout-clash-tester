@@ -28,8 +28,9 @@ let rendererDirty = false;
 let closingApproved = false;
 
 function resolvePreload(): string {
-  // electron-vite emits the preload as .mjs when package.json is type:module.
-  const candidates = ["index.mjs", "index.js", "index.cjs"];
+  // Built as CommonJS (electron.vite.config.ts) so the renderer can run
+  // sandboxed; the others are fallbacks for older builds.
+  const candidates = ["index.cjs", "index.mjs", "index.js"];
   for (const f of candidates) {
     const p = path.join(__dirname, "../preload", f);
     if (existsSync(p)) return p;
@@ -50,9 +51,17 @@ export function createWindow(): void {
       preload: resolvePreload(),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
     },
   });
+
+  // The window only ever shows the app itself (SECURITY.md): no new
+  // windows, no navigation away (e.g. a dropped HTML file or a link), and
+  // no browser permissions (camera, notifications, …) — the app uses none.
+  const contents = mainWindow.webContents;
+  contents.setWindowOpenHandler(() => ({ action: "deny" }));
+  contents.on("will-navigate", (event) => event.preventDefault());
+  contents.session.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
 
   if (isDev && process.env.ELECTRON_RENDERER_URL) {
     mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL);

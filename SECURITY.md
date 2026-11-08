@@ -34,7 +34,9 @@ Clash Tester runs locally. Reports are especially welcome about:
   around that, or a way for a tool call to reach files or commands it
   shouldn't, is in scope. See [`docs/MCP.md`](docs/MCP.md).
 - **The headless MCP server** (`clash-tester`), which reads and writes
-  files the agent names on behalf of the local user.
+  files the agent names on behalf of the local user. It only accepts
+  `.clashproj` / `.json` project paths, and `get_results` only returns
+  files that are Clash Tester results — a way around either is in scope.
 
 Out of scope: problems that need an attacker who already controls the
 user's account or machine.

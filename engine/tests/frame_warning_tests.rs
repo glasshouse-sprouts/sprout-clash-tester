@@ -126,7 +126,7 @@ fn test_bcf_author_is_clash_tester() {
     let mut markup = String::new();
     for i in 0..zip.len() {
         let mut f = zip.by_index(i).unwrap();
-        if f.name().ends_with("markup.bcf") {
+        if f.name().unwrap().ends_with("markup.bcf") {
             f.read_to_string(&mut markup).unwrap();
         }
     }

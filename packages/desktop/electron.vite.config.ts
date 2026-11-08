@@ -21,6 +21,10 @@ export default defineConfig({
       lib: {
         entry: resolve(__dirname, "src/preload/index.ts"),
       },
+      // CommonJS: a sandboxed renderer only loads CommonJS preloads.
+      rollupOptions: {
+        output: { format: "cjs", entryFileNames: "[name].cjs" },
+      },
     },
   },
   renderer: {

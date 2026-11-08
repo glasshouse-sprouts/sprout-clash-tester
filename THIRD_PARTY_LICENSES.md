@@ -9,107 +9,92 @@ Clash Tester itself: Apache-2.0 (see [`LICENSE`](LICENSE)).
 
 **Check:** every licence below is known and on the allowlist in the script.
 
-## Rust crates shipped in the engine (201)
+## Rust crates shipped in the engine (157)
 
 Normal and build dependencies of `engine/` for every target platform
 (dev-dependencies left out).
 
 | Licence | Crates |
 |---|---|
-| MIT OR Apache-2.0 | 124 |
-| MIT | 18 |
-| Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | 13 |
-| Apache-2.0 OR MIT | 9 |
-| MIT/Apache-2.0 | 7 |
-| Apache-2.0 | 7 |
+| MIT OR Apache-2.0 | 101 |
+| MIT | 17 |
+| Apache-2.0 OR MIT | 10 |
+| Apache-2.0 | 5 |
 | Zlib OR Apache-2.0 OR MIT | 5 |
-| Zlib | 3 |
 | MPL-2.0 | 3 |
+| MIT/Apache-2.0 | 3 |
 | Unlicense OR MIT | 2 |
-| MIT OR Apache-2.0 OR LGPL-2.1-or-later | 2 |
+| Zlib | 2 |
+| Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | 2 |
+| MIT OR Zlib OR Apache-2.0 | 2 |
 | 0BSD OR MIT OR Apache-2.0 | 1 |
 | CC0-1.0 OR MIT-0 OR Apache-2.0 | 1 |
 | ISC | 1 |
-| bzip2-1.0.6 | 1 |
-| MIT OR Zlib OR Apache-2.0 | 1 |
-| CC0-1.0 OR MIT-0 | 1 |
-| BSD-3-Clause | 1 |
+| MIT OR Apache-2.0 OR LGPL-2.1-or-later | 1 |
 | (MIT OR Apache-2.0) AND Unicode-3.0 | 1 |
 
 | Package | Version | Licence |
 |---|---|---|
 | adler2 | 2.0.1 | 0BSD OR MIT OR Apache-2.0 |
-| aes | 0.8.4 | MIT OR Apache-2.0 |
 | allocator-api2 | 0.2.21 | MIT OR Apache-2.0 |
-| android_system_properties | 0.1.5 | MIT/Apache-2.0 |
+| android_system_properties | 0.1.6 | MIT OR Apache-2.0 |
 | anstream | 1.0.0 | MIT OR Apache-2.0 |
 | anstyle | 1.0.14 | MIT OR Apache-2.0 |
 | anstyle-parse | 1.0.0 | MIT OR Apache-2.0 |
 | anstyle-query | 1.1.5 | MIT OR Apache-2.0 |
 | anstyle-wincon | 3.0.11 | MIT OR Apache-2.0 |
-| anyhow | 1.0.102 | MIT OR Apache-2.0 |
+| anyhow | 1.0.104 | MIT OR Apache-2.0 |
 | approx | 0.5.1 | Apache-2.0 |
-| arrayvec | 0.7.6 | MIT OR Apache-2.0 |
-| autocfg | 1.5.0 | Apache-2.0 OR MIT |
-| bitflags | 2.11.0 | MIT OR Apache-2.0 |
-| block-buffer | 0.10.4 | MIT OR Apache-2.0 |
+| arrayvec | 0.7.8 | MIT OR Apache-2.0 |
+| autocfg | 1.5.1 | Apache-2.0 OR MIT |
+| bitflags | 2.13.2 | MIT OR Apache-2.0 |
 | bnum | 0.14.4 | MIT OR Apache-2.0 |
-| bumpalo | 3.20.2 | MIT OR Apache-2.0 |
-| bytemuck | 1.25.0 | Zlib OR Apache-2.0 OR MIT |
+| bumpalo | 3.20.3 | MIT OR Apache-2.0 |
+| bytemuck | 1.25.2 | Zlib OR Apache-2.0 OR MIT |
 | byteorder | 1.5.0 | Unlicense OR MIT |
-| bzip2 | 0.6.1 | MIT OR Apache-2.0 |
-| cc | 1.2.58 | MIT OR Apache-2.0 |
-| cfg-if | 1.0.4 | MIT OR Apache-2.0 |
-| chrono | 0.4.44 | MIT OR Apache-2.0 |
-| cipher | 0.4.4 | MIT OR Apache-2.0 |
-| clap | 4.6.0 | MIT OR Apache-2.0 |
-| clap_builder | 4.6.0 | MIT OR Apache-2.0 |
-| clap_derive | 4.6.0 | MIT OR Apache-2.0 |
-| clap_lex | 1.1.0 | MIT OR Apache-2.0 |
+| cc | 1.11.1 | MIT OR Apache-2.0 |
+| cfg_aliases | 0.2.2 | MIT |
+| cfg-if | 1.0.5 | MIT OR Apache-2.0 |
+| chrono | 0.4.45 | MIT OR Apache-2.0 |
+| clap | 4.6.7 | MIT OR Apache-2.0 |
+| clap_builder | 4.6.7 | MIT OR Apache-2.0 |
+| clap_derive | 4.6.7 | MIT OR Apache-2.0 |
+| clap_lex | 1.1.1 | MIT OR Apache-2.0 |
 | colorchoice | 1.0.5 | MIT OR Apache-2.0 |
-| constant_time_eq | 0.4.2 | CC0-1.0 OR MIT-0 OR Apache-2.0 |
+| constant_time_eq | 0.6.1 | CC0-1.0 OR MIT-0 OR Apache-2.0 |
 | core-foundation-sys | 0.8.7 | MIT OR Apache-2.0 |
-| cpufeatures | 0.2.17 | MIT OR Apache-2.0 |
-| crc32fast | 1.5.0 | MIT OR Apache-2.0 |
-| crossbeam-deque | 0.8.6 | MIT OR Apache-2.0 |
-| crossbeam-epoch | 0.9.18 | MIT OR Apache-2.0 |
-| crossbeam-utils | 0.8.21 | MIT OR Apache-2.0 |
-| crypto-common | 0.1.7 | MIT OR Apache-2.0 |
-| deflate64 | 0.1.12 | MIT |
-| deranged | 0.5.8 | MIT OR Apache-2.0 |
-| digest | 0.10.7 | MIT OR Apache-2.0 |
+| crc32fast | 1.5.4 | MIT OR Apache-2.0 |
+| crossbeam-deque | 0.8.8 | MIT OR Apache-2.0 |
+| crossbeam-epoch | 0.9.21 | MIT OR Apache-2.0 |
+| crossbeam-utils | 0.8.23 | MIT OR Apache-2.0 |
 | downcast-rs | 2.0.2 | MIT OR Apache-2.0 |
 | earcutr | 0.5.0 | ISC |
-| either | 1.15.0 | MIT OR Apache-2.0 |
+| either | 1.19.0 | MIT OR Apache-2.0 |
 | ena | 0.14.4 | MIT OR Apache-2.0 |
-| equivalent | 1.0.2 | Apache-2.0 OR MIT |
+| equivalent | 1.0.3 | Apache-2.0 OR MIT |
 | errno | 0.3.14 | MIT OR Apache-2.0 |
 | fast-float2 | 0.2.4 | MIT OR Apache-2.0 |
-| fastrand | 2.3.0 | Apache-2.0 OR MIT |
+| fastrand | 2.5.0 | Apache-2.0 OR MIT |
 | fdeflate | 0.3.7 | MIT OR Apache-2.0 |
-| find-msvc-tools | 0.1.9 | MIT OR Apache-2.0 |
-| flate2 | 1.1.9 | MIT OR Apache-2.0 |
-| foldhash | 0.1.5 | Zlib |
+| find-msvc-tools | 0.1.15 | MIT OR Apache-2.0 |
+| flate2 | 1.1.11 | MIT OR Apache-2.0 |
 | foldhash | 0.2.0 | Zlib |
-| futures-core | 0.3.32 | MIT OR Apache-2.0 |
-| futures-macro | 0.3.32 | MIT OR Apache-2.0 |
-| futures-task | 0.3.32 | MIT OR Apache-2.0 |
-| futures-util | 0.3.32 | MIT OR Apache-2.0 |
-| generic-array | 0.14.7 | MIT |
+| futures-core | 0.3.34 | MIT OR Apache-2.0 |
+| futures-macro | 0.3.34 | MIT OR Apache-2.0 |
+| futures-task | 0.3.34 | MIT OR Apache-2.0 |
+| futures-util | 0.3.34 | MIT OR Apache-2.0 |
 | geometry-predicates | 0.3.0 | MIT |
-| getrandom | 0.3.4 | MIT OR Apache-2.0 |
-| getrandom | 0.4.2 | MIT OR Apache-2.0 |
+| getrandom | 0.4.3 | MIT OR Apache-2.0 |
 | glam | 0.30.10 | MIT OR Apache-2.0 |
 | glam | 0.31.1 | MIT OR Apache-2.0 |
 | glam | 0.32.1 | MIT OR Apache-2.0 |
 | glam | 0.33.12 | MIT OR Apache-2.0 |
 | glamx | 0.1.3 | MIT OR Apache-2.0 |
 | hash32 | 0.3.1 | MIT OR Apache-2.0 |
-| hashbrown | 0.15.5 | MIT OR Apache-2.0 |
 | hashbrown | 0.16.1 | MIT OR Apache-2.0 |
+| hashbrown | 0.17.1 | MIT OR Apache-2.0 |
 | heapless | 0.8.0 | MIT OR Apache-2.0 |
 | heck | 0.5.0 | MIT OR Apache-2.0 |
-| hmac | 0.12.1 | MIT OR Apache-2.0 |
 | i_float | 4.1.0 | MIT |
 | i_key_sort | 0.11.0 | MIT |
 | i_overlay | 8.1.2 | MIT OR Apache-2.0 |
@@ -117,105 +102,82 @@ Normal and build dependencies of `engine/` for every target platform
 | i_tree | 0.19.1 | MIT |
 | iana-time-zone | 0.1.65 | MIT OR Apache-2.0 |
 | iana-time-zone-haiku | 0.1.2 | MIT OR Apache-2.0 |
-| id-arena | 2.3.0 | MIT/Apache-2.0 |
 | ifc-lite-clash | 27.0.0 | MPL-2.0 |
 | ifc-lite-core | 27.0.0 | MPL-2.0 |
 | ifc-lite-geometry | 27.0.0 | MPL-2.0 |
-| indexmap | 2.13.0 | Apache-2.0 OR MIT |
-| inout | 0.1.4 | MIT OR Apache-2.0 |
+| indexmap | 2.14.2 | Apache-2.0 OR MIT |
 | is_terminal_polyfill | 1.70.2 | MIT OR Apache-2.0 |
 | itertools | 0.14.0 | MIT OR Apache-2.0 |
 | itoa | 1.0.18 | MIT OR Apache-2.0 |
-| jobserver | 0.1.34 | MIT OR Apache-2.0 |
 | jpeg-decoder | 0.3.2 | MIT OR Apache-2.0 |
-| js-sys | 0.3.94 | MIT OR Apache-2.0 |
-| leb128fmt | 0.1.0 | MIT OR Apache-2.0 |
-| libbz2-rs-sys | 0.2.2 | bzip2-1.0.6 |
-| libc | 0.2.184 | MIT OR Apache-2.0 |
+| js-sys | 0.3.107 | MIT OR Apache-2.0 |
+| libc | 0.2.191 | MIT OR Apache-2.0 |
 | libm | 0.2.16 | MIT |
 | linux-raw-sys | 0.12.1 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| log | 0.4.29 | MIT OR Apache-2.0 |
-| lzma-rust2 | 0.16.2 | Apache-2.0 |
-| matrixmultiply | 0.3.10 | MIT/Apache-2.0 |
-| memchr | 2.8.0 | Unlicense OR MIT |
+| log | 0.4.35 | MIT OR Apache-2.0 |
+| matrixmultiply | 0.3.11 | MIT/Apache-2.0 |
+| memchr | 2.8.3 | Unlicense OR MIT |
 | minimal-lexical | 0.2.1 | MIT/Apache-2.0 |
 | miniz_oxide | 0.8.9 | MIT OR Zlib OR Apache-2.0 |
+| miniz_oxide | 0.9.1 | MIT OR Zlib OR Apache-2.0 |
 | nalgebra | 0.35.0 | Apache-2.0 |
+| nix | 0.31.3 | MIT |
 | nom | 7.1.3 | MIT |
-| num-bigint | 0.4.6 | MIT OR Apache-2.0 |
+| num-bigint | 0.4.8 | MIT OR Apache-2.0 |
 | num-complex | 0.4.6 | MIT OR Apache-2.0 |
-| num-conv | 0.2.1 | MIT OR Apache-2.0 |
 | num-derive | 0.4.2 | MIT OR Apache-2.0 |
-| num-integer | 0.1.46 | MIT OR Apache-2.0 |
+| num-integer | 0.1.47 | MIT OR Apache-2.0 |
 | num-rational | 0.4.2 | MIT OR Apache-2.0 |
 | num-traits | 0.2.19 | MIT OR Apache-2.0 |
 | once_cell | 1.21.4 | MIT OR Apache-2.0 |
 | once_cell_polyfill | 1.70.2 | MIT OR Apache-2.0 |
-| ordered-float | 5.3.0 | MIT |
-| parry3d-f64 | 0.26.0 | Apache-2.0 |
+| ordered-float | 5.4.0 | MIT |
+| parry3d-f64 | 0.26.1 | Apache-2.0 |
 | paste | 1.0.15 | MIT OR Apache-2.0 |
-| pbkdf2 | 0.12.2 | MIT OR Apache-2.0 |
 | pin-project-lite | 0.2.17 | Apache-2.0 OR MIT |
-| pkg-config | 0.3.32 | MIT OR Apache-2.0 |
 | png | 0.18.1 | MIT OR Apache-2.0 |
-| powerfmt | 0.2.0 | MIT OR Apache-2.0 |
-| ppmd-rust | 1.4.0 | CC0-1.0 OR MIT-0 |
-| prettyplease | 0.2.37 | MIT OR Apache-2.0 |
-| proc-macro2 | 1.0.106 | MIT OR Apache-2.0 |
-| quick-xml | 0.39.2 | MIT |
-| quote | 1.0.45 | MIT OR Apache-2.0 |
-| r-efi | 5.3.0 | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
+| proc-macro2 | 1.0.107 | MIT OR Apache-2.0 |
+| quick-xml | 0.42.0 | MIT |
+| quote | 1.0.47 | MIT OR Apache-2.0 |
 | r-efi | 6.0.0 | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
 | rawpointer | 0.2.1 | MIT/Apache-2.0 |
-| rayon | 1.11.0 | MIT OR Apache-2.0 |
+| rayon | 1.12.0 | MIT OR Apache-2.0 |
 | rayon-core | 1.13.0 | MIT OR Apache-2.0 |
 | robust | 1.2.0 | MIT OR Apache-2.0 |
 | rstar | 0.12.2 | MIT OR Apache-2.0 |
-| rustc-hash | 2.1.2 | Apache-2.0 OR MIT |
-| rustix | 1.1.4 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| rustversion | 1.0.22 | MIT OR Apache-2.0 |
+| rustc-hash | 2.1.3 | Apache-2.0 OR MIT |
+| rustix | 1.1.6 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| rustversion | 1.0.23 | MIT OR Apache-2.0 |
 | safe_arch | 0.7.4 | Zlib OR Apache-2.0 OR MIT |
 | safe_arch | 1.2.0 | Zlib OR Apache-2.0 OR MIT |
-| semver | 1.0.27 | MIT OR Apache-2.0 |
-| serde | 1.0.228 | MIT OR Apache-2.0 |
-| serde_core | 1.0.228 | MIT OR Apache-2.0 |
-| serde_derive | 1.0.228 | MIT OR Apache-2.0 |
-| serde_json | 1.0.149 | MIT OR Apache-2.0 |
-| sha1 | 0.10.6 | MIT OR Apache-2.0 |
-| sha2 | 0.10.9 | MIT OR Apache-2.0 |
-| shlex | 1.3.0 | MIT OR Apache-2.0 |
+| serde | 1.0.229 | MIT OR Apache-2.0 |
+| serde_core | 1.0.229 | MIT OR Apache-2.0 |
+| serde_derive | 1.0.229 | MIT OR Apache-2.0 |
+| serde_json | 1.0.154 | MIT OR Apache-2.0 |
+| shlex | 2.0.1 | MIT OR Apache-2.0 |
 | simba | 0.10.2 | Apache-2.0 |
 | simba | 0.9.1 | Apache-2.0 |
-| simd-adler32 | 0.3.9 | MIT |
+| simd-adler32 | 0.3.10 | MIT |
 | slab | 0.4.12 | MIT |
-| smallvec | 1.15.1 | MIT OR Apache-2.0 |
+| smallvec | 1.16.5 | MIT OR Apache-2.0 |
 | spade | 2.15.1 | MIT OR Apache-2.0 |
 | stable_deref_trait | 1.2.1 | MIT OR Apache-2.0 |
 | strsim | 0.11.1 | MIT |
-| subtle | 2.6.1 | BSD-3-Clause |
-| syn | 2.0.117 | MIT OR Apache-2.0 |
+| syn | 2.0.119 | MIT OR Apache-2.0 |
+| syn | 3.0.9 | MIT OR Apache-2.0 |
 | tempfile | 3.27.0 | MIT OR Apache-2.0 |
-| thiserror | 2.0.18 | MIT OR Apache-2.0 |
-| thiserror-impl | 2.0.18 | MIT OR Apache-2.0 |
-| time | 0.3.47 | MIT OR Apache-2.0 |
-| time-core | 0.1.8 | MIT OR Apache-2.0 |
+| thiserror | 2.0.21 | MIT OR Apache-2.0 |
+| thiserror-impl | 2.0.21 | MIT OR Apache-2.0 |
 | twox-hash | 2.1.5 | MIT |
-| typed-path | 0.12.3 | MIT OR Apache-2.0 |
-| typenum | 1.19.0 | MIT OR Apache-2.0 |
-| unicode-ident | 1.0.24 | (MIT OR Apache-2.0) AND Unicode-3.0 |
-| unicode-xid | 0.2.6 | MIT OR Apache-2.0 |
+| typed-path | 0.13.0 | MIT OR Apache-2.0 |
+| typenum | 1.20.1 | MIT OR Apache-2.0 |
+| unicode-ident | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 |
 | utf8parse | 0.2.2 | Apache-2.0 OR MIT |
-| uuid | 1.23.0 | Apache-2.0 OR MIT |
-| version_check | 0.9.5 | MIT/Apache-2.0 |
-| wasip2 | 1.0.2+wasi-0.2.9 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wasip3 | 0.4.0+wasi-0.3.0-rc-2026-01-06 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wasm-bindgen | 0.2.117 | MIT OR Apache-2.0 |
-| wasm-bindgen-macro | 0.2.117 | MIT OR Apache-2.0 |
-| wasm-bindgen-macro-support | 0.2.117 | MIT OR Apache-2.0 |
-| wasm-bindgen-shared | 0.2.117 | MIT OR Apache-2.0 |
-| wasm-encoder | 0.244.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wasm-metadata | 0.244.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wasmparser | 0.244.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| uuid | 1.29.1 | Apache-2.0 OR MIT |
+| wasm-bindgen | 0.2.130 | MIT OR Apache-2.0 |
+| wasm-bindgen-macro | 0.2.130 | MIT OR Apache-2.0 |
+| wasm-bindgen-macro-support | 0.2.130 | MIT OR Apache-2.0 |
+| wasm-bindgen-shared | 0.2.130 | MIT OR Apache-2.0 |
 | wide | 0.7.33 | Zlib OR Apache-2.0 OR MIT |
 | wide | 1.7.1 | Zlib OR Apache-2.0 OR MIT |
 | windows-core | 0.62.2 | MIT OR Apache-2.0 |
@@ -225,20 +187,11 @@ Normal and build dependencies of `engine/` for every target platform
 | windows-result | 0.4.1 | MIT OR Apache-2.0 |
 | windows-strings | 0.5.1 | MIT OR Apache-2.0 |
 | windows-sys | 0.61.2 | MIT OR Apache-2.0 |
-| wit-bindgen | 0.51.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wit-bindgen-core | 0.51.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wit-bindgen-rust | 0.51.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wit-bindgen-rust-macro | 0.51.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wit-component | 0.244.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| wit-parser | 0.244.0 | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
-| zeroize | 1.8.2 | Apache-2.0 OR MIT |
-| zip | 8.4.0 | MIT |
-| zlib-rs | 0.6.3 | Zlib |
-| zmij | 1.0.21 | MIT |
-| zopfli | 0.8.3 | Apache-2.0 |
-| zstd | 0.13.3 | MIT |
-| zstd-safe | 7.2.4 | MIT OR Apache-2.0 |
-| zstd-sys | 2.0.16+zstd.1.5.7 | MIT/Apache-2.0 |
+| zeroize | 1.9.1 | Apache-2.0 OR MIT |
+| zeroize_derive | 1.5.0 | Apache-2.0 OR MIT |
+| zip | 9.4.2 | MIT |
+| zlib-rs | 0.6.8 | Zlib |
+| zmij | 1.0.23 | MIT |
 
 ## npm packages shipped (96)
 
@@ -253,12 +206,12 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 
 | Package | Version | Licence |
 |---|---|---|
-| @hono/node-server | 1.19.14 | MIT |
-| @modelcontextprotocol/sdk | 1.29.0 | MIT |
+| @hono/node-server | 2.1.6 | MIT |
+| @modelcontextprotocol/sdk | 1.32.2 | MIT |
 | accepts | 2.0.0 | MIT |
 | ajv | 8.20.0 | MIT |
 | ajv-formats | 3.0.1 | MIT |
-| body-parser | 2.2.2 | MIT |
+| body-parser | 2.4.0 | MIT |
 | bytes | 3.1.2 | MIT |
 | call-bind-apply-helpers | 1.0.2 | MIT |
 | call-bound | 1.0.4 | MIT |
@@ -276,7 +229,7 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | encodeurl | 2.0.0 | MIT |
 | es-define-property | 1.0.1 | MIT |
 | es-errors | 1.3.0 | MIT |
-| es-object-atoms | 1.1.1 | MIT |
+| es-object-atoms | 1.1.2 | MIT |
 | escape-html | 1.0.3 | MIT |
 | etag | 1.8.1 | MIT |
 | eventsource | 3.0.7 | MIT |
@@ -284,7 +237,7 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | express | 5.2.1 | MIT |
 | express-rate-limit | 8.5.2 | MIT |
 | fast-deep-equal | 3.1.3 | MIT |
-| fast-uri | 3.1.2 | BSD-3-Clause |
+| fast-uri | 3.1.9 | BSD-3-Clause |
 | finalhandler | 2.1.1 | MIT |
 | forwarded | 0.2.0 | MIT |
 | fresh | 2.0.0 | MIT |
@@ -293,12 +246,12 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | get-proto | 1.0.1 | MIT |
 | gopd | 1.2.0 | MIT |
 | has-symbols | 1.1.0 | MIT |
-| hasown | 2.0.3 | MIT |
-| hono | 4.12.19 | MIT |
+| hasown | 2.0.4 | MIT |
+| hono | 4.13.17 | MIT |
 | http-errors | 2.0.1 | MIT |
-| iconv-lite | 0.7.2 | MIT |
+| iconv-lite | 0.7.3 | MIT |
 | inherits | 2.0.4 | ISC |
-| ip-address | 10.2.0 | MIT |
+| ip-address | 10.7.6 | MIT |
 | ipaddr.js | 1.9.1 | MIT |
 | is-promise | 4.0.0 | MIT |
 | isexe | 2.0.0 | ISC |
@@ -321,8 +274,8 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | path-key | 3.1.1 | MIT |
 | path-to-regexp | 8.4.2 | MIT |
 | pkce-challenge | 5.0.1 | MIT |
-| proxy-addr | 2.0.7 | MIT |
-| qs | 6.15.2 | BSD-3-Clause |
+| proxy-addr | 2.0.8 | MIT |
+| qs | 6.17.1 | BSD-3-Clause |
 | range-parser | 1.2.1 | MIT |
 | raw-body | 3.0.2 | MIT |
 | react | 19.2.6 | MIT |
@@ -336,7 +289,7 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | setprototypeof | 1.2.0 | ISC |
 | shebang-command | 2.0.0 | MIT |
 | shebang-regex | 3.0.0 | MIT |
-| side-channel | 1.1.0 | MIT |
+| side-channel | 1.1.1 | MIT |
 | side-channel-list | 1.0.1 | MIT |
 | side-channel-map | 1.0.1 | MIT |
 | side-channel-weakmap | 1.0.2 | MIT |
@@ -347,10 +300,10 @@ Production dependencies of the workspaces (CLI, MCP server, desktop app).
 | vary | 1.1.2 | MIT |
 | which | 2.0.2 | ISC |
 | wrappy | 1.0.2 | ISC |
-| zod | 4.4.3 | MIT |
+| zod | 4.6.7 | MIT |
 | zod-to-json-schema | 3.25.2 | ISC |
 
-## Development-only npm packages (297)
+## Development-only npm packages (249)
 
 Build, test and lint tools — not shipped, listed for completeness. Some
 of them still end up in the desktop app's renderer bundle when it is
@@ -359,15 +312,14 @@ the packaged Electron runtime brings its own Chromium licence file.
 
 | Licence | Packages |
 |---|---|
-| MIT | 243 |
+| MIT | 202 |
 | Apache-2.0 | 18 |
-| ISC | 11 |
-| BSD-2-Clause | 10 |
-| BSD-3-Clause | 6 |
+| ISC | 10 |
+| BSD-2-Clause | 8 |
+| BSD-3-Clause | 3 |
 | MIT-0 | 2 |
 | MPL-2.0 | 2 |
 | Python-2.0 | 1 |
 | CC-BY-4.0 | 1 |
 | CC0-1.0 | 1 |
 | BlueOak-1.0.0 | 1 |
-| (MIT OR CC0-1.0) | 1 |

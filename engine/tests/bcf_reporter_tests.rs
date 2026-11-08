@@ -99,7 +99,7 @@ fn test_generate_bcf_valid_zip() {
     }
 
     // Check for topic folders and their files
-    let file_names: Vec<String> = archive.file_names().map(|s| s.to_string()).collect();
+    let file_names: Vec<String> = archive.file_names().map(|s| s.unwrap().to_string()).collect();
 
     // There should be 2 topic folders, each containing markup.bcf and a .bcfv file
     let markup_files: Vec<_> = file_names
@@ -148,7 +148,7 @@ fn test_generate_bcf_valid_zip() {
 /// Read every (markup, viewpoint) pair from a BCF zip, in archive order.
 fn read_topics(path: &std::path::Path) -> Vec<(String, String)> {
     let mut archive = ZipArchive::new(File::open(path).unwrap()).unwrap();
-    let names: Vec<String> = archive.file_names().map(|s| s.to_string()).collect();
+    let names: Vec<String> = archive.file_names().map(|s| s.unwrap().to_string()).collect();
     names
         .iter()
         .filter(|n| n.ends_with("markup.bcf"))

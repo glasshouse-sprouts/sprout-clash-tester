@@ -2,6 +2,7 @@
 // loading the working project.
 
 import { loadOrInitState } from "../state.js";
+import { checkProjectPath } from "./guards.js";
 
 // ─── Helper types ─────────────────────────────────────────────────────────────
 
@@ -23,10 +24,13 @@ export interface Args {
   [key: string]: unknown;
 }
 
-/** Resolve the project path: explicit arg wins, else default state path. */
+/**
+ * Resolve the project path: explicit arg wins, else default state path. An
+ * explicit `project_path` must name a project file (see guards.ts).
+ */
 export async function loadWorking(args: Args | undefined) {
   const explicit = typeof args?.project_path === "string" ? args.project_path : undefined;
-  return loadOrInitState(explicit);
+  return loadOrInitState(explicit === undefined ? undefined : checkProjectPath(explicit));
 }
 
 export interface ToolDef {
