@@ -44,7 +44,10 @@ outputs/
 # Allow our example outputs through if needed (override in subfolder)
 !examples/**/expected/*.bcf
 
-# Maintainers' private working notes — kept locally, never committed.
+# Maintainers' private working notes — never committed. They live in the
+# Dropbox project folder; `internal` is a symlink to it (no trailing slash:
+# git sees a symlink as a file). The lines below it are a safety net.
+/internal
 TASKS.md
 STATUS.md
 CLAUDE.md
