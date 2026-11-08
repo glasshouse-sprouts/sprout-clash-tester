@@ -4,7 +4,7 @@ import { VERSION, formatIfcClass, formatOpeningCuts } from "./index.js";
 
 describe("@clash-tester/core", () => {
   it("exposes a version string", () => {
-    expect(VERSION).toBe("0.0.1");
+    expect(VERSION).toBe("0.1.0");
   });
 
   it("shows the type-object class after the occurrence class", () => {

@@ -1,6 +1,6 @@
 {
   "name": "@clash-tester/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "Shared logic: rule presets, project files, spawning the Rust engine, parsing results.",
   "private": true,

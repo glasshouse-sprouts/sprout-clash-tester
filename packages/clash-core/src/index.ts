@@ -3,7 +3,7 @@
 // Stable surface for the CLI, the desktop app, and the MCP server.
 // Anything not exported here is internal.
 
-export const VERSION = "0.0.1" as const;
+export const VERSION = "0.1.0" as const;
 
 export { run, checkAlignment, getEnginePath } from "./runner.js";
 export { compareNarrowPhases, diffByRule } from "./compare.js";

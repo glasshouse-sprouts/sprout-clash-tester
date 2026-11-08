@@ -1,6 +1,6 @@
 {
   "name": "@clash-tester/mcp-server",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "MCP server exposing Clash Tester as tools an AI agent can call.",
   "private": true,
