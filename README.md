@@ -1,15 +1,140 @@
 # Clash Tester
 
-A small, standalone IFC clash detection tool. Runs as CLI, desktop app
-(Electron), and MCP server.
+Find where the geometry in your IFC models collides. Give Clash Tester one
+or more IFC files and a set of clash rules; it writes the clashes as
+**BCF** (for BIM viewers), **JSON** (for scripts and AI agents) and
+**CSV** (for spreadsheets).
 
-> **Status: M5 (desktop app) complete.** Engine + Node runner + CLI +
-> preset library + `--json` + MCP server + Electron desktop app all
-> working. Try the CLI: `clashtester run examples/tiny-project/sample.clashproj`.
-> Try the desktop app: `cd packages/desktop && npm run dev`. See
-> `M4_PROGRESS.md` for Claude Desktop wiring and `M5_PROGRESS.md` for
-> the desktop app. Read `SPEC.md`, `PLAN.md`, and the `Mn_PROGRESS.md`
-> files for full context.
+Three ways to use it, all on the same engine:
+
+- **CLI** — `clashtester run project.clashproj`
+- **Desktop app** — an Electron app: drop in IFC files, pick rules, run,
+  browse the results.
+- **MCP server** — lets an AI agent (e.g. Claude) register models, set
+  rules, run detection and read the results. The desktop app has its own
+  MCP server too, so an agent can see and drive the open app.
+
+> **Status: early (0.x).** It works and is tested, but there are no
+> packaged installers yet and the project file format may still change.
+> This project is maintained on a best-effort basis. We welcome issues and
+> PRs, but cannot guarantee response times.
+
+## What it does
+
+- **Presets and custom rules.** Presets such as `HVACxSTR` (ducts against
+  beams and columns) match your files by discipline tag. Custom rules take
+  an IFC type selector per side (`IfcDuct*`, `IfcWall|IfcSlab`, `*`).
+- **Self check.** A model tested against itself: internal clashes and
+  elements that are probably modelled twice.
+- **Fewer false clashes.** Openings are cut out of walls and slabs before
+  testing, and elements that belong together in the IFC (a door in its
+  wall, parts of an assembly) are skipped.
+- **Grouping.** Clashes are grouped into issues: one element pair, one
+  element hitting many others, possible double modelling, and optionally
+  nearby clashes. BCF can have one topic per clash or per group.
+- **Alignment checks.** Warns when the models don't share a placement
+  (e.g. different export origins), before and after detection.
+- **Hard clashes or clearance.** Default: a hard overlap of at least 5 mm.
+  Optionally a clearance distance instead.
+
+## Documentation
+
+| Document | What's in it |
+|---|---|
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Purpose, components, key design choices, repository layout |
+| [`docs/HOW-IT-WORKS.md`](docs/HOW-IT-WORKS.md) | How a clash is decided, step by step, and what is written |
+| [`docs/PROJECT-FILE.md`](docs/PROJECT-FILE.md) | The `.clashproj` format: files, rules, selectors, settings |
+| [`docs/MCP.md`](docs/MCP.md) | The two MCP servers: setup, tools, troubleshooting |
+
+## Quick start
+
+You need [Rust](https://rustup.rs) 1.85 or newer, [Node.js](https://nodejs.org)
+20 or newer, and git. Developed on macOS; Linux and Windows should work
+but are not tested yet.
+
+```bash
+git clone https://github.com/3dbyggeri/clash-tester.git
+cd clash-tester
+```
+
+Build the Rust engine (the first build takes a few minutes):
+
+```bash
+cd engine && cargo build --release && cd ..
+```
+
+Install the Node packages and build them:
+
+```bash
+npm install
+```
+
+```bash
+npm run build --workspaces --if-present
+```
+
+Run the example (two small buildingSMART sample models, ducts against
+structure at 100 mm clearance):
+
+```bash
+node packages/cli/dist/index.js run examples/tiny-project/sample.clashproj
+```
+
+It prints a summary and writes `report.bcf`, `clashes.json` and
+`clashes.csv` to `examples/tiny-project/outputs/`. A second example,
+[`examples/self-check/`](examples/self-check), checks two models against
+themselves.
+
+To start your own project,
+`node packages/cli/dist/index.js init my-project.clashproj` writes a sample
+project file to edit (point its `files` at your IFCs); `run --help` lists
+the options. The format: [`docs/PROJECT-FILE.md`](docs/PROJECT-FILE.md).
+
+### Desktop app
+
+```bash
+cd packages/desktop && npm run dev
+```
+
+### MCP server
+
+See [`docs/MCP.md`](docs/MCP.md): `npm run mcp:config` prints the
+configuration block for Claude.
+
+## Outputs
+
+| File | Content |
+|---|---|
+| `report.bcf` | BCF 2.1: one topic per clash (or per group), with the clashing elements selected and a camera on the clash. Opens in BIMcollab, Solibri and other BIM tools. |
+| `clashes.json` | Everything: clashes (types, GUIDs, files, position, depth or gap, …), groups, per-rule counts, warnings. |
+| `clashes.csv` | One row per clash. |
+
+Each clash has a number that is the same in all three: the BCF topic title
+starts with it, and it is the first CSV column. Details:
+[`docs/HOW-IT-WORKS.md`](docs/HOW-IT-WORKS.md#outputs).
+
+## Known limits
+
+- **No rotation.** Models are assumed to share a coordinate origin; a
+  per-file translation handles offsets, rotation is not supported.
+- **Placeholder BCF snapshots.** Topics carry a placeholder image, not a
+  rendered view.
+- **IFC2X3 MEP** elements are classified through their type objects
+  (`IfcFlowSegment` typed as a duct counts as a duct). Elements without a
+  type object can't be classified, and the run warns about them.
+- **Depth is an estimate** with the default narrow phase: the smallest
+  side of the bounding-box overlap, not the true penetration.
+- **The ifc-lite narrow phase is experimental** (`--narrow-phase ifclite`).
+  It separates touching faces from real clashes, but is not the default.
+- **No installers yet.** The desktop app runs from source
+  (`npm run dev`).
+
+## Development
+
+The repository layout is in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#repository-layout).
+Tests: `cargo test --release` in `engine/`, and `npm test` at the root
+(set `CLASH_BINARY=engine/target/release/clash` to include the end-to-end
+tests). `npm run typecheck` and `npm run lint` check the TypeScript.
 
 ## Origins and credits
 
@@ -34,43 +159,13 @@ Licence and copyright notice for Clashero: see [`NOTICE`](NOTICE). Where
 the copy came from and how we maintain it: see
 [`engine/VENDORED.md`](engine/VENDORED.md).
 
-## What it does (when finished)
+The engine reads and meshes IFC with
+[ifc-lite](https://crates.io/crates/ifc-lite-core). The test models come
+from buildingSMART International (CC BY 4.0) and KIT; sources and terms are
+in [`engine/tests/models/README.md`](engine/tests/models/README.md). All
+dependency licences: [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
 
-- You give it one or more IFC files and a set of clash rules.
-- It finds where the geometry collides.
-- It writes the results as **BCF** (opens in BIM viewers), **JSON** (for
-  agents / scripts), and **CSV** (for spreadsheets).
+## Licence
 
-## Project files
-
-- `SPEC.md` — what the tool is and isn't, the architecture, open questions.
-- `PLAN.md` — milestones from scaffold to shippable release.
-- `M0_PROGRESS.md` — repo scaffold + vendored engine.
-- `M1_PROGRESS.md` — engine baseline cleanup + translation + AABB warning + Node runner.
-- `M2_PROGRESS.md` — CLI commands (`init`, `validate`, `run`) + JSON/CSV writers + sample project.
-- `M3_PROGRESS.md` — preset library + source-IFC-per-clash + `--json` + `init --preset`.
-- `M4_PROGRESS.md` — MCP server (9 tools, stdio transport, Claude Desktop wiring).
-- `M5_PROGRESS.md` — Electron desktop app (three views, drag-and-drop, IPC bridge).
-- `README.md` — this file. High-level orientation only.
-- `engine/VENDORED.md` — origin of the vendored Rust engine.
-
-## Decisions so far
-
-| Decision | Choice | Why |
-|---|---|---|
-| Clash engine | Vendored copy of Clashero's Rust engine | Already works, tested, fast on big models. Vendoring keeps us 100% independent — no external dependency, no submodule. |
-| Coordinate alignment | Translation override only, default zero | Models assumed to be coordinated. Translation handles edge cases. AABB-overlap sanity warning catches silent misalignment. Rotation is out of scope. |
-| Rule UX | Preset library + custom override | Familiar to BIM users; presets cover 90% of cases |
-| MCP scope | Mirror Clashero's MCP (dashboard tools removed) | Battle-tested toolset |
-| Outputs | BCF + JSON + CSV (always together) | Covers viewer, agent, and PM workflows |
-| Project file format | `.clashproj` JSON | Stable, hand-editable, version-controllable |
-| Platforms | macOS, Windows, Linux | Electron makes this cheap |
-| Snapshots in BCF (v1) | Placeholder PNG | Same as Clashero; real screenshots is a v2 problem |
-| Desktop stack | Mirrors Model Viewer (electron-vite + React + Tailwind) | Consistency across our tools |
-| Name | "Clash Tester" stays | Descriptive, no time to bikeshed |
-
-## Open questions still on the table (see SPEC §12)
-
-1. Default output location — next to `.clashproj`? Downloads? Always ask?
-2. Federated perf gate before v1 — yes / no?
-3. MCP binary discovery — auto-resolve to `engine/target/release/clash` or a tool?
+Apache License 2.0 — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+Copyright 2026 3dbyggeri danmark ApS.
