@@ -2,7 +2,8 @@
 //! checks between files that actually meet in a rule, and BCF coordinates
 //! when no file of a rule stays in its own frame.
 
-use crate::{ClashSet, EngineWarning, aabb_overlap_warnings, placement_mismatch_warnings};
+use crate::placement::placement_mismatch_warnings;
+use crate::{ClashSet, EngineWarning};
 use parry3d_f64::bounding_volume::Aabb;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -72,4 +73,51 @@ pub(crate) fn bcf_frame_warnings(sets: &[ClashSet]) -> Vec<EngineWarning> {
         ),
         files: Vec::new(),
     }]
+}
+
+/// After all files are loaded, do a pairwise AABB-overlap check between
+/// every pair of files. If a pair doesn't overlap **and** both files
+/// contributed at least one element, emit a `no_aabb_overlap` warning.
+/// Disjoint AABBs almost always mean the models aren't aligned.
+///
+/// This complements `placement_mismatch_warnings`: that one fires when
+/// clusters are >0.5 m apart by centre (may still have overlapping
+/// AABBs for large files); this one fires when the AABBs are truly
+/// disjoint (the more extreme symptom).
+fn aabb_overlap_warnings(file_aabbs: &HashMap<PathBuf, Option<Aabb>>) -> Vec<EngineWarning> {
+    // Stable order so warnings are deterministic.
+    let mut entries: Vec<(&PathBuf, &Aabb)> = file_aabbs
+        .iter()
+        .filter_map(|(k, v)| v.as_ref().map(|a| (k, a)))
+        .collect();
+    entries.sort_by(|(a, _), (b, _)| a.cmp(b));
+
+    let mut warnings = Vec::new();
+    for i in 0..entries.len() {
+        for j in (i + 1)..entries.len() {
+            let (path_i, aabb_i) = entries[i];
+            let (path_j, aabb_j) = entries[j];
+            if aabb_i.intersection(aabb_j).is_none() {
+                let name_i = path_i
+                    .file_name()
+                    .and_then(|n| n.to_str())
+                    .unwrap_or("?")
+                    .to_string();
+                let name_j = path_j
+                    .file_name()
+                    .and_then(|n| n.to_str())
+                    .unwrap_or("?")
+                    .to_string();
+                warnings.push(EngineWarning {
+                    kind: "no_aabb_overlap".to_string(),
+                    message: format!(
+                        "files {} and {} don't overlap in space — possibly misaligned, clash count may be unreliable",
+                        name_i, name_j
+                    ),
+                    files: vec![name_i, name_j],
+                });
+            }
+        }
+    }
+    warnings
 }
