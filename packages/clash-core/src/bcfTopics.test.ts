@@ -1,4 +1,4 @@
-// Tests for group → BCF topic mapping (SPEC §13c). Pure data — no engine.
+// Tests for group → BCF topic mapping (docs/HOW-IT-WORKS.md#bcf-topics). Pure data — no engine.
 
 import { describe, expect, it } from "vitest";
 import { cameraDistance, groupToTopic, groupsToTopics } from "./bcfTopics.js";

@@ -2,12 +2,17 @@
 
 The `clashtester` command-line tool.
 
-**Status:** M0 placeholder. Real commands land in M2 — see `../../PLAN.md`.
-
-## Planned commands
-
 | Command | What it does |
 |---|---|
-| `clashtester init` | Creates a new `.clashproj` interactively or from a preset. |
-| `clashtester run <project>` | Runs clash detection, writes BCF + JSON + CSV. |
-| `clashtester validate <project>` | Validates a project file without running detection. |
+| `clashtester init <path>` | Write a sample `.clashproj` to edit (`--preset` to pre-fill one). |
+| `clashtester validate <project>` | Check a project file without running detection. |
+| `clashtester run <project>` | Run clash detection; writes BCF + JSON + CSV to `outputs/` next to the project (`--out` to change). |
+
+`clashtester run --help` lists the options (`--json`, `--bcf-topics`,
+`--narrow-phase`, `--no-relation-skip`, `--compare-narrow-phase`, …).
+
+From a clone, after building (see the main README):
+
+```bash
+node packages/cli/dist/index.js run examples/tiny-project/sample.clashproj
+```

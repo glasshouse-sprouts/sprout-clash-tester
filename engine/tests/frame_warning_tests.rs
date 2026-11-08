@@ -1,4 +1,4 @@
-//! Coordinate-frame warnings and BCF authorship (TASKS T14 B/C, SPEC §4).
+//! Coordinate-frame warnings and BCF authorship (docs/HOW-IT-WORKS.md#coordinates-and-units).
 
 use clash::bcf_reporter::{BcfTopic, generate_bcf_topics};
 use clash::{DetectionResult, clash_detect_with_config};

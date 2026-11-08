@@ -1,4 +1,4 @@
-// Tests for clash grouping (SPEC §13a). Pure data — no engine.
+// Tests for clash grouping (docs/HOW-IT-WORKS.md#grouping). Pure data — no engine.
 
 import { describe, expect, it } from "vitest";
 import {
@@ -164,7 +164,7 @@ describe("groupClashes — level B (one element, many clashes)", () => {
     expect(g.title).toBe("IfcDuctSegment clashes with 3 elements (IfcBeam ×3) [HVACxSTR]");
   });
 
-  it("SPEC §13a worked example: A–B, A–C, A–D, E–D", () => {
+  it("worked example (docs/HOW-IT-WORKS.md#grouping): A–B, A–C, A–D, E–D", () => {
     // Degrees A=3, D=2 → hubs A and D. A–D goes to A (more pairs). D keeps
     // only E–D (< 2) → demoted to a pair. D appears in both groups; each
     // clash is in exactly one.
@@ -342,7 +342,8 @@ describe("groupClashes — level C (proximity, optional)", () => {
   });
 });
 
-// ─── Duplicates (double modelling, SPEC §13b) ────────────────────────────────
+// ─── Duplicates (double modelling, docs/HOW-IT-WORKS.md#double-modelling)
+// ────────────────────────────────
 
 /** Measurements of a perfect copy: same volume, same centre. */
 const COPY = { volumeA: 2.4, volumeB: 2.4, centroidDistanceMetres: 0, aabbMatch: 1 };
@@ -414,7 +415,7 @@ describe("isLikelyDuplicate — same type + volume + centre", () => {
   });
 });
 
-describe("duplicateVerdict — per-criterion breakdown (T5)", () => {
+describe("duplicateVerdict — per-criterion breakdown", () => {
   const base = { ifcTypeA: "IfcWall", ifcTypeB: "IFCWALLSTANDARDCASE", ...COPY };
 
   it("all three criteria pass for an exact copy", () => {

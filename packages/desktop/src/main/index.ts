@@ -23,7 +23,7 @@ import { registerRunIpc } from "./runIpc.js";
 import { createWindow, mainWindow, registerWindowIpc } from "./window.js";
 
 // One app instance at a time: a second launch focuses the first window
-// instead of fighting over the desktop MCP port (SPEC §13d).
+// instead of fighting over the desktop MCP port (docs/MCP.md#desktop-live-ui--clash-tester-ui).
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {

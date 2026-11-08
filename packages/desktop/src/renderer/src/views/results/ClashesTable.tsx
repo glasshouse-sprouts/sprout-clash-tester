@@ -125,7 +125,7 @@ export function ClashesTable({
 
 /** IFC class cell: `IFCFLOWSEGMENT → IfcDuctSegment` for generic
  * occurrences classified by their type object, plus the PredefinedType
- * when there is one (SPEC §6). */
+ * when there is one (docs/PROJECT-FILE.md#ifc2x3-type-objects). */
 function IfcClassCell({
   ifcType,
   typeClass,

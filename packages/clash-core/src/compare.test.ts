@@ -1,4 +1,5 @@
-// diffByRule: per-rule agreement between the two narrow phases (SPEC §13g).
+// diffByRule: per-rule agreement between the two narrow phases
+// (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
 
 import { describe, expect, it } from "vitest";
 import { diffByRule } from "./compare.js";

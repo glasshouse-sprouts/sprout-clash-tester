@@ -1,4 +1,4 @@
-// Public types of clash grouping (SPEC §13a).
+// Public types of clash grouping (docs/HOW-IT-WORKS.md#grouping).
 
 import type { DuplicateOptions } from "./duplicate.js";
 
@@ -17,7 +17,7 @@ export interface GroupingOptions {
   minElementClashes?: number;
   /** Level C. Omitted = off. */
   proximity?: ProximityOptions;
-  /** Double-modelling thresholds (SPEC §13b). */
+  /** Double-modelling thresholds (docs/HOW-IT-WORKS.md#double-modelling). */
   duplicate?: DuplicateOptions;
 }
 

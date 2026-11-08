@@ -1,5 +1,4 @@
-//! Minimal repros of ifc-lite-clash findings to report upstream (TASKS
-//! T16, `research/ifc-lite-clash-feedback.md`). They call
+//! Minimal repros of ifc-lite-clash findings to report upstream. They call
 //! `ifc_lite_clash::ClashSession` directly, so the code can go into an
 //! upstream issue as is. Each test asserts TODAY's (wrong) verdict: it
 //! fails once upstream fixes it — then flip the assertion.

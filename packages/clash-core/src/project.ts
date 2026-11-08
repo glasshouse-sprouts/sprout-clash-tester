@@ -1,5 +1,5 @@
 // .clashproj — project file load, save, validate, and expansion to
-// engine clash rules. Schema matches SPEC.md §7.
+// engine clash rules. Schema matches docs/PROJECT-FILE.md.
 //
 // Design notes:
 //   - The project file is the user-facing artefact. Hand-editable JSON.
@@ -11,7 +11,7 @@
 //     When we break the schema, bump `version` and add a migration in
 //     `migrateProject()`.
 //
-// Presets ARE resolved here as of M3. `expandProjectToRules` accepts an
+// Presets are resolved here. `expandProjectToRules` accepts an
 // optional preset map (defaults to the one in `presets/`). A rule with
 // `preset: "HVACxSTR"` is expanded by looking the preset up in the map
 // and finding all project files whose `discipline` matches each side.

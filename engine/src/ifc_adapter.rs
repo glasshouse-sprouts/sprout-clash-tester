@@ -8,7 +8,7 @@ mod relations;
 mod step_text;
 mod units;
 
-// Public API, unchanged paths (`clash::ifc_adapter::…`) since the T30 split.
+// Public API, unchanged paths (`clash::ifc_adapter::…`) after the module split.
 pub use metadata::load_ifc_metadata;
 pub use relations::{IfcRelations, ordered_pair, related_guid_pairs};
 pub use step_text::{
@@ -49,7 +49,8 @@ pub struct IfcMetadata {
     /// The class read off the type object when the occurrence is a
     /// generic distribution class (IFC2X3 style): an `IfcFlowSegment`
     /// typed by `IfcDuctSegmentType` is an `IfcDuctSegment`. `None` when
-    /// the occurrence class already says what the element is (SPEC §6).
+    /// the occurrence class already says what the element is
+    /// (docs/PROJECT-FILE.md#ifc2x3-type-objects).
     pub type_class: Option<String>,
     /// `PredefinedType` of the occurrence, else of its type object;
     /// `None` when absent or `NOTDEFINED`. Shown, not matched on.
@@ -64,15 +65,15 @@ pub struct IfcElement {
 }
 
 /// An IFC file as loaded for clash detection: its elements, the GUID
-/// pairs that belong together by IFC relations (SPEC §13e) and what the
-/// opening cuts did (SPEC §13f).
+/// pairs that belong together by IFC relations (docs/HOW-IT-WORKS.md#related-elements) and what the
+/// opening cuts did (docs/HOW-IT-WORKS.md#opening-cuts).
 #[derive(Clone)]
 pub struct LoadedIfc {
     pub elements: Vec<IfcElement>,
     pub related_pairs: HashSet<(String, String)>,
     pub opening_cuts: OpeningCutStats,
     /// Generic MEP elements (`IfcFlowSegment`, …) with no type object:
-    /// presets can't classify them (SPEC §6).
+    /// presets can't classify them (docs/PROJECT-FILE.md#ifc2x3-type-objects).
     pub untyped_generic: usize,
 }
 
@@ -106,7 +107,7 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
     let mut scanner = EntityScanner::new(&content);
     // Survey coordinates (UTM, millions of metres) keep full precision only
     // if nothing passes through f32 at that size — an f32 step there is
-    // ~0.5 m (SPEC §4, TASKS T14). So: RTC — ifc-lite subtracts a
+    // ~0.5 m (docs/HOW-IT-WORKS.md#coordinates-and-units). So: RTC — ifc-lite subtracts a
     // model-wide anchor in f64 before any f32 work, opening cuts included —
     // plus a local frame per mesh. File units (scale 1); the conversion to
     // metres, with the anchor added back, happens below.
@@ -163,7 +164,8 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
                     // Positions are relative to `mesh.origin` (zero on the
                     // plain path, the element centre on the opening-cut
                     // path), in the file's unit. The engine works in metres
-                    // from here on — this is the one conversion (SPEC §4).
+                    // from here on — this is the one conversion
+                    // (docs/HOW-IT-WORKS.md#coordinates-and-units).
                     let (o, s) = (mesh.origin, to_metres);
                     let anchor = [rtc.0, rtc.1, rtc.2];
                     let vertices: Vec<Point> = mesh

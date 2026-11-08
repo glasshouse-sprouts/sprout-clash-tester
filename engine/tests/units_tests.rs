@@ -1,4 +1,4 @@
-//! All geometry is in metres after load (SPEC §4, TASKS T13): thresholds
+//! All geometry is in metres after load (docs/HOW-IT-WORKS.md#coordinates-and-units): thresholds
 //! mean the same in mm and m models, and a mm file clashes correctly
 //! against a metre file. Fixtures `units-m.ifc` / `units-mm.ifc` hold the
 //! same scene: a 0.2 m slab and ducts 3 mm in, 20 mm in and 40 mm above.

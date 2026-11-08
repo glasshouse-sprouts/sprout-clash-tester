@@ -1,4 +1,4 @@
-// BCF topics built from clash groups (SPEC §13c). Pure — no I/O.
+// BCF topics built from clash groups (docs/HOW-IT-WORKS.md#bcf-topics). Pure — no I/O.
 //
 // The engine's `clash bcf --topics <json>` subcommand writes the BCF; this
 // module only decides what goes into each topic. The future BCF-API push
@@ -45,7 +45,7 @@ const KIND_LABEL: Record<ClashGroupKind, string> = {
  * Turn one group into a BCF topic.
  *
  * - Title: `"<n> - " + group.title` — `n` is the group's 1-based position
- *   in the group list (TASKS T2/T4).
+ *   in the group list.
  * - Description: group kind, then one line per member clash:
  *   `#<clash number> <rule>: <typeA> (<guidA>) × <typeB> (<guidB>)`.
  * - Camera: aimed at the group centroid along the single-clash direction,

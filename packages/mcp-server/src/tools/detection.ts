@@ -160,7 +160,7 @@ async function runClashDetection(args: Args | undefined): Promise<ToolResponse> 
     warnings.length > 0
       ? "\nRule-expansion notes:\n" + warnings.map((m) => `  ! ${m}`).join("\n")
       : "";
-  // Groups = future task-tracker topics (SPEC §13a). Show the biggest so
+  // Groups = future task-tracker topics (docs/HOW-IT-WORKS.md#grouping). Show the biggest so
   // an agent can talk about "the duct that hits 12 beams" straight away;
   // the full list (with member clash indices) is in clashes.json.
   const groups = result.groups ?? [];

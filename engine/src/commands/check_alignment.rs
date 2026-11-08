@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! `clash check-alignment`: quick pre-flight placement check from each
 //! file's IFCSITE origin (no geometry pass).
 

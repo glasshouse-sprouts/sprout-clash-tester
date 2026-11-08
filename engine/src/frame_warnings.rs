@@ -1,4 +1,4 @@
-//! Run warnings about coordinate frames (SPEC §4, TASKS T14 B/C): placement
+//! Run warnings about coordinate frames (docs/HOW-IT-WORKS.md#placement-checks): placement
 //! checks between files that actually meet in a rule, and BCF coordinates
 //! when no file of a rule stays in its own frame.
 

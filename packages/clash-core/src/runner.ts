@@ -116,7 +116,7 @@ export async function run(opts: RunOptions): Promise<RunResult> {
 
   const groups = groupClashes(clashes, opts.grouping);
 
-  // Per-group BCF (SPEC §13c): topics from the groups, written by the
+  // Per-group BCF (docs/HOW-IT-WORKS.md#bcf-topics): topics from the groups, written by the
   // engine's own (BIMcollab-tested) writer via `clash bcf`.
   let bcfExit = 0;
   let allStdout = stdout;

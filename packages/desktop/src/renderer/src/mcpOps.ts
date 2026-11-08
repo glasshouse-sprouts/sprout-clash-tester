@@ -1,5 +1,5 @@
-// Desktop MCP ops (SPEC §13d, phase 1). Pure: `(state, args) → { state,
-// result }`, so they are tested without Electron or React. App.tsx runs
+// Desktop MCP ops (docs/MCP.md#desktop-live-ui--clash-tester-ui, phase 1). Pure: `(state, args) → {
+// state, result }`, so they are tested without Electron or React. App.tsx runs
 // them against the live AppState when the main process forwards a tool
 // call; `ui_run` (async, side effects) is handled in App.tsx using
 // `runBlockedReason` and `runSummary` from here.
@@ -148,7 +148,7 @@ export function resultsPage(s: AppState, args: Args) {
       lr.groups.map((g, i) => ({
         number: i + 1,
         key: g.key,
-        kind: (g.kind as string) === "element" ? "clashGroup" : g.kind, // pre-T6 results
+        kind: (g.kind as string) === "element" ? "clashGroup" : g.kind, // old name
         title: g.title,
         clashNumbers: g.clashIndices.map((ci) => clashNumber(lr.clashes[ci]!, ci)),
         rules: g.rules,

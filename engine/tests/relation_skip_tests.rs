@@ -1,5 +1,5 @@
 //! Skipping pairs that belong together by IFC relations, and loading each
-//! file once per run (SPEC §13e, TASKS T9).
+//! file once per run (docs/HOW-IT-WORKS.md#related-elements).
 
 use clash::ifc_adapter::{load_ifc_elements, load_ifc_file, ordered_pair};
 use clash::{
@@ -87,7 +87,7 @@ fn test_fzk_doors_in_walls_are_skipped() {
 
 #[test]
 fn test_fzk_windows_stay_clean() {
-    // Since T12 the walls have holes, and each window frame sits a little
+    // With opening cuts the walls have holes, and each window frame sits a little
     // into its reveal (75–90 mm): 11 hits with the skip off, all of them
     // window × own wall, so the skip removes every one.
     let f = fixture("AC20-FZK-Haus.ifc");
@@ -100,12 +100,12 @@ fn test_fzk_windows_stay_clean() {
 
 #[test]
 fn test_fzk_self_check_rebaselined() {
-    // Local-frame + RTC meshes (T14): 257 without relation skip, 208 with
-    // it. Versus T12's 272 / 223 every changed pair is flush (parry distance
+    // Local-frame + RTC meshes: 257 without relation skip, 208 with
+    // it. Versus 272 / 223 before local frames, every changed pair is flush (parry distance
     // exactly 0 — rafters on sloped space tops, roof on gable walls), where
-    // float noise decides "crossing"; see SPEC §4. With opening cuts (T12)
-    // window frames sit in their own wall's reveal, which the skip removes.
-    // (Uncut, ifc-lite 27 / T10: 261 / 223; ifc-lite 2.1: 253 / 215.)
+    // float noise decides "crossing"; see docs/HOW-IT-WORKS.md#coordinates-and-units. With opening
+    // cuts window frames sit in their own wall's reveal, which the skip removes.
+    // (Uncut, ifc-lite 27: 261 / 223; ifc-lite 2.1: 253 / 215.)
     let f = fixture("AC20-FZK-Haus.ifc");
     let r = vec![rule("SELF", &f, "*", "*")];
     assert_eq!(run(&r, false).clashes.len(), 257);

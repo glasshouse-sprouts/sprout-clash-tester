@@ -2,9 +2,9 @@
 // `npm run mcp:config` — print a ready-to-paste `mcpServers` block for
 // Claude Desktop / Cowork with both Clash Tester servers:
 //   clash-tester     headless stdio server (packages/mcp-server)
-//   clash-tester-ui  bridge to the open desktop app (SPEC §13d)
+//   clash-tester-ui  bridge to the open desktop app (docs/MCP.md#desktop-live-ui--clash-tester-ui)
 // Uses absolute paths (Claude starts servers with a minimal PATH, and
-// this repo's path contains spaces) and warns about missing builds.
+// paths may contain spaces) and warns about missing builds.
 // Warnings go to stderr so stdout stays pasteable JSON.
 
 import { existsSync } from "node:fs";

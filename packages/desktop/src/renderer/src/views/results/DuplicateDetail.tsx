@@ -1,4 +1,4 @@
-// The per-clash double-modelling breakdown (TASKS T5).
+// The per-clash double-modelling breakdown.
 
 import { normaliseIfcType, type DuplicateVerdict } from "@clash-tester/core/grouping";
 import type { LastRun } from "../../state";
@@ -6,7 +6,7 @@ import { fmtCm, fmtM3, fmtPct } from "./format";
 
 /**
  * Why a clash is / isn't "double?" — each criterion with its measured
- * value, the threshold and ✓/✗ (TASKS T5). Read-only; the rule itself is
+ * value, the threshold and ✓/✗. Read-only; the rule itself is
  * `duplicateVerdict` in clash-core.
  */
 export function DuplicateDetail({

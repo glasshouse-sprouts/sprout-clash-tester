@@ -1,12 +1,14 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! IFC relations that tie elements together, and the GUID pairs they give
-//! (SPEC §13e).
+//! (docs/HOW-IT-WORKS.md#related-elements).
 
 use super::IfcMetadata;
 use ifc_lite_core::AttributeValue;
 use std::collections::{HashMap, HashSet};
 
 /// IFC relations that tie elements together physically, by entity id —
-/// read in the metadata pass so related pairs can be skipped (SPEC §13e).
+/// read in the metadata pass so related pairs can be skipped
+/// (docs/HOW-IT-WORKS.md#related-elements).
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct IfcRelations {
     /// `IfcRelVoidsElement`: (host element, opening).
@@ -16,7 +18,8 @@ pub struct IfcRelations {
     /// `IfcRelAggregates`: (whole, parts).
     pub aggregates: Vec<(u64, Vec<u64>)>,
     /// `IfcRelDefinesByType`: (type object, occurrences). Not a physical
-    /// tie — read here so occurrences get their type class (SPEC §6).
+    /// tie — read here so occurrences get their type class
+    /// (docs/PROJECT-FILE.md#ifc2x3-type-objects).
     pub typed_by: Vec<(u64, Vec<u64>)>,
 }
 

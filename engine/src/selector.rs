@@ -49,7 +49,7 @@ impl Selector {
             // Pipe-separated alternatives: "IfcBeam|IfcColumn" → match either.
             // An element answers to its occurrence class and to the class
             // read off its type object (IFC2X3 `IfcFlowSegment` typed as a
-            // duct segment answers to both), SPEC §6.
+            // duct segment answers to both), docs/PROJECT-FILE.md#ifc2x3-type-objects.
             let classes: Vec<String> = std::iter::once(&meta.ifc_type)
                 .chain(meta.type_class.as_ref())
                 .map(|c| c.to_uppercase())

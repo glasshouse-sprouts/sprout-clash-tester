@@ -1,4 +1,4 @@
-// Desktop MCP ops (SPEC §13d) — pure, no Electron/React.
+// Desktop MCP ops (docs/MCP.md#desktop-live-ui--clash-tester-ui) — pure, no Electron/React.
 
 import { describe, expect, it } from "vitest";
 import type { Project } from "@clash-tester/core/types";
@@ -214,7 +214,7 @@ describe("runSummary (ui_run answer)", () => {
     });
   });
 
-  it("passes the run's opening cuts through (SPEC §13f)", () => {
+  it("passes the run's opening cuts through", () => {
     const openingCuts = { hostsCut: 2, openings: 3, failed: ["W1"], notCut: ["O7"] };
     expect(runSummary({ ...lastRun(), openingCuts }).openingCuts).toEqual(openingCuts);
   });

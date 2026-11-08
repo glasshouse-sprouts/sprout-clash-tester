@@ -1,4 +1,4 @@
-// Shared MCP protocol shapes — main ⇄ renderer IPC (SPEC §13d).
+// Shared MCP protocol shapes — main ⇄ renderer IPC (docs/MCP.md#desktop-live-ui--clash-tester-ui).
 //
 // Adapted from Model Viewer (`src/shared/mcp/protocol.ts`),
 // Copyright 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache

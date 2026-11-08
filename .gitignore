@@ -44,8 +44,7 @@ outputs/
 # Allow our example outputs through if needed (override in subfolder)
 !examples/**/expected/*.bcf
 
-# Internal working files — never in the public repo (TASKS T21, decided
-# 2026-11-04). They stay here because the coordination workflow reads them.
+# Maintainers' private working notes — kept locally, never committed.
 TASKS.md
 STATUS.md
 CLAUDE.md

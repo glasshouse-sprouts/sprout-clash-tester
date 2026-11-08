@@ -1,4 +1,4 @@
-//! Tests for the M1 AABB-overlap sanity warning.
+//! Tests for the AABB-overlap sanity warning.
 //!
 //! When two source files have non-overlapping bounding boxes the engine
 //! emits a structured `no_aabb_overlap` warning. This catches silent

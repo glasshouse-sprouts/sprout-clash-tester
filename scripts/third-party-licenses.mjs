@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // `npm run licenses` — write THIRD_PARTY_LICENSES.md: the licence of every
 // Rust crate and npm package Clash Tester ships, plus a summary of the
-// development-only tools (TASKS T19). Reads what is installed — `cargo
+// development-only tools. Reads what is installed — `cargo
 // metadata` for engine/ and `npm ls` for the workspaces — so run it after
 // `npm install` and a cargo build. Exits 1 when any licence is unknown or
 // not on the allowlist below, so CI can run it as a check.

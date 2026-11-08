@@ -26,7 +26,7 @@ export function ResultsView({
   patch: (fn: (prev: AppState) => AppState) => void;
 }) {
   // Selection lives in AppState: a click here and the desktop MCP's
-  // ui_select_* tools set the same thing (SPEC §13d).
+  // ui_select_* tools set the same thing (docs/MCP.md#desktop-live-ui--clash-tester-ui).
   const { clashNumber: selectedClash, groupKey: selectedGroup } = state.selection;
   const rootRef = useRef<HTMLDivElement>(null);
   // Bring the selected row into view (group first, then clash).
@@ -55,13 +55,14 @@ export function ResultsView({
   const duplicateGroups = groups.filter((g) => g.kind === "duplicate");
   // Clash rows that belong to a "possible double modelling" group.
   const duplicateRows = new Set(duplicateGroups.flatMap((g) => g.clashIndices));
-  // Thresholds the "double?" verdict is made against (SPEC §13b).
+  // Thresholds the "double?" verdict is made against (docs/HOW-IT-WORKS.md#double-modelling).
   const duplicateOptions: DuplicateOptions = state.project?.settings.grouping?.duplicate ?? {};
   const thresholds = checkDuplicateOptions(duplicateOptions);
   const thresholdsFromProject = Object.keys(duplicateOptions).length > 0;
   // Clash rows of the selected group are highlighted too.
   const groupRows = new Set(groups.find((g) => g.key === selectedGroup)?.clashIndices ?? []);
-  // The runner sets touch counts only for the ifc-lite narrow phase (SPEC §13g).
+  // The runner sets touch counts only for the ifc-lite narrow phase
+  // (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
   const ifclite = lr.perRule.some((r) => r.touchCount !== undefined);
   return (
     <div ref={rootRef} className="space-y-4">

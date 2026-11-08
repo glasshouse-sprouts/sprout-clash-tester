@@ -1,5 +1,5 @@
-// The one stderr line the headless MCP server writes on startup (TASKS
-// T1). Pure, so it is unit-tested.
+// The one stderr line the headless MCP server writes on startup. Pure,
+// so it is unit-tested.
 
 export interface StartupInfo {
   version: string;

@@ -1,5 +1,6 @@
-//! Classify generic MEP occurrences by their type object (SPEC §6,
-//! TASKS T15). In IFC2X3 a duct is an `IfcFlowSegment` occurrence whose
+//! Classify generic MEP occurrences by their type object
+//! (docs/PROJECT-FILE.md#ifc2x3-type-objects). In IFC2X3 a duct is an `IfcFlowSegment` occurrence
+//! whose
 //! `IfcDuctSegmentType` says what it is, so selectors like `IfcDuct*`
 //! need the class read off the type object.
 

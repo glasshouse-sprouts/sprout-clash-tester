@@ -1,6 +1,6 @@
-// stdio bridge `bin/clashtester-ui-mcp.mjs` end to end (SPEC §13d): spawn
-// it like Claude does and talk MCP over stdio, with the desktop server
-// (a) not running and (b) running (real server, fake renderer).
+// stdio bridge `bin/clashtester-ui-mcp.mjs` end to end
+// (docs/MCP.md#desktop-live-ui--clash-tester-ui): spawn it like Claude does and talk MCP over
+// stdio, with the desktop server (a) not running and (b) running (real server, fake renderer).
 
 import net from "node:net";
 import path from "node:path";

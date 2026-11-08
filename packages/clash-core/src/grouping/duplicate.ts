@@ -1,5 +1,5 @@
 // "Possible double modelling" — when two clashing elements are probably
-// the same element modelled twice (SPEC §13b, TASKS T5).
+// the same element modelled twice (docs/HOW-IT-WORKS.md#double-modelling).
 
 import type { ClashEntry } from "../types.js";
 
@@ -53,7 +53,7 @@ export type DuplicateInput = Pick<
 
 /**
  * Why a clash is / isn't "possible double modelling", criterion by
- * criterion (TASKS T5). `likelyDuplicate` is true only when all three
+ * criterion. `likelyDuplicate` is true only when all three
  * criteria pass.
  */
 export interface DuplicateVerdict {

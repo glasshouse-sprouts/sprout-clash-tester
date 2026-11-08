@@ -1,6 +1,6 @@
 # Preset clash rule sets
 
-Seven built-in rule templates. Each one says "elements of type X from
+Thirteen built-in rule templates. Each one says "elements of type X from
 discipline A vs elements of type Y from discipline B" — the project file
 provides the actual IFCs, with their `discipline` tag mapping them to
 the right side.
@@ -76,8 +76,9 @@ federated projects (informed by Clashero's discipline tables).
 
 ### Things deliberately NOT shipped (yet)
 
-- **Self-clashes** (e.g. HVAC-vs-HVAC). Requires a small engine fix to
-  skip same-element pairs before it'd be useful. Add later if needed.
+- **Same-discipline checks** (e.g. HVAC-vs-HVAC). Use a self check
+  instead: a custom rule with the same file on both sides (the desktop
+  Rules view has a button for it).
 - **EQUIPMENTxSTR**. "Equipment" tags vary too much by project
   convention to ship as a generic preset.
 - **GEOxSTR / GEOxARCH**. Geo content is project-specific; better as

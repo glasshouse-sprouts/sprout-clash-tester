@@ -1,10 +1,10 @@
-// "Self check" section of the Rules view (SPEC §13b).
+// "Self check" section of the Rules view (docs/HOW-IT-WORKS.md#self-check).
 
 import { useState } from "react";
 import { selfCheckRuleName } from "../../state";
 
 /**
- * "Self check" — a model tested against itself (SPEC §13b). Finds internal
+ * "Self check" — a model tested against itself (docs/HOW-IT-WORKS.md#self-check). Finds internal
  * clashes and double modelling. One click adds `SELF-<fileId>` with the
  * same file on both sides and all element types.
  */

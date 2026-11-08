@@ -1,4 +1,4 @@
-//! Survey coordinates (TASKS T14 A, SPEC §4): a model moved to UTM gives the
+//! Survey coordinates (docs/HOW-IT-WORKS.md#coordinates-and-units): a model moved to UTM gives the
 //! same clashes, opening cuts and (shifted) positions as at the origin. The
 //! shifted copies are written here, from the repo fixtures.
 

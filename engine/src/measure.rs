@@ -1,5 +1,6 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Geometry measurements per clash: bounding-box similarity and mesh
-//! volume / centre, used to spot double modelling (SPEC §13b).
+//! volume / centre, used to spot double modelling (docs/HOW-IT-WORKS.md#double-modelling).
 
 use crate::ifc_adapter::IfcElement;
 use parry3d_f64::bounding_volume::Aabb;

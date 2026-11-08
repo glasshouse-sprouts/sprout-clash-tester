@@ -14,7 +14,7 @@ mod placement;
 mod rule_detect;
 mod run;
 
-// Public API, unchanged paths (`clash::…`) since the T30 split.
+// Public API, unchanged paths (`clash::…`) after the module split.
 pub use legacy_detect::{clash_detect, clash_detect_between_groups};
 pub use measure::{MeshMeasure, aabb_match, mesh_measure};
 pub use placement::{
@@ -44,13 +44,13 @@ pub struct SelectionGroup {
     pub mode: Option<String>,
     /// Optional selector (same syntax as `selector`) applied AFTER the
     /// include step; matching elements are dropped. Used e.g. by self
-    /// checks to skip IfcSpace / IfcOpeningElement. See SPEC §13b.
+    /// checks to skip IfcSpace / IfcOpeningElement. See docs/HOW-IT-WORKS.md#self-check.
     #[serde(default)]
     pub exclude: Option<String>,
     /// Optional `[dx, dy, dz]` translation in metres applied to every
     /// element loaded from `file` before clash detection. Used for edge
     /// cases where the IFCs don't share a coordinate origin. Default =
-    /// `None` (no translation). See SPEC.md §4.
+    /// `None` (no translation). See docs/HOW-IT-WORKS.md#coordinates-and-units.
     #[serde(default)]
     pub translation: Option<[f64; 3]>,
 }
@@ -74,11 +74,11 @@ pub struct EngineWarning {
 pub struct DetectionResult {
     pub clashes: Vec<ClashInfo>,
     pub warnings: Vec<EngineWarning>,
-    /// One entry per rule, in config order (SPEC §13e).
+    /// One entry per rule, in config order (docs/HOW-IT-WORKS.md#related-elements).
     #[serde(default)]
     pub rule_stats: Vec<RuleStat>,
     /// Openings cut out of their hosts, summed over the run's files
-    /// (SPEC §13f).
+    /// (docs/HOW-IT-WORKS.md#opening-cuts).
     #[serde(default)]
     pub opening_cuts: OpeningCutStats,
 }
@@ -91,7 +91,8 @@ pub struct RuleStat {
     /// relations (opening in host, door in wall, parts of an assembly).
     pub skipped_by_relations: usize,
     /// ifc-lite narrow phase: touching pairs and unconfirmed box
-    /// estimates, not counted as clashes (SPEC §13g). 0 with parry.
+    /// estimates, not counted as clashes (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). 0 with
+    /// parry.
     #[serde(default)]
     pub touch_count: usize,
     #[serde(default)]
@@ -102,12 +103,13 @@ pub struct RuleStat {
 #[derive(Debug, Clone)]
 pub struct DetectOptions {
     /// Skip element pairs that belong together by IFC relations
-    /// (SPEC §13e). Default true.
+    /// (docs/HOW-IT-WORKS.md#related-elements). Default true.
     pub skip_related: bool,
-    /// Cut `IfcRelVoidsElement` openings out of their hosts (SPEC §13f).
+    /// Cut `IfcRelVoidsElement` openings out of their hosts (docs/HOW-IT-WORKS.md#opening-cuts).
     /// Default true; off only for side-by-side diagnosis.
     pub cut_openings: bool,
-    /// Narrow phase and touch reporting (SPEC §13g). Default parry.
+    /// Narrow phase and touch reporting (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). Default
+    /// parry.
     pub narrow: NarrowConfig,
 }
 
@@ -121,7 +123,7 @@ impl Default for DetectOptions {
 /// apply within one file — relations never link two models.
 pub type RelatedPairs = HashMap<String, HashSet<(String, String)>>;
 
-/// Narrow-phase choice for a run (SPEC §13g).
+/// Narrow-phase choice for a run (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct NarrowConfig {
     pub phase: NarrowPhase,

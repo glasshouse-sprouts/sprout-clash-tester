@@ -155,7 +155,7 @@ fn test_cli_detect_with_discipline_filtering() {
 
 #[test]
 fn test_cli_opening_cuts_in_summary_and_flag() {
-    // SPEC §13f: the summary JSON carries the run's opening cuts, and
+    // docs/HOW-IT-WORKS.md#opening-cuts: the summary JSON carries the run's opening cuts, and
     // `--no-opening-cuts` turns them off (diagnosis only).
     let ifc = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/models/opening-cut.ifc");
     let dir = tempfile::tempdir().unwrap();
@@ -199,8 +199,8 @@ fn test_cli_opening_cuts_in_summary_and_flag() {
 
 #[test]
 fn test_cli_narrow_phase_ifclite_summary_fields() {
-    // SPEC §13g: `--narrow-phase ifclite` fills status / distance_kind per
-    // clash and touch / unconfirmed counts per rule; a bad value is refused.
+    // docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase: `--narrow-phase ifclite` fills status /
+    // distance_kind per clash and touch / unconfirmed counts per rule; a bad value is refused.
     let ifc = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/models/opening-cut.ifc");
     let dir = tempfile::tempdir().unwrap();
     let rules = dir.path().join("rules.json");

@@ -1,5 +1,6 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Where each file sits: per-file bounding boxes, clustering of file
-//! positions, and the placement warnings built from them (SPEC §4).
+//! positions, and the placement warnings built from them (docs/HOW-IT-WORKS.md#placement-checks).
 
 use crate::EngineWarning;
 use crate::ifc_adapter::IfcElement;
@@ -22,8 +23,8 @@ fn merge_aabb(running: &mut Option<Aabb>, next: Aabb) {
 }
 
 /// Update the per-file AABB map by folding in every element in `elements`.
-/// World metres, like every mesh since load (SPEC §4), so files in
-/// different units compare on equal footing.
+/// World metres, like every mesh since load (docs/HOW-IT-WORKS.md#coordinates-and-units), so files
+/// in different units compare on equal footing.
 pub(crate) fn update_file_aabb(
     file_aabbs: &mut HashMap<PathBuf, Option<Aabb>>,
     file: &PathBuf,
@@ -75,9 +76,8 @@ fn aabb_centre(a: &Aabb) -> [f64; 3] {
 /// Generic over the position source — used both for AABB centres (post-
 /// detection check) and for IFCSITE origins (pre-detection quick check).
 ///
-/// Mirrors Model Viewer's federation-detection algorithm. See SPEC.md
-/// §4 for the user-facing description and the Model Viewer
-/// `docs/coord-frames-and-federation.md` for the longer rationale.
+/// Mirrors the federation-detection algorithm of Model Viewer, a companion
+/// BIM viewer. See docs/HOW-IT-WORKS.md#placement-checks for the user-facing description.
 pub fn cluster_origins(
     origins: Vec<(PathBuf, [f64; 3])>,
 ) -> Vec<(Vec<PathBuf>, [f64; 3])> {

@@ -120,7 +120,7 @@ fn test_generate_bcf_valid_zip() {
         assert!(markup_content.contains("<Title>1 - Clash between "));
     }
 
-    // Topic titles carry the clash's 1-based number, in list order (T2).
+    // Topic titles carry the clash's 1-based number, in list order.
     // Topics are written to the zip in list order, so archive order works.
     let titles: Vec<String> = markup_files
         .iter()
@@ -169,7 +169,7 @@ fn read_topics(path: &std::path::Path) -> Vec<(String, String)> {
 
 #[test]
 fn test_generate_bcf_topics_many_guids_per_topic() {
-    // Per-group export (SPEC §13c): one topic, several elements, a camera
+    // Per-group export (docs/HOW-IT-WORKS.md#bcf-topics): one topic, several elements, a camera
     // chosen by the caller.
     let dir = tempdir().unwrap();
     let bcf_path = dir.path().join("groups.bcf");

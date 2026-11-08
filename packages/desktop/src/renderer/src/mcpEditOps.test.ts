@@ -1,4 +1,5 @@
-// Desktop MCP edit ops (SPEC §13d phase 2) — pure, no Electron/React.
+// Desktop MCP edit ops (docs/MCP.md#desktop-live-ui--clash-tester-ui phase 2) — pure, no
+// Electron/React.
 
 import { describe, expect, it } from "vitest";
 import type { Project } from "@clash-tester/core/types";
@@ -237,7 +238,7 @@ describe("settings", () => {
     expect(() => edit(open(), "ui_set_settings", { skipRelatedElements: "x" })).toThrow(/skipRelatedElements must be true or false/);
   });
 
-  it("sets the narrow phase and touch listing; defaults leave the keys out (SPEC §13g)", () => {
+  it("sets the narrow phase and touch listing; defaults leave the keys out", () => {
     const on = edit(open(), "ui_set_settings", { narrowPhase: "ifclite", reportTouch: true }).state;
     expect(on.project!.settings.narrowPhase).toBe("ifclite");
     expect(on.project!.settings.reportTouch).toBe(true);

@@ -1,4 +1,4 @@
-// Types of a `.clashproj` project file (SPEC.md §7).
+// Types of a `.clashproj` project file (docs/PROJECT-FILE.md).
 
 import type { ProjectSettings } from "../settings.js";
 
@@ -35,14 +35,14 @@ export interface ProjectFile {
   discipline?: string;
   /**
    * Per-file translation override in metres. Default `[0, 0, 0]`.
-   * Edge cases only — see SPEC.md §4.
+   * Edge cases only — see docs/HOW-IT-WORKS.md#coordinates-and-units.
    */
   translation?: [number, number, number];
 }
 
 export type ProjectRule = ProjectRulePreset | ProjectRuleCustom;
 
-/** A rule that references a preset by name (preset machinery lands in M3). */
+/** A rule that references a preset by name. */
 export interface ProjectRulePreset {
   name: string;
   preset: string;

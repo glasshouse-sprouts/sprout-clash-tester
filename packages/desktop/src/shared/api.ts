@@ -126,7 +126,8 @@ export interface DesktopEvents {
    */
   onSaveBeforeClose: (handler: () => void) => void;
   offSaveBeforeClose: (handler: () => void) => void;
-  /** Desktop MCP: a tool call for the renderer to run (SPEC §13d). */
+  /** Desktop MCP: a tool call for the renderer to run
+   * (docs/MCP.md#desktop-live-ui--clash-tester-ui). */
   onMcpRequest: (handler: (req: McpIpcRequest) => void) => void;
   offMcpRequest: (handler: (req: McpIpcRequest) => void) => void;
   /** Answer an `onMcpRequest` call (same `id`). */

@@ -33,9 +33,9 @@ export function fmtPos(p: [number, number, number]): string {
  *   ↔  clearance (elements close but not touching)
  *
  * Caveat: the parry depth is the engine's AABB-min-dim proxy, not
- * true geometric penetration. See SPEC §14. With the ifc-lite narrow
- * phase (SPEC §13g) a box-estimated depth gets "≈", and listed touching /
- * unconfirmed pairs say so instead of a severity.
+ * true geometric penetration. See docs/HOW-IT-WORKS.md#clash-or-not. With the ifc-lite narrow
+ * phase (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase) a box-estimated depth gets "≈", and listed
+ * touching / unconfirmed pairs say so instead of a severity.
  */
 export function fmtSeverity(c: {
   mode: string;

@@ -63,8 +63,8 @@ function fmtDuration(ms: number): string {
 }
 
 /**
- * Resolve the standard outputs folder for a `.clashproj` file. Per SPEC §12
- * open question, we default to `outputs/` next to the project. The user
+ * Resolve the standard outputs folder for a `.clashproj` file. Per docs/HOW-IT-WORKS.md#outputs,
+ * we default to `outputs/` next to the project. The user
  * can override with --out.
  */
 function defaultOutputsDir(projectPath: string): string {
@@ -234,7 +234,7 @@ async function cmdValidate(projectPath: string): Promise<void> {
       `  Min depth : ${project.settings.minPenetrationMeters} m\n`,
     );
   } catch (err) {
-    fail(err, "Check the file's JSON syntax and field names against SPEC.md §7.");
+    fail(err, "Check the file's JSON syntax and field names against docs/PROJECT-FILE.md.");
   }
 }
 
@@ -253,15 +253,17 @@ interface RunCmdOptions {
    */
   json?: boolean;
   enginePath?: string;
-  /** `--bcf-topics clash|group` — overrides `settings.bcfTopics` (SPEC §13c). */
+  /** `--bcf-topics clash|group` — overrides `settings.bcfTopics` (docs/HOW-IT-WORKS.md#bcf-topics).
+   * */
   bcfTopics?: string;
   /**
    * Commander maps `--no-relation-skip` to `relationSkip: false`; default
    * true. Either this flag or `settings.skipRelatedElements: false` turns
-   * the IFC-relation skip off (SPEC §13e).
+   * the IFC-relation skip off (docs/HOW-IT-WORKS.md#related-elements).
    */
   relationSkip?: boolean;
-  /** `--narrow-phase parry|ifclite` — overrides `settings.narrowPhase` (SPEC §13g). */
+  /** `--narrow-phase parry|ifclite` — overrides `settings.narrowPhase`
+   * (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). */
   narrowPhase?: string;
   /** `--report-touch` — ifc-lite: list touching / unconfirmed pairs too. */
   reportTouch?: boolean;

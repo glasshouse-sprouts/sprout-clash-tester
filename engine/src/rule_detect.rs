@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Clash detection between the two sides of one rule: broad phase,
 //! self / mirror / relation skips, narrow phase (parry or ifc-lite) and
 //! the clash records.
@@ -18,7 +19,7 @@ use std::collections::HashSet;
 
 /// Whether a hard overlap is deep enough to report: **at least**
 /// `min_penetration` metres ("at least 5 mm"). One rule for both narrow
-/// phases (TASKS T16; parry used `>`, ifc-lite `>=` before).
+/// phases (parry used `>`, ifc-lite `>=` before).
 pub fn deep_enough(depth: f64, min_penetration: f64) -> bool {
     depth >= min_penetration
 }
@@ -72,7 +73,7 @@ pub fn clash_detect_rule(
         NarrowPhase::Parry => 0.0,
     };
     // ifc-lite classifies every candidate pair of the rule in one go; the
-    // loop below only looks verdicts up (SPEC §13g).
+    // loop below only looks verdicts up (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
     let ifclite = (narrow.phase == NarrowPhase::Ifclite)
         .then(|| ifclite_narrow::verdicts(group_a, group_b, tolerance));
     let mut clash_count = 0;
@@ -81,8 +82,8 @@ pub fn clash_detect_rule(
 
     // NOTE: ifc_lite_geometry applies the full IFC placement chain
     // (element → storey → building → site) when generating meshes, and
-    // the loader converts them to metres (SPEC §4). Mesh coordinates are
-    // therefore world metres: thresholds, depths, gaps and positions all
+    // the loader converts them to metres (docs/HOW-IT-WORKS.md#coordinates-and-units). Mesh
+    // coordinates are therefore world metres: thresholds, depths, gaps and positions all
     // compare directly. Do NOT add site_origin again — that would
     // double-count it.
 
@@ -124,8 +125,8 @@ pub fn clash_detect_rule(
             // ── AABB broad-phase filter ──────────────────────────────────────
             // Skip narrow-phase test when bounding boxes don't overlap.
             // For tolerance > 0 we skip this optimisation (would need AABB expansion).
-            // ifc-lite also calls pairs up to its touch band apart touching
-            // (TASKS T16), so its boxes are widened by that band.
+            // ifc-lite also calls pairs up to its touch band apart touching,
+            // so its boxes are widened by that band.
             let aabb2 = el2.mesh.compute_aabb(&identity);
             if tolerance == 0.0 && aabb1.loosened(touch_band).intersection(&aabb2).is_none() {
                 continue;
@@ -146,7 +147,7 @@ pub fn clash_detect_rule(
                 }
             }
 
-            // Pairs that belong together by IFC relations (SPEC §13e):
+            // Pairs that belong together by IFC relations (docs/HOW-IT-WORKS.md#related-elements):
             // same file only, looked up by GUID pair.
             if let Some(rel) = related {
                 let f = &el1.metadata.source_file;

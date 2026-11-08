@@ -12,7 +12,10 @@ Clashero (the foundation of the clash engine)
   engine/ started as a copy of the clash/ crate of Clashero, taken from
   commit a1616b3 (2026-03-29). Derived from it, and changed by us since:
   engine/Cargo.toml; engine/src/ifc_adapter.rs, selector.rs,
-  bcf_reporter.rs, clash_engine.rs, lib.rs, main.rs; engine/tests/
+  bcf_reporter.rs, clash_engine.rs, lib.rs, main.rs (since split into
+  modules: engine/src/ifc_adapter/, commands/, run.rs, rule_detect.rs,
+  legacy_detect.rs, placement.rs, measure.rs carry code moved out of
+  ifc_adapter.rs, lib.rs and main.rs); engine/tests/
   bcf_reporter_tests.rs, clash_detect_tests.rs, clash_engine_tests.rs,
   cli_tests.rs, test_ifc_adapter.rs, viewpoint_tests.rs,
   test_clash_set.json; and the test models in engine/tests/models/

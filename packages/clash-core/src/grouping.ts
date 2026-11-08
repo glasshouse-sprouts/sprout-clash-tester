@@ -1,7 +1,7 @@
 // Clash grouping — turns the flat clash list into groups, one group per
 // future task-tracker topic. Pure data: no engine, no I/O, browser-safe.
 //
-// Design: SPEC.md §13a. Summary:
+// Design: docs/HOW-IT-WORKS.md#grouping. Summary:
 //   Level A (always) — clashes with the same unordered element pair merge.
 //   Level B (always) — an element with >= `minElementClashes` pairs becomes
 //                      a "hub"; all its pairs form one clash group.
@@ -9,7 +9,8 @@
 //                      `radiusMetres` of each other merge into an area.
 //   Duplicates       — same IFC type + (nearly) same volume + (nearly) same
 //                      centre: split off first as "possible double
-//                      modelling" (SPEC §13b) and kept out of levels B and C.
+//                      modelling" (docs/HOW-IT-WORKS.md#double-modelling)
+//                      and kept out of levels B and C.
 //
 // Invariants (tested):
 //   - every input clash lands in exactly one group;

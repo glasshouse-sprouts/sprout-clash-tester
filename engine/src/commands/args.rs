@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Command-line arguments (clap).
 
 use clash::ifclite_narrow::NarrowPhase;
@@ -30,7 +31,7 @@ pub enum Commands {
         output: Option<PathBuf>,
     },
     /// Write a BCF from a ready-made topic list (no detection). Used by
-    /// the Node side for "one topic per group" exports (SPEC §13c).
+    /// the Node side for "one topic per group" exports (docs/HOW-IT-WORKS.md#bcf-topics).
     Bcf {
         /// JSON array of topics:
         /// `{ title, description?, position, camera_eye?, guids[] }`.
@@ -83,17 +84,17 @@ pub struct DetectArgs {
 
     /// Don't skip element pairs that belong together by IFC relations
     /// (opening in its host, door/window in its wall, parts of the same
-    /// assembly). By default those pairs are skipped (SPEC §13e).
+    /// assembly). By default those pairs are skipped (docs/HOW-IT-WORKS.md#related-elements).
     #[arg(long)]
     pub no_relation_skip: bool,
 
     /// Don't cut openings (IfcRelVoidsElement) out of their host
-    /// elements. For side-by-side diagnosis only (SPEC §13f).
+    /// elements. For side-by-side diagnosis only (docs/HOW-IT-WORKS.md#opening-cuts).
     #[arg(long)]
     pub no_opening_cuts: bool,
 
     /// Narrow phase that decides a clash: `parry` (default) or
-    /// `ifclite` (ifc-lite-clash, SPEC §13g).
+    /// `ifclite` (ifc-lite-clash, docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
     #[arg(long, default_value = "parry")]
     pub narrow_phase: NarrowPhase,
 

@@ -1,5 +1,5 @@
-// Desktop MCP server (SPEC §13d) with a fake `callTool` — real HTTP on a
-// free port, real MCP client. No Electron.
+// Desktop MCP server (docs/MCP.md#desktop-live-ui--clash-tester-ui) with a fake `callTool` — real
+// HTTP on a free port, real MCP client. No Electron.
 
 import http from "node:http";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";

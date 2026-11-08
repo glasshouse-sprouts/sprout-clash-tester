@@ -27,7 +27,7 @@ export type {
 /**
  * Exclude used by self checks by default: spaces, spatial zones and opening elements
  * (IFC2x3 + IFC4 `IfcOpeningStandardCase`) and spatial zones only produce
- * meaningless internal clashes. SPEC §13b. Lives here (not project.ts) so
+ * meaningless internal clashes. docs/HOW-IT-WORKS.md#self-check. Lives here (not project.ts) so
  * the browser-safe `@clash-tester/core/types` sub-path can export it.
  */
 export const SELF_CHECK_DEFAULT_EXCLUDE =
@@ -51,14 +51,14 @@ export interface SelectionGroup {
   /**
    * Optional selector (same syntax as `selector`) applied AFTER the
    * include step — matching elements are dropped. Self checks use
-   * `SELF_CHECK_DEFAULT_EXCLUDE` to skip spaces and openings (SPEC §13b).
+   * `SELF_CHECK_DEFAULT_EXCLUDE` to skip spaces and openings (docs/HOW-IT-WORKS.md#self-check).
    */
   exclude?: string;
   /**
    * Per-file translation override in **metres** (world units).
    * Default `[0, 0, 0]` = no translation. Only the user supplies this
    * for edge cases where IFCs don't share a coordinate origin.
-   * See SPEC.md §4.
+   * See docs/HOW-IT-WORKS.md#coordinates-and-units.
    */
   translation?: [number, number, number];
 }
@@ -88,12 +88,12 @@ export interface RuleCount {
   /**
    * Overlapping element pairs skipped because they belong together by IFC
    * relations (opening in its host, door/window in its wall, parts of an
-   * assembly) — SPEC §13e. Absent from older engines.
+   * assembly) — docs/HOW-IT-WORKS.md#related-elements. Absent from older engines.
    */
   skippedByRelations?: number;
   /**
-   * ifc-lite narrow phase (SPEC §13g): pairs whose faces only touch, and
-   * hard-by-box-estimate pairs parry could not confirm — not clashes.
+   * ifc-lite narrow phase (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): pairs whose faces only
+   * touch, and hard-by-box-estimate pairs parry could not confirm — not clashes.
    * Absent with the parry narrow phase / older engines.
    */
   touchCount?: number;
@@ -102,12 +102,12 @@ export interface RuleCount {
 
 /**
  * Openings (IfcRelVoidsElement) cut out of their host elements in a run —
- * SPEC §13f. A host whose cut failed keeps its uncut mesh; its GUID is in
+ * docs/HOW-IT-WORKS.md#opening-cuts. A host whose cut failed keeps its uncut mesh; its GUID is in
  * `failed` (engine warning `opening_cut_failed`). An opening that removed
  * nothing from its host is in `notCut` (warning `opening_not_cut`). A
  * host that was cut but whose cut mesh is not closed (ifc-lite's
  * open-topology note) is in `hostsCut` and `openMesh` (warning
- * `opening_cut_open_mesh`, TASKS T17); absent in older results.
+ * `opening_cut_open_mesh`); absent in older results.
  */
 export interface OpeningCuts {
   hostsCut: number;
@@ -128,7 +128,7 @@ export function formatOpeningCuts(c: OpeningCuts): string {
 }
 
 /** `" (not clashes: 3 touching, 1 unconfirmed)"` for an ifc-lite rule
- * with such pairs, else `""` (SPEC §13g). */
+ * with such pairs, else `""` (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). */
 export function formatNotClashes(r: RuleCount): string {
   return r.touchCount || r.unconfirmedCount
     ? ` (not clashes: ${r.touchCount ?? 0} touching, ${r.unconfirmedCount ?? 0} unconfirmed)`
@@ -195,8 +195,8 @@ export interface ClashEntry {
   /** Distance between the two elements' mesh centres, metres. */
   centroidDistanceMetres?: number | null;
   /**
-   * ifc-lite narrow phase only (SPEC §13g): `hard` / `clearance`, or —
-   * listed only with `reportTouch` — `touch` / `unconfirmed`.
+   * ifc-lite narrow phase only (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): `hard` / `clearance`,
+   * or — listed only with `reportTouch` — `touch` / `unconfirmed`.
    */
   status?: "hard" | "clearance" | "touch" | "unconfirmed";
   /** ifc-lite only: depth/gap measured on the meshes or read off the boxes. */
@@ -204,7 +204,8 @@ export interface ClashEntry {
   /**
    * Class read off element A's / B's type object when the occurrence is
    * a generic IFC2X3-style one (`IFCFLOWSEGMENT` typed as a duct segment
-   * → `IfcDuctSegment`), SPEC §6. Absent when the occurrence class says it.
+   * → `IfcDuctSegment`), docs/PROJECT-FILE.md#ifc2x3-type-objects. Absent when the occurrence class
+   * says it.
    */
   typeClassA?: string;
   typeClassB?: string;
@@ -214,7 +215,8 @@ export interface ClashEntry {
 }
 
 /** `"IFCFLOWSEGMENT → IfcDuctSegment"` when the type object says more
- * than the occurrence class, else the occurrence class (SPEC §6). */
+ * than the occurrence class, else the occurrence class (docs/PROJECT-FILE.md#ifc2x3-type-objects).
+ * */
 export function formatIfcClass(ifcType: string, typeClass?: string): string {
   return typeClass ? `${ifcType} → ${typeClass}` : ifcType;
 }
@@ -235,14 +237,15 @@ export interface RunResult {
    */
   clashes: ClashEntry[];
   /**
-   * Clashes grouped into future task-tracker topics (SPEC §13a).
+   * Clashes grouped into future task-tracker topics (docs/HOW-IT-WORKS.md#grouping).
    * Always set by `run()`; optional only so results saved by older
    * versions (without groups) still type-check when read back.
    */
   groups?: ClashGroup[];
   /** Warnings the engine emitted (e.g. misalignment hints). */
   warnings: EngineWarning[];
-  /** Openings cut out of their hosts (SPEC §13f). Absent from older engines. */
+  /** Openings cut out of their hosts (docs/HOW-IT-WORKS.md#opening-cuts). Absent from older
+   * engines. */
   openingCuts?: OpeningCuts;
   /** Where outputs landed. `bcf` is set when an output BCF was requested. */
   outputs: {
@@ -318,15 +321,16 @@ export interface RunOptions {
   /**
    * BCF topics: `"clash"` (default) = one topic per clash, written by the
    * engine during detection; `"group"` = one topic per clash group, built
-   * with `groupsToTopics` and written by `clash bcf` afterwards (SPEC §13c).
+   * with `groupsToTopics` and written by `clash bcf` afterwards (docs/HOW-IT-WORKS.md#bcf-topics).
    */
   bcfTopics?: "clash" | "group";
   /**
-   * Skip element pairs that belong together by IFC relations (SPEC §13e).
-   * Default true; `false` passes `--no-relation-skip` to the engine.
+   * Skip element pairs that belong together by IFC relations
+   * (docs/HOW-IT-WORKS.md#related-elements). Default true; `false` passes `--no-relation-skip` to
+   * the engine.
    */
   skipRelatedElements?: boolean;
-  /** Narrow phase (SPEC §13g). Default `"parry"`. */
+  /** Narrow phase (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). Default `"parry"`. */
   narrowPhase?: "parry" | "ifclite";
   /** ifc-lite only: list touching / unconfirmed pairs too. Default false. */
   reportTouch?: boolean;
@@ -359,7 +363,7 @@ export interface RunOptions {
    */
   onProgress?: (line: string) => void;
   /**
-   * Grouping options (SPEC §13a). Levels A + B always run; level C
+   * Grouping options (docs/HOW-IT-WORKS.md#grouping). Levels A + B always run; level C
    * (proximity) only when `grouping.proximity.enabled`.
    */
   grouping?: GroupingOptions;

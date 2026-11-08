@@ -1,6 +1,6 @@
 // Project settings validation — pure and browser-safe, so the desktop
-// renderer can check live edits (desktop MCP `ui_set_settings`, SPEC
-// §13d) with exactly the messages a .clashproj load gives.
+// renderer can check live edits (desktop MCP `ui_set_settings`,
+// docs/MCP.md#desktop-live-ui--clash-tester-ui) with exactly the messages a .clashproj load gives.
 
 import type { GroupingOptions } from "./grouping.js";
 
@@ -10,24 +10,24 @@ export interface ProjectSettings {
   /** Minimum penetration in metres (hard-intersection mode). Default `0.005`. */
   minPenetrationMeters: number;
   /**
-   * Clash grouping (SPEC §13a). Optional — omitted means levels A + B with
+   * Clash grouping (docs/HOW-IT-WORKS.md#grouping). Optional — omitted means levels A + B with
    * defaults and no proximity grouping.
    */
   grouping?: GroupingOptions;
   /**
    * BCF export: one topic per clash (`"clash"`, default when omitted) or
-   * per clash group (`"group"`). SPEC §13c.
+   * per clash group (`"group"`). docs/HOW-IT-WORKS.md#bcf-topics.
    */
   bcfTopics?: "clash" | "group";
   /**
    * Skip element pairs that belong together by IFC relations: opening in
    * its host, door/window in its wall, parts of the same assembly
-   * (SPEC §13e). Default true when omitted.
+   * (docs/HOW-IT-WORKS.md#related-elements). Default true when omitted.
    */
   skipRelatedElements?: boolean;
   /**
-   * Narrow phase that decides a clash (SPEC §13g): `"parry"` (default
-   * when omitted) or `"ifclite"` (ifc-lite-clash: touch is not a clash,
+   * Narrow phase that decides a clash (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): `"parry"`
+   * (default when omitted) or `"ifclite"` (ifc-lite-clash: touch is not a clash,
    * real contact points, measured vs estimated depth).
    */
   narrowPhase?: "parry" | "ifclite";

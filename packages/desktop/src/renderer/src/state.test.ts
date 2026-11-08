@@ -135,7 +135,7 @@ describe("rules helpers", () => {
   });
 });
 
-describe("addSelfCheckRule (SPEC §13b)", () => {
+describe("addSelfCheckRule", () => {
   it("adds a rule with the same file on both sides, all types", () => {
     const p = addSelfCheckRule(sample(), "vent");
     expect(p.rules).toHaveLength(1);
@@ -177,7 +177,7 @@ describe("addSelfCheckRule (SPEC §13b)", () => {
   });
 });
 
-describe("groupKindLabel (T6)", () => {
+describe("groupKindLabel", () => {
   it("shows clashGroup — and the old 'element' kind — as Clash group", () => {
     expect(groupKindLabel("clashGroup")).toBe("Clash group");
     expect(groupKindLabel("element")).toBe("Clash group");
@@ -191,7 +191,7 @@ describe("groupKindLabel (T6)", () => {
   });
 });
 
-describe("setBcfTopics (SPEC §13c)", () => {
+describe("setBcfTopics", () => {
   it("stores group, and clears the setting for the per-clash default", () => {
     const grouped = setBcfTopics(sample(), "group");
     expect(grouped.settings.bcfTopics).toBe("group");
@@ -201,7 +201,7 @@ describe("setBcfTopics (SPEC §13c)", () => {
   });
 });
 
-describe("setSkipRelatedElements (SPEC §13e)", () => {
+describe("setSkipRelatedElements", () => {
   it("stores off explicitly and on by removing the key", () => {
     const off = setSkipRelatedElements(sample(), false);
     expect(off.settings.skipRelatedElements).toBe(false);
@@ -209,7 +209,7 @@ describe("setSkipRelatedElements (SPEC §13e)", () => {
   });
 });
 
-describe("setNarrowPhase / setReportTouch (SPEC §13g)", () => {
+describe("setNarrowPhase / setReportTouch", () => {
   it("stores ifclite explicitly and parry by removing the key", () => {
     const on = setNarrowPhase(sample(), "ifclite");
     expect(on.settings.narrowPhase).toBe("ifclite");

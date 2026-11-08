@@ -1,9 +1,9 @@
 # Examples
 
-Sample inputs the test suite and the user can run against.
+Small projects you can run straight from a clone. Both use the test IFC
+files in `engine/tests/models/`.
 
-- `tiny-project/` — small IFCs + a `.clashproj` used by the M1 e2e test and
-  by anyone trying the CLI for the first time.
-
-Real example contents land in M1 (when the engine is wired up) and M3 (when
-the project file format is finalised).
+- [`tiny-project/`](tiny-project) — HVAC against structure, one custom
+  rule at 100 mm clearance. The quickest way to see the CLI work.
+- [`self-check/`](self-check) — two models, each checked against itself:
+  internal clashes, related-element skips and possible double modelling.

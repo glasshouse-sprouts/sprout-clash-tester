@@ -239,7 +239,7 @@ describe("expandProjectToRules", () => {
   });
 });
 
-describe("validateProject — settings.bcfTopics (SPEC §13c)", () => {
+describe("validateProject — settings.bcfTopics", () => {
   const withTopics = (bcfTopics: unknown) => ({
     ...sampleProject(),
     settings: { toleranceMeters: 0, minPenetrationMeters: 0.005, bcfTopics },
@@ -256,7 +256,7 @@ describe("validateProject — settings.bcfTopics (SPEC §13c)", () => {
   });
 });
 
-describe("validateProject — settings.narrowPhase / reportTouch (SPEC §13g)", () => {
+describe("validateProject — settings.narrowPhase / reportTouch", () => {
   const withNarrow = (extra: Record<string, unknown>) => ({
     ...sampleProject(),
     settings: { toleranceMeters: 0, minPenetrationMeters: 0.005, ...extra },
@@ -277,7 +277,7 @@ describe("validateProject — settings.narrowPhase / reportTouch (SPEC §13g)", 
   });
 });
 
-describe("validateProject — settings.skipRelatedElements (SPEC §13e)", () => {
+describe("validateProject — settings.skipRelatedElements", () => {
   const withSkip = (skipRelatedElements: unknown) => ({
     ...sampleProject(),
     settings: { toleranceMeters: 0, minPenetrationMeters: 0.005, skipRelatedElements },
@@ -294,7 +294,7 @@ describe("validateProject — settings.skipRelatedElements (SPEC §13e)", () => 
   });
 });
 
-describe("validateProject — rule side exclude (SPEC §7, §13b)", () => {
+describe("validateProject — rule side exclude", () => {
   function withExclude(exclude: unknown): unknown {
     const p = sampleProject();
     return {
@@ -320,7 +320,7 @@ describe("validateProject — rule side exclude (SPEC §7, §13b)", () => {
   });
 });
 
-describe("validateProject — settings.grouping (SPEC §13a)", () => {
+describe("validateProject — settings.grouping", () => {
   function withGrouping(grouping: unknown): unknown {
     const p = sampleProject();
     return { ...p, settings: { ...p.settings, grouping } };

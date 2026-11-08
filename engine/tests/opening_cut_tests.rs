@@ -1,5 +1,5 @@
 //! Openings cut out of their host elements before clash detection
-//! (SPEC §13f, TASKS T12). Fixture `opening-cut.ifc`: a 4 × 0.2 × 3 m
+//! (docs/HOW-IT-WORKS.md#opening-cuts). Fixture `opening-cut.ifc`: a 4 × 0.2 × 3 m
 //! wall with a 1 × 1 m opening, one duct passing through the opening and
 //! one through the solid part of the wall.
 

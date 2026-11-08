@@ -287,7 +287,8 @@ export default function App() {
     return { ok: true, lastRun: last };
   }, [state.project, state.projectPath, state.running, state.dirty, patch]);
 
-  // ─── Desktop MCP (SPEC §13d) ──────────────────────────────────────────────
+  // ─── Desktop MCP (docs/MCP.md#desktop-live-ui--clash-tester-ui)
+  // ──────────────────────────────────────────────
 
   // Tool calls arrive outside React's render cycle; read the latest
   // state and Run handler through refs.
@@ -488,8 +489,9 @@ export default function App() {
           </button>
         </div>
       )}
-      {/* Last desktop-MCP edit (SPEC §13d): non-blocking, one-step Undo.
-          Hidden once the user edits further (the snapshot is stale). */}
+      {/* Last desktop-MCP edit (docs/MCP.md#desktop-live-ui--clash-tester-ui):
+          non-blocking, one-step Undo. Hidden once the user edits further
+          (the snapshot is stale). */}
       {canUndoAiEdit(state) && (
         <div className="flex items-center gap-2 border-b border-violet-800 bg-violet-950 px-4 py-2 text-violet-100">
           <Bot className="size-4 shrink-0" />

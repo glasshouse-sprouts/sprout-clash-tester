@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! The metadata pass: GUID, class, discipline, property sets and
 //! relations of every entity, without meshing.
 
@@ -84,7 +85,7 @@ pub(super) fn extract_basic_metadata(
     while let Some((id, type_name, _start, _end)) = scanner.next_entity() {
         if let Ok(decoded) = decoder.decode_by_id(id as u32) {
             // Relations — attributes 4 and 5 are the related / relating
-            // objects: physical ties (SPEC §13e) and type objects (§6).
+            // objects: physical ties (docs/HOW-IT-WORKS.md#related-elements) and type objects (§6).
             match type_name {
                 "IFCRELVOIDSELEMENT" | "IFCRELFILLSELEMENT" | "IFCRELAGGREGATES" => {
                     let a = entity_refs(decoded.attributes.get(4));

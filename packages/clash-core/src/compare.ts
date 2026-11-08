@@ -1,4 +1,4 @@
-// Narrow-phase comparison (SPEC §13g, TASKS T11 step 1): run the same
+// Narrow-phase comparison (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): run the same
 // rules with parry and with ifc-lite and count, per rule, the clashes both
 // report and those only one of them reports — for side-by-side checks on
 // real projects before ifc-lite becomes the default.

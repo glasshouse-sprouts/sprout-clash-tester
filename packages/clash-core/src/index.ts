@@ -65,7 +65,7 @@ export type { PresetDefinition, PresetSide, LoadPresetsOptions } from "./presets
 // Output writers (JSON, CSV).
 export { writeResultJson, writeResultCsv, csvForResult } from "./writers.js";
 
-// Clash grouping (SPEC §13a). Pure / browser-safe.
+// Clash grouping (docs/HOW-IT-WORKS.md#grouping). Pure / browser-safe.
 export {
   groupClashes,
   clashKey,
@@ -89,7 +89,7 @@ export type {
   ProximityOptions,
 } from "./grouping.js";
 
-// BCF topics per group (SPEC §13c). Pure.
+// BCF topics per group (docs/HOW-IT-WORKS.md#bcf-topics). Pure.
 export { groupToTopic, groupsToTopics, cameraDistance } from "./bcfTopics.js";
 export type { BcfTopic, BcfTopicsMode } from "./bcfTopics.js";
 

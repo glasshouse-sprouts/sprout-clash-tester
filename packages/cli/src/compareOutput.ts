@@ -1,4 +1,5 @@
-// Pretty output for `clashtester run --compare-narrow-phase` (SPEC §13g).
+// Pretty output for `clashtester run --compare-narrow-phase`
+// (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
 
 import type { RuleComparison } from "@clash-tester/core";
 

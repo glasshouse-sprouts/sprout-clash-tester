@@ -174,7 +174,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     ) as { totalClashes: number; groups?: unknown[]; clashes: { number?: number }[] };
     expect(json.totalClashes).toBeGreaterThan(0);
     expect(Array.isArray(json.groups)).toBe(true);
-    // Every clash carries its 1-based number, in array order (T2).
+    // Every clash carries its 1-based number, in array order.
     expect(json.clashes.map((c) => c.number)).toEqual(json.clashes.map((_, i) => i + 1));
 
     // CSV should have a header + at least one data row, numbered 1..N.
@@ -189,7 +189,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     );
   });
 
-  it("--bcf-topics group writes one BCF topic per group (SPEC §13c)", async () => {
+  it("--bcf-topics group writes one BCF topic per group", async () => {
     const sample = path.join(ROOT, "examples", "tiny-project", "sample.clashproj");
     const outDir = await mkdtemp(path.join(tmpdir(), "cli-run-groups-"));
     const r = await runCli(
@@ -211,7 +211,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     expect(titles).toEqual(json.groups.map((g, i) => `${i + 1} - ${g.title}`));
   });
 
-  it("skips doors in their own walls by IFC relations; --no-relation-skip reports them (SPEC §13e)", async () => {
+  it("skips doors in their own walls by IFC relations; --no-relation-skip reports them", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "cli-rel-"));
     const proj = path.join(dir, "fzk.clashproj");
     const fzk = path.join(ROOT, "engine", "tests", "models", "AC20-FZK-Haus.ifc");
@@ -250,7 +250,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     expect(offJson.totalClashes).toBe(5);
   });
 
-  it("reports the run's opening cuts; a duct through a wall opening is no clash (SPEC §13f)", async () => {
+  it("reports the run's opening cuts; a duct through a wall opening is no clash", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "cli-cut-"));
     const proj = path.join(dir, "cut.clashproj");
     const ifc = path.join(ROOT, "engine", "tests", "models", "opening-cut.ifc");
@@ -288,7 +288,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     expect(pretty.stdout).toContain("opening cuts: 1 hosts cut, 1 openings, 0 failed, 0 not cut");
   });
 
-  it("--narrow-phase ifclite and --compare-narrow-phase (SPEC §13g)", async () => {
+  it("--narrow-phase ifclite and --compare-narrow-phase", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "cli-narrow-"));
     const proj = path.join(dir, "cut.clashproj");
     const ifc = path.join(ROOT, "engine", "tests", "models", "opening-cut.ifc");

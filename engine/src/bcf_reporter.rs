@@ -85,8 +85,8 @@ pub struct ClashInfo {
     /// plus equal volumes and the same IFC type ⇒ likely double modelling.
     #[serde(default)]
     pub centroid_distance: Option<f64>,
-    /// ifc-lite narrow phase only (SPEC §13g): `"hard"`, `"clearance"`,
-    /// or — listed only with `report_touch` — `"touch"` / `"unconfirmed"`.
+    /// ifc-lite narrow phase only (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): `"hard"`,
+    /// `"clearance"`, or — listed only with `report_touch` — `"touch"` / `"unconfirmed"`.
     /// `None` from the parry narrow phase.
     #[serde(default)]
     pub status: Option<String>,
@@ -95,8 +95,8 @@ pub struct ClashInfo {
     #[serde(default)]
     pub distance_kind: Option<String>,
     /// Class read off element A's / B's type object when the occurrence
-    /// is generic (`IfcFlowSegment` → `IfcDuctSegment`), SPEC §6. `None`
-    /// when the occurrence class says it already.
+    /// is generic (`IfcFlowSegment` → `IfcDuctSegment`), docs/PROJECT-FILE.md#ifc2x3-type-objects.
+    /// `None` when the occurrence class says it already.
     #[serde(default)]
     pub type_class_a: Option<String>,
     #[serde(default)]
@@ -130,7 +130,7 @@ pub struct BcfTopic {
 impl BcfTopic {
     /// The topic for one clash; `number` is its 1-based position in the
     /// clash list ("1 - Clash between …") — the same number the CSV `no`
-    /// column and the JSON `number` field carry (TASKS T2).
+    /// column and the JSON `number` field carry.
     /// Listed ifc-lite non-clashes say what they are ("Touch between …").
     pub fn from_clash(number: usize, clash: &ClashInfo) -> Self {
         let what = crate::ifclite_narrow::record_noun(clash.status.as_deref());

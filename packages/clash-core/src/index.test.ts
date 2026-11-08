@@ -1,5 +1,4 @@
 // Smoke test — confirms vitest runs and the package is importable.
-// Real tests land alongside real code in M1+.
 import { describe, expect, it } from "vitest";
 import { VERSION, formatIfcClass, formatOpeningCuts } from "./index.js";
 
@@ -8,14 +7,14 @@ describe("@clash-tester/core", () => {
     expect(VERSION).toBe("0.0.1");
   });
 
-  it("shows the type-object class after the occurrence class (SPEC §6)", () => {
+  it("shows the type-object class after the occurrence class", () => {
     expect(formatIfcClass("IFCFLOWSEGMENT", "IfcDuctSegment")).toBe(
       "IFCFLOWSEGMENT → IfcDuctSegment",
     );
     expect(formatIfcClass("IFCBEAM")).toBe("IFCBEAM");
   });
 
-  it("names cut hosts with an open mesh only when there are some (T17)", () => {
+  it("names cut hosts with an open mesh only when there are some", () => {
     const c = { hostsCut: 3, openings: 4, failed: [], notCut: ["O1"] };
     expect(formatOpeningCuts(c)).toBe(
       "opening cuts: 3 hosts cut, 4 openings, 0 failed, 1 not cut",

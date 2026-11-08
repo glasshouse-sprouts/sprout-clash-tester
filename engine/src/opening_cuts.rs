@@ -1,5 +1,5 @@
 //! Cutting `IfcRelVoidsElement` openings out of their host elements before
-//! clash detection (SPEC §13f). Without the cut a wall with a door hole is
+//! clash detection (docs/HOW-IT-WORKS.md#opening-cuts). Without the cut a wall with a door hole is
 //! meshed as a solid box, and anything standing in the hole is inside it.
 
 use crate::ifc_adapter::{IfcElement, IfcMetadata};
@@ -32,7 +32,7 @@ pub struct OpeningCutStats {
     #[serde(default)]
     pub not_cut: Vec<String>,
     /// GUIDs of hosts that WERE cut, but whose cut mesh is not closed:
-    /// ifc-lite's informational "open topology" note (TASKS T17). They
+    /// ifc-lite's informational "open topology" note. They
     /// count in `hosts_cut` and keep the cut mesh; `check_cuts` still
     /// verifies each opening.
     #[serde(default)]
@@ -87,7 +87,7 @@ pub fn void_map(
 /// uncut mesh and its GUID goes into `stats.failed` — never silently. The
 /// one exception is ifc-lite's informational open-topology note: the cut
 /// was made and returned, only the result isn't closed, so the host keeps
-/// its cut mesh and goes into `stats.open_mesh` (TASKS T17).
+/// its cut mesh and goes into `stats.open_mesh`.
 pub fn mesh_element(
     router: &GeometryRouter,
     element: &DecodedEntity,
@@ -153,7 +153,7 @@ pub fn check_cuts(
             continue;
         }
         // Test near the host, not at survey coordinates (millions of
-        // metres), where parry's tolerances are too coarse (TASKS T14).
+        // metres), where parry's tolerances are too coarse.
         let centre = host.mesh.local_aabb().center();
         let host_mesh = shifted(&host.mesh, centre);
         for opening_id in openings {

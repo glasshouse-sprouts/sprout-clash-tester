@@ -78,7 +78,7 @@ export function ZeroClashesNotice() {
           <strong>File alignment.</strong> If the files were authored with
           different coordinate origins, the engine fires{" "}
           <span className="font-mono">[no_aabb_overlap]</span>. Fix with a
-          per-file translation override (SPEC §4).
+          per-file translation override (docs/HOW-IT-WORKS.md#coordinates-and-units).
         </li>
         <li>
           <strong>Selectors.</strong> Make sure the selectors actually

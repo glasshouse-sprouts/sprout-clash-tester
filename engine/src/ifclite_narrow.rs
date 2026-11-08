@@ -1,6 +1,7 @@
-//! Narrow phase via `ifc-lite-clash` (SPEC §13g, TASKS T11 step 1).
+//! Narrow phase via `ifc-lite-clash` (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
 //!
-//! One rule's two element groups (metres since load, SPEC §4) go into a
+//! One rule's two element groups (metres since load, docs/HOW-IT-WORKS.md#coordinates-and-units) go
+//! into a
 //! `ClashSession` shifted to a local origin before the f32 cast (survey
 //! coordinates as f32 lose precision), and every classified pair comes back keyed by
 //! its position in group A and group B. The caller keeps everything above
@@ -14,8 +15,8 @@ use std::collections::HashMap;
 
 /// Gap within which ifc-lite calls two faces touching rather than
 /// clear, metres. At 0 touch counts flipped with float rounding (4 → 2 on
-/// one real model after T13); 1 mm is a product decision (SPEC §13g,
-/// TASKS T16). Penetrations shallower than this are touches too.
+/// one real model); 1 mm is a product decision (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
+/// Penetrations shallower than this are touches too.
 pub const TOUCH_TOLERANCE_METRES: f64 = 0.001;
 
 /// Which narrow phase decides a clash.

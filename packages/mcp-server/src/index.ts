@@ -7,7 +7,7 @@
 // `CLASHTESTER_STATE` env var or a `project_path` argument on individual
 // tool calls.
 //
-// See SPEC.md §8 for the toolset.
+// See docs/MCP.md#headless--clash-tester for the toolset.
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";

@@ -1,4 +1,5 @@
-// Main-side IPC bridge: MCP tool calls → renderer ops (SPEC §13d).
+// Main-side IPC bridge: MCP tool calls → renderer ops
+// (docs/MCP.md#desktop-live-ui--clash-tester-ui).
 //
 // Adapted from Model Viewer (`src/main/mcp/bridge.ts`),
 // Copyright 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache

@@ -1,4 +1,4 @@
-//! Tests for the M1 per-file `translation` extension.
+//! Tests for the per-file `translation` extension.
 //!
 //! `SelectionGroup.translation` is an optional `[dx, dy, dz]` (metres)
 //! applied to every mesh loaded from `file` before clash detection.

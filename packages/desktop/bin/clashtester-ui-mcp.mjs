@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // clash-tester-ui — stdio bridge to the Clash Tester desktop app's MCP
-// server (SPEC §13d). This is what Claude Desktop / Cowork / Claude Code
-// spawn; they only load stdio servers.
+// server (docs/MCP.md#desktop-live-ui--clash-tester-ui). This is what Claude Desktop / Cowork /
+// Claude Code spawn; they only load stdio servers.
 //
 // Adapted from Model Viewer (`bin/mv-mcp.mjs`), Copyright
 // 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache License,
 // Version 2.0 — http://www.apache.org/licenses/LICENSE-2.0
 // Differences: Streamable HTTP upstream, no auto-launch yet (comes with
-// M6 packaging), and the bridge stays up when the app is not running:
+// packaged installers), and the bridge stays up when the app is not running:
 // it lists the tools from `ui-tools.json` and answers every call with a
 // clear "start the app" error, so the agent can tell the user.
 //

@@ -42,4 +42,4 @@ Everything else (`Cargo.toml`, `Cargo.lock`, `src/`, `tests/`, source
   happens in Clashero in the future and we want it, the change is
   cherry-picked by hand, documented in this file, and tested.
 - New engine features for this project (translation override, AABB-overlap
-  sanity warning — see SPEC.md §4) are implemented here.
+  sanity warning — see docs/HOW-IT-WORKS.md#placement-checks) are implemented here.

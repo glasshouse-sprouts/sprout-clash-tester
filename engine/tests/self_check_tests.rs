@@ -1,5 +1,5 @@
 //! Self check: a model tested against itself (same file on both sides of
-//! a rule) — finds internal clashes and double modelling. See SPEC §13b.
+//! a rule) — finds internal clashes and double modelling. See docs/HOW-IT-WORKS.md#self-check.
 //!
 //! The engine must (1) never report an element clashing with itself and
 //! (2) report each unordered element pair at most once. `aabb_match`
@@ -106,7 +106,7 @@ fn test_cross_file_rule_unchanged_by_self_skip() {
 
 // ─── Self-check exclude (spaces + openings) ──────────────────────────────────
 
-/// The self-check default exclude (TASKS T3, SPEC §13b).
+/// The self-check default exclude (docs/HOW-IT-WORKS.md#self-check).
 const SPACES_AND_OPENINGS: &str =
     "IfcSpace|IfcSpatialZone|IfcOpeningElement|IfcOpeningStandardCase";
 

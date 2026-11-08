@@ -65,8 +65,8 @@ const events: DesktopEvents = {
     const wrapped = (handler as { _wrap?: () => void })._wrap;
     if (wrapped) ipcRenderer.off("app:saveBeforeClose", wrapped);
   },
-  // Desktop MCP (SPEC §13d): main asks the renderer to run a tool op;
-  // the renderer answers with `respondMcp`.
+  // Desktop MCP (docs/MCP.md#desktop-live-ui--clash-tester-ui): main asks the renderer to run a
+  // tool op; the renderer answers with `respondMcp`.
   onMcpRequest: (handler) => {
     const wrapped = (_e: unknown, req: McpIpcRequest) => handler(req);
     (handler as { _wrap?: (e: unknown, r: McpIpcRequest) => void })._wrap = wrapped;

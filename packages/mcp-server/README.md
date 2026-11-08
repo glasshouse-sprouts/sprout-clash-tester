@@ -6,7 +6,7 @@ the desktop app. Works on its own working project,
 `project_path` argument per call). For driving the open desktop app use
 `clash-tester-ui` instead.
 
-**Setup, logs and troubleshooting:** [`docs/MCP_SETUP.md`](../../docs/MCP_SETUP.md)
+**Setup, logs and troubleshooting:** [`docs/MCP.md`](../../docs/MCP.md)
 — `npm run mcp:config` at the repo root prints the config block.
 
 | Tool | Does |

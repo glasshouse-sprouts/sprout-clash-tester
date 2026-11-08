@@ -1,4 +1,4 @@
-// Groups table of the Results view (SPEC §13a).
+// Groups table of the Results view (docs/HOW-IT-WORKS.md#grouping).
 
 import type { AppState, LastRun } from "../../state";
 import { KindBadge } from "./badges";

@@ -43,7 +43,7 @@ export interface AppState {
   /**
    * What the user (or the desktop MCP) has picked in the Results view.
    * Clicks and `ui_select_*` tools set the same state, so `ui_get_state`
-   * reports what is on screen (SPEC §13d).
+   * reports what is on screen (docs/MCP.md#desktop-live-ui--clash-tester-ui).
    */
   selection: Selection;
   /** Last AI edit, for the "AI changed … — Undo" notice. */
@@ -51,7 +51,7 @@ export interface AppState {
 }
 
 export interface Selection {
-  /** Clash number (T2) whose row is highlighted and detail open. */
+  /** Clash number whose row is highlighted and detail open. */
   clashNumber: number | null;
   /** Key of the highlighted group; its clashes are highlighted too. */
   groupKey: string | null;
@@ -60,8 +60,8 @@ export interface Selection {
 export const noSelection: Selection = { clashNumber: null, groupKey: null };
 
 /**
- * One-step undo for an edit made by the desktop MCP (SPEC §13d phase 2).
- * Undo only applies while the project is still exactly `after` (same
+ * One-step undo for an edit made by the desktop MCP (docs/MCP.md#desktop-live-ui--clash-tester-ui
+ * phase 2). Undo only applies while the project is still exactly `after` (same
  * object) — once the user edits further, the snapshot is stale.
  */
 export interface AiUndo {
@@ -101,12 +101,13 @@ export interface LastRun {
     name: string;
     clashes: number;
     skippedByRelations?: number;
-    /** ifc-lite narrow phase only (SPEC §13g). */
+    /** ifc-lite narrow phase only (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). */
     touchCount?: number;
     unconfirmedCount?: number;
   }[];
   warnings: { kind: string; message: string; files: string[] }[];
-  /** Openings cut out of their hosts (SPEC §13f); absent in older results. */
+  /** Openings cut out of their hosts (docs/HOW-IT-WORKS.md#opening-cuts); absent in older results.
+   * */
   openingCuts?: OpeningCuts;
   clashes: {
     /** 1-based clash number = BCF title prefix (absent in older results). */
@@ -130,16 +131,17 @@ export interface LastRun {
     volumeA?: number | null;
     volumeB?: number | null;
     centroidDistanceMetres?: number | null;
-    /** ifc-lite narrow phase only (SPEC §13g). */
+    /** ifc-lite narrow phase only (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). */
     status?: "hard" | "clearance" | "touch" | "unconfirmed";
     distanceKind?: "mesh" | "estimate";
-    /** Class from the type object for generic IFC2X3 occurrences (SPEC §6). */
+    /** Class from the type object for generic IFC2X3 occurrences
+     * (docs/PROJECT-FILE.md#ifc2x3-type-objects). */
     typeClassA?: string;
     typeClassB?: string;
     predefinedTypeA?: string;
     predefinedTypeB?: string;
   }[];
-  /** Clash groups (SPEC §13a/b). Empty for results from older versions. */
+  /** Clash groups (docs/HOW-IT-WORKS.md#grouping/b). Empty for results from older versions. */
   groups: ClashGroup[];
   outputs: { bcf?: string; json?: string; csv?: string };
 }
@@ -341,7 +343,7 @@ export interface CustomRuleFields {
   /** Include (`"i"`) or exclude (`"e"`) mode per side. Omitted = keep. */
   aMode?: "i" | "e";
   bMode?: "i" | "e";
-  /** Elements to drop after the selector (SPEC §7). `""` = none. Omitted = keep. */
+  /** Elements to drop after the selector (docs/PROJECT-FILE.md). `""` = none. Omitted = keep. */
   aExclude?: string;
   bExclude?: string;
 }
@@ -415,7 +417,7 @@ export function customRuleFields(rule: ProjectRule): CustomRuleFields | null {
 }
 
 /**
- * Set BCF export to one topic per clash or per group (SPEC §13c). `"clash"`
+ * Set BCF export to one topic per clash or per group (docs/HOW-IT-WORKS.md#bcf-topics). `"clash"`
  * is the default, so it is stored by removing the setting. Pure.
  */
 export function setBcfTopics(project: Project, mode: "clash" | "group"): Project {
@@ -446,7 +448,7 @@ export function groupKindLabel(kind: string): string {
 
 /**
  * Turn the IFC-relation skip on (default, stored by leaving the key out)
- * or off (SPEC §13e). Pure.
+ * or off (docs/HOW-IT-WORKS.md#related-elements). Pure.
  */
 export function setSkipRelatedElements(project: Project, on: boolean): Project {
   const { skipRelatedElements: _old, ...rest } = project.settings;
@@ -454,8 +456,8 @@ export function setSkipRelatedElements(project: Project, on: boolean): Project {
 }
 
 /**
- * Narrow phase (SPEC §13g): parry is the default, stored by leaving the
- * key out. Back to parry also drops `reportTouch`, which only ifc-lite
+ * Narrow phase (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): parry is the default, stored by
+ * leaving the key out. Back to parry also drops `reportTouch`, which only ifc-lite
  * uses. Pure.
  */
 export function setNarrowPhase(project: Project, phase: "parry" | "ifclite"): Project {
@@ -477,7 +479,7 @@ export function selfCheckRuleName(fileId: string): string {
 
 /**
  * Add a self check for one file: the file tested against itself, all
- * element types. Finds internal clashes and double modelling (SPEC §13b).
+ * element types. Finds internal clashes and double modelling (docs/HOW-IT-WORKS.md#self-check).
  * By default spaces and openings are excluded on both sides
  * (`SELF_CHECK_DEFAULT_EXCLUDE`) — they only make meaningless clashes.
  * No-op (returns the same project) if that file's self check already

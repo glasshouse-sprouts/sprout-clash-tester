@@ -1,5 +1,5 @@
-// Desktop MCP edit ops (SPEC §13d, phase 2). Pure: `(state, args) →
-// { state, result }`, built on the same `state.ts` helpers the UI uses,
+// Desktop MCP edit ops (docs/MCP.md#desktop-live-ui--clash-tester-ui, phase 2). Pure: `(state,
+// args) → { state, result }`, built on the same `state.ts` helpers the UI uses,
 // so a human and an AI edit go down one code path.
 //
 // Every successful edit marks the project dirty and records an `AiUndo`

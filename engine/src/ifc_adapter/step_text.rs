@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Reads straight from the IFC STEP text, no geometry pass: the IFCSITE
 //! origin, IFCMAPCONVERSION, and the small STEP parsing helpers.
 

@@ -268,7 +268,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("MCP server — full run flow", () => {
     expect(viewer.text).toContain("report.bcf");
   });
 
-  it("run summary shows pairs skipped by IFC relations (SPEC §13e)", async () => {
+  it("run summary shows pairs skipped by IFC relations", async () => {
     const haus = path.join(ROOT, "engine", "tests", "models", "AC20-FZK-Haus.ifc");
     await client.callTool("register_model", { name: "haus", path: haus, discipline: "ARCH" });
     await client.callTool("save_clash_rules", {
@@ -287,7 +287,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("MCP server — full run flow", () => {
     expect(run.text).toContain("DOORxWALL: 0 (5 related pair(s) skipped)");
   });
 
-  it("save_clash_rules accepts a per-side exclude and validates it (T3)", async () => {
+  it("save_clash_rules accepts a per-side exclude and validates it", async () => {
     const haus = path.join(ROOT, "engine", "tests", "models", "AC20-FZK-Haus.ifc");
     await client.callTool("register_model", { name: "haus", path: haus, discipline: "ARCH" });
 

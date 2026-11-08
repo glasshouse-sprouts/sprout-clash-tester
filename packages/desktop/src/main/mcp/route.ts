@@ -1,5 +1,5 @@
-// Which side answers a desktop-MCP tool (SPEC §13d). Pure apart from the
-// injected dependencies, so it is tested without Electron.
+// Which side answers a desktop-MCP tool (docs/MCP.md#desktop-live-ui--clash-tester-ui). Pure apart
+// from the injected dependencies, so it is tested without Electron.
 //
 //   ui_list_presets → main (clash-core preset library, same text as the
 //                     headless `list_presets`);

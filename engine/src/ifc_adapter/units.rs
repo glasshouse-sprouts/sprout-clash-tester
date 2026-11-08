@@ -1,4 +1,6 @@
-//! The file's active length unit and its scale to metres (SPEC §4).
+// Derived from Clashero (MIT). See NOTICE.
+//! The file's active length unit and its scale to metres
+//! (docs/HOW-IT-WORKS.md#coordinates-and-units).
 
 use super::step_text::{build_entity_map, parse_entity_ref, step_nth_arg};
 
@@ -67,8 +69,8 @@ pub fn extract_active_length_unit_from_str(content: &str) -> String {
 
 /// Metres per one unit of `unit` (a name from
 /// `extract_active_length_unit_from_str`). The loader multiplies every
-/// mesh by this once, so the engine works in metres throughout (SPEC §4).
-/// Unknown names count as metres.
+/// mesh by this once, so the engine works in metres throughout
+/// (docs/HOW-IT-WORKS.md#coordinates-and-units). Unknown names count as metres.
 pub fn unit_scale_metres_per(unit: &str) -> f64 {
     match unit {
         "millimetre" => 0.001,

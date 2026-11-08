@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! A whole run: parse the rule config, load each file once, select the
 //! sides of every rule, detect, and collect the run warnings.
 
@@ -19,8 +20,8 @@ use std::path::PathBuf;
 
 /// Translate every element's mesh by `[dx, dy, dz]` **metres** by
 /// rebuilding the mesh with shifted vertices. Zero translation is
-/// short-circuited. Meshes are in metres since load (SPEC §4), so the
-/// translation applies as given, whatever the file's own unit.
+/// short-circuited. Meshes are in metres since load (docs/HOW-IT-WORKS.md#coordinates-and-units),
+/// so the translation applies as given, whatever the file's own unit.
 ///
 /// We rebuild the mesh rather than threading a `Pose` through the engine
 /// because the broad-phase / narrow-phase code currently assumes identity
@@ -133,7 +134,7 @@ fn opening_cut_warnings(stats: &OpeningCutStats) -> Vec<EngineWarning> {
 
 /// One warning per file with generic MEP elements (`IfcFlowSegment`, …)
 /// that have no type object, so no preset can tell a duct from a pipe
-/// there (SPEC §6).
+/// there (docs/PROJECT-FILE.md#ifc2x3-type-objects).
 fn untyped_generic_warnings(cache: &HashMap<PathBuf, LoadedIfc>) -> Vec<EngineWarning> {
     let mut files: Vec<_> = cache.iter().filter(|(_, l)| l.untyped_generic > 0).collect();
     files.sort_by_key(|(path, _)| *path);
@@ -250,7 +251,7 @@ pub fn clash_detect_with_options(
 
     // Order matters: placement_mismatch first (the broader diagnostic),
     // then no_aabb_overlap (the more extreme symptom), both only between
-    // files that meet in a rule (T14). When files are truly disjoint, both
+    // files that meet in a rule. When files are truly disjoint, both
     // fire — and the user sees the bigger picture before the specific
     // symptom.
     let mut opening_cuts = OpeningCutStats::default();

@@ -1,6 +1,6 @@
-//! The ifc-lite narrow phase behind `--narrow-phase ifclite` (SPEC §13g,
-//! TASKS T11 step 1): same rule pipeline as parry, touch is never a clash
-//! unless asked for, box estimates need parry to confirm a surface
+//! The ifc-lite narrow phase behind `--narrow-phase ifclite`
+//! (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase): same rule pipeline as parry, touch is never a
+//! clash unless asked for, box estimates need parry to confirm a surface
 //! crossing, and survey coordinates don't lose precision.
 
 use clash::ifc_adapter::{IfcElement, IfcMetadata};
@@ -172,7 +172,7 @@ fn test_fixture_gives_the_same_clashes_in_both_phases() {
 }
 
 /// A unit box and one neighbour beside it in +Y at `gap` metres (negative
-/// = overlap), through the ifc-lite phase (TASKS T16).
+/// = overlap), through the ifc-lite phase.
 fn neighbour_at(gap: f64) -> (Clashes, RuleCounts) {
     let a = vec![cube("A", [0.0; 3], [1.0; 3])];
     let b = vec![cube("N", [0.0, 1.0 + gap, 0.0], [1.0, 2.0 + gap, 1.0])];
@@ -198,7 +198,7 @@ fn test_min_depth_is_at_least_in_both_phases() {
     let kept = classify(Some(&at_min), false, 0.005, || Ok(true)).unwrap();
     assert_eq!(kept, Outcome::Clash(at_min));
     // Parry end to end: boxes overlapping by exactly 0.5 m (exact in
-    // binary) against a 0.5 m minimum — kept since T16 (was `>`).
+    // binary) against a 0.5 m minimum — kept (the rule used to be `>`).
     let a = vec![cube("A", [0.0; 3], [1.0; 3])];
     let b = vec![cube("B", [0.5, 0.0, 0.0], [1.5, 1.0, 1.0])];
     let parry = NarrowConfig { phase: NarrowPhase::Parry, report_touch: false };

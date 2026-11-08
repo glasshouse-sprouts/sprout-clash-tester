@@ -52,7 +52,7 @@ function sampleResult(): RunResult {
 }
 
 describe("csvForResult", () => {
-  it("ends each row with the type-object class and PredefinedType (SPEC §6)", () => {
+  it("ends each row with the type-object class and PredefinedType", () => {
     const r = sampleResult();
     r.clashes[0] = {
       ...r.clashes[0]!,
@@ -65,7 +65,7 @@ describe("csvForResult", () => {
     expect(rows[1]!.endsWith(",IfcDuctSegment,RIGIDSEGMENT,,")).toBe(true);
   });
 
-  it("ends each row with the ifc-lite status and distance kind (SPEC §13g)", () => {
+  it("ends each row with the ifc-lite status and distance kind", () => {
     const r = sampleResult();
     r.clashes[0] = { ...r.clashes[0], status: "hard", distanceKind: "estimate" };
     const rows = csvForResult(r).trim().split("\n");

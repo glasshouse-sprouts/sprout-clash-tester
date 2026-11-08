@@ -1,5 +1,5 @@
-//! IFC2X3 MEP occurrences classified by their type object (SPEC §6,
-//! TASKS T15). Fixture: a beam with four generic `IfcFlow*` boxes
+//! IFC2X3 MEP occurrences classified by their type object
+//! (docs/PROJECT-FILE.md#ifc2x3-type-objects). Fixture: a beam with four generic `IfcFlow*` boxes
 //! standing through it — duct segment, pipe segment and duct fitting
 //! typed by type objects, plus one flow segment without a type object.
 

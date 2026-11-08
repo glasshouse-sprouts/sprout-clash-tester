@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! `clash detect`: run detection, write the BCF and the JSON summary.
 
 use super::args::DetectArgs;
@@ -23,7 +24,7 @@ struct CliSummary<'a> {
     clashes: Vec<ClashSummaryEntry>,
     /// Where the BCF was written, if `--output` was given.
     bcf_path: Option<String>,
-    /// Openings cut out of their hosts (SPEC §13f). Absent on the legacy
+    /// Openings cut out of their hosts (docs/HOW-IT-WORKS.md#opening-cuts). Absent on the legacy
     /// `--file` path, which has no run-level total.
     opening_cuts: Option<&'a OpeningCutStats>,
 }
@@ -33,10 +34,10 @@ struct RuleCount<'a> {
     name: &'a str,
     clashes: usize,
     /// Pairs skipped because they belong together by IFC relations
-    /// (SPEC §13e). 0 when the skip is off.
+    /// (docs/HOW-IT-WORKS.md#related-elements). 0 when the skip is off.
     skipped_by_relations: usize,
     /// ifc-lite narrow phase: touching pairs / unconfirmed box estimates,
-    /// not clashes (SPEC §13g). 0 with parry.
+    /// not clashes (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). 0 with parry.
     touch_count: usize,
     unconfirmed_count: usize,
 }
@@ -79,7 +80,7 @@ struct ClashSummaryEntry {
     /// ifc-lite only: "mesh" (measured) or "estimate" (from the boxes).
     distance_kind: Option<String>,
     /// Class from the type object when A / B is a generic IFC2X3-style
-    /// occurrence (`IfcFlowSegment` → `IfcDuctSegment`), SPEC §6.
+    /// occurrence (`IfcFlowSegment` → `IfcDuctSegment`), docs/PROJECT-FILE.md#ifc2x3-type-objects.
     type_class_a: Option<String>,
     type_class_b: Option<String>,
     /// `PredefinedType` of A / B (occurrence, else type object).
@@ -110,7 +111,7 @@ fn split_description(desc: &str) -> (String, String, String) {
     };
     // After the rule, the format is "Clash between <typeA> (...) and <typeB> (...)"
     // ("Touch between" / "Unconfirmed clash between" for listed ifc-lite
-    // non-clashes, SPEC §13g).
+    // non-clashes, docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
     let body = rest.split_once(" between ").map_or(rest.as_str(), |(_, b)| b);
     let parts: Vec<&str> = body.splitn(2, " and ").collect();
     let type_a = parts

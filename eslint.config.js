@@ -1,5 +1,5 @@
 // ESLint flat config (eslint v9+).
-// Kept intentionally small in M0 — we'll add rules as the codebase grows.
+// Kept intentionally small — rules are added as the codebase grows.
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 

@@ -13,7 +13,7 @@ fn test_clash_detect_hvac_structural() {
     let files = vec![hvac_path, structural_path];
     let tolerance = 0.0;
     // Added when we vendored: clash_detect grew a `min_penetration` parameter
-    // (5 mm default — see SPEC.md §4) after this test was written upstream.
+    // (5 mm default — see docs/HOW-IT-WORKS.md#clash-or-not) after this test was written upstream.
     let min_penetration = 0.005;
     let discipline_a = None;
     let discipline_b = None;

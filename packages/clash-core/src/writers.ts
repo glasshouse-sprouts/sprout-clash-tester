@@ -34,16 +34,16 @@ export async function writeResultJson(result: RunResult, filePath: string): Prom
  * and centre distance are what double modelling is decided on;
  * `likelyDuplicate` is "yes" when the clash sits in a `duplicate` group
  * (or, for results without groups, passes `isLikelyDuplicate` with
- * default thresholds) — SPEC §13b.
+ * default thresholds) — docs/HOW-IT-WORKS.md#double-modelling.
  *
  * `status` / `distanceKind` come from the ifc-lite narrow phase only
- * (SPEC §13g; empty with parry) and sit last so existing column positions
- * don't move.
+ * (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase; empty with parry) and sit last so existing column
+ * positions don't move.
  *
  * `typeClassA/B` is the class read off the type object for generic
  * IFC2X3-style occurrences (`ifcTypeA` stays the occurrence class), and
- * `predefinedTypeA/B` the element's PredefinedType — SPEC §6. Appended
- * last for the same reason.
+ * `predefinedTypeA/B` the element's PredefinedType — docs/PROJECT-FILE.md#ifc2x3-type-objects.
+ * Appended last for the same reason.
  *
  * Values are quoted with RFC 4180 rules. Missing optional fields
  * become empty cells.

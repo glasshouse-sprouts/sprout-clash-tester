@@ -97,7 +97,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("runner e2e — clash detection", () => {
     ).toBe(false);
   });
 
-  it("groups every real clash exactly once (SPEC §13a)", async () => {
+  it("groups every real clash exactly once", async () => {
     const result = await run({
       rules: [ruleHvacVsStr()],
       toleranceMeters: sharedTolerance,
@@ -159,7 +159,7 @@ describe.skipIf(!ENGINE_AVAILABLE)("runner e2e — clash detection", () => {
     expect(parsed.total_clashes).toBe(result.totalClashes);
   });
 
-  it("classifies IFC2X3 flow elements by their type object (SPEC §6)", async () => {
+  it("classifies IFC2X3 flow elements by their type object", async () => {
     const file = path.join(MODELS, "ifc2x3-mep-types.ifc");
     const result = await run({
       rules: [

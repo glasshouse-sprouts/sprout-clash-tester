@@ -1,3 +1,4 @@
+// Derived from Clashero (MIT). See NOTICE.
 //! Older parry-only entry points: the legacy `--file` path (every element
 //! of the given files against every other, no rules) and
 //! `clash_detect_between_groups`.
@@ -106,7 +107,8 @@ pub fn clash_detect(
             let center = intersection.center();
             let pos = [center.x, center.y, center.z];
 
-            // World metres (the loader converts every mesh, SPEC §4).
+            // World metres (the loader converts every mesh,
+            // docs/HOW-IT-WORKS.md#coordinates-and-units).
             let world_pos = pos;
             let camera_eye = [
                 world_pos[0] - 5.0,
