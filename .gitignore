@@ -1,0 +1,55 @@
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+*.tsbuildinfo
+# desktop: typecheck output (tsconfig.node/web outDir), old electron-vite
+# builds and the temp configs electron-vite leaves behind when it crashes
+packages/desktop/out-types-*/
+packages/desktop/out.old*/
+packages/desktop/electron.vite.config.*.mjs
+
+# Rust build artefacts (engine)
+engine/target/
+
+# Test / coverage output
+coverage/
+.vitest-cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Environment
+.env
+.env.local
+
+# Generated outputs (real clash runs)
+outputs/
+*.bcf
+*.bcfzip
+
+# Allow our example outputs through if needed (override in subfolder)
+!examples/**/expected/*.bcf
+
+# Internal working files — never in the public repo (TASKS T21, decided
+# 2026-11-04). They stay here because the coordination workflow reads them.
+TASKS.md
+STATUS.md
+CLAUDE.md
+SPEC.md
+PLAN.md
+M*_PROGRESS.md
+research/

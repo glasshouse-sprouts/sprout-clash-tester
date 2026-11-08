@@ -1,0 +1,13 @@
+# Rust build output
+/target
+
+# Environment
+.env
+.local
+
+# IDE / AI memory (vendored from Clashero — we don't carry these in)
+.junie
+
+# NOTE: Cargo.lock IS committed.
+# This is a binary crate (has src/main.rs), so reproducible builds matter
+# and we want everyone to build against the same dependency versions.

@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Tiny resets — Tailwind v4 ships Preflight by default but we want
+ * a darker default and a sans-serif fallback. */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Make file inputs feel native-ish in macOS hiddenInset titlebar mode */
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}

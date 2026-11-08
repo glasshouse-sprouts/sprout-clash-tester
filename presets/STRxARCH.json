@@ -1,0 +1,12 @@
+{
+  "name": "STRxARCH",
+  "description": "Structural shell vs architectural envelope. Cross-discipline alignment check — catches mismatches where an architect's wall or slab doesn't line up with the engineer's beam, column, or core. Common on early-stage federations.",
+  "sideA": {
+    "selector": "IfcBeam*|IfcColumn*|IfcSlab*|IfcFoundation*|IfcMember*|IfcPlate|IfcReinforcingElement*",
+    "discipline": "STR"
+  },
+  "sideB": {
+    "selector": "IfcWall*|IfcSlab*|IfcRoof|IfcCurtainWall*|IfcDoor*|IfcWindow*|IfcStair*|IfcRailing|IfcCovering",
+    "discipline": "ARCH"
+  }
+}

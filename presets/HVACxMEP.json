@@ -1,0 +1,12 @@
+{
+  "name": "HVACxMEP",
+  "description": "Ducts (HVAC) vs pipes & MEP equipment. Service-routing conflicts — both compete for the same plenum and shaft space.",
+  "sideA": {
+    "selector": "IfcDuct*|IfcAirTerminal*|IfcUnitaryEquipment|IfcFan|IfcCompressor|IfcCoil|IfcHumidifier|IfcChiller|IfcBoiler|IfcDamper*|IfcFilter*|IfcSpaceHeater|IfcHeatExchanger",
+    "discipline": "HVAC"
+  },
+  "sideB": {
+    "selector": "IfcPipe*|IfcPump*|IfcValve*|IfcTank*|IfcSanitaryTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcFlowController*|IfcFlowStorageDevice*|IfcInterceptor",
+    "discipline": "MEP"
+  }
+}

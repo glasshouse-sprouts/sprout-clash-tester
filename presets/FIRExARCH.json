@@ -1,0 +1,12 @@
+{
+  "name": "FIRExARCH",
+  "description": "Sprinkler piping and fire-suppression terminals vs architectural walls, slabs and openings. Penetration sleeves required wherever sprinkler pipes cross compartmentation; sprinkler heads vs ceiling layouts also caught here.",
+  "sideA": {
+    "selector": "IfcPipe*|IfcFireSuppressionTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcValve*|IfcAlarm|IfcSensor",
+    "discipline": "FIRE"
+  },
+  "sideB": {
+    "selector": "IfcWall*|IfcSlab*|IfcRoof|IfcCurtainWall*|IfcDoor*|IfcWindow*|IfcStair*|IfcRailing|IfcCovering",
+    "discipline": "ARCH"
+  }
+}

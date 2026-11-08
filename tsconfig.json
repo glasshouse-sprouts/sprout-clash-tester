@@ -1,0 +1,10 @@
+{
+  "//": "Root config for editors. Each package has its own tsconfig.json that extends tsconfig.base.json.",
+  "files": [],
+  "references": [
+    { "path": "./packages/clash-core" },
+    { "path": "./packages/cli" },
+    { "path": "./packages/mcp-server" },
+    { "path": "./packages/desktop" }
+  ]
+}

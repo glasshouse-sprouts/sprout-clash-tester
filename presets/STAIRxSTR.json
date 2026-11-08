@@ -1,0 +1,12 @@
+{
+  "name": "STAIRxSTR",
+  "description": "Stair geometry and railings vs structural beams and slabs above. Catches headroom violations — beams or slabs hanging too low over a stair landing.",
+  "sideA": {
+    "selector": "IfcStair*|IfcStairFlight|IfcRailing|IfcRamp*",
+    "discipline": "ARCH"
+  },
+  "sideB": {
+    "selector": "IfcBeam*|IfcSlab*",
+    "discipline": "STR"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@clash-tester/mcp-server",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "description": "MCP server exposing Clash Tester as tools an AI agent can call.",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "clashtester-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@clash-tester/core": "*",
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "devDependencies": {}
+}

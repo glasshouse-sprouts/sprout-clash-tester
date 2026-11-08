@@ -1,0 +1,12 @@
+{
+  "name": "ELECxSTR",
+  "description": "Cables, trays and electrical equipment vs structural beams and columns. Catches routing that requires structural penetrations or detours.",
+  "sideA": {
+    "selector": "IfcCable*|IfcCableCarrier*|IfcElectric*|IfcLightFixture|IfcOutlet|IfcSwitchingDevice*|IfcProtectiveDevice*|IfcCommunicationsAppliance|IfcDistributionControlElement",
+    "discipline": "ELEC"
+  },
+  "sideB": {
+    "selector": "IfcBeam*|IfcColumn*|IfcFoundation*|IfcPile|IfcFooting*",
+    "discipline": "STR"
+  }
+}

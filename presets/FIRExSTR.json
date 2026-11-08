@@ -1,0 +1,12 @@
+{
+  "name": "FIRExSTR",
+  "description": "Fire-suppression piping & terminals vs structural elements. Critical — sprinkler pipes blocked by beams stall fit-out. Includes pipe segments, fittings, sprinkler heads, fire alarms and sensors on side A.",
+  "sideA": {
+    "selector": "IfcPipe*|IfcFireSuppressionTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcValve*|IfcAlarm|IfcSensor",
+    "discipline": "FIRE"
+  },
+  "sideB": {
+    "selector": "IfcBeam*|IfcColumn*|IfcFoundation*|IfcPile|IfcFooting*",
+    "discipline": "STR"
+  }
+}

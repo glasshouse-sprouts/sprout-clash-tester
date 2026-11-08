@@ -1,0 +1,22 @@
+{
+  "name": "@clash-tester/cli",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "description": "Command-line interface for the Clash Tester.",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "clashtester": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@clash-tester/core": "*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {}
+}

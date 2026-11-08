@@ -1,0 +1,12 @@
+{
+  "name": "ELECxMEP",
+  "description": "Cables and electrical equipment vs MEP piping. Separation rules — cables shouldn't run too close to water/sanitary pipes. Lower priority than structural clashes but still worth catching.",
+  "sideA": {
+    "selector": "IfcCable*|IfcCableCarrier*|IfcElectric*|IfcLightFixture|IfcOutlet|IfcSwitchingDevice*|IfcProtectiveDevice*|IfcCommunicationsAppliance|IfcDistributionControlElement|IfcController|IfcActuator|IfcSensor",
+    "discipline": "ELEC"
+  },
+  "sideB": {
+    "selector": "IfcPipe*|IfcPump*|IfcValve*|IfcTank*|IfcSanitaryTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcFlowController*|IfcFlowStorageDevice*",
+    "discipline": "MEP"
+  }
+}

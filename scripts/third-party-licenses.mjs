@@ -1,0 +1,190 @@
+#!/usr/bin/env node
+// `npm run licenses` — write THIRD_PARTY_LICENSES.md: the licence of every
+// Rust crate and npm package Clash Tester ships, plus a summary of the
+// development-only tools (TASKS T19). Reads what is installed — `cargo
+// metadata` for engine/ and `npm ls` for the workspaces — so run it after
+// `npm install` and a cargo build. Exits 1 when any licence is unknown or
+// not on the allowlist below, so CI can run it as a check.
+
+import { execFileSync } from "node:child_process";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// SPDX ids we accept. An expression passes when every AND part has at
+// least one OR alternative here. Weak copyleft (MPL-2.0) is allowed: the
+// files stay under MPL and are used unmodified (see NOTICE).
+const ALLOWED = new Set([
+  "MIT",
+  "MIT-0",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Zlib",
+  "0BSD",
+  "Unlicense",
+  "CC0-1.0",
+  "Unicode-3.0",
+  "bzip2-1.0.6",
+  "MPL-2.0",
+  "BlueOak-1.0.0",
+  "Python-2.0",
+  "CC-BY-4.0",
+]);
+
+/** Whether an SPDX expression (`A OR B`, `(A OR B) AND C`, `A/B`) passes. */
+function allowed(expr) {
+  if (!expr) return false;
+  return expr
+    .replace(/[()]/g, "")
+    .split(/\s+AND\s+/)
+    .every((part) => part.split(/\s+OR\s+|\//).some((id) => ALLOWED.has(id.trim())));
+}
+
+const run = (cmd, args, cwd) =>
+  execFileSync(cmd, args, { cwd, encoding: "utf-8", maxBuffer: 64 << 20 });
+
+/** Rust crates in engine/'s normal + build graph (dev-dependencies left out). */
+function rustCrates() {
+  const meta = JSON.parse(
+    run("cargo", ["metadata", "--format-version", "1", "--locked"], path.join(ROOT, "engine")),
+  );
+  const byId = new Map(meta.packages.map((p) => [p.id, p]));
+  const nodes = new Map(meta.resolve.nodes.map((n) => [n.id, n]));
+  const seen = new Set();
+  const stack = [meta.resolve.root];
+  while (stack.length) {
+    const id = stack.pop();
+    if (seen.has(id)) continue;
+    seen.add(id);
+    for (const d of nodes.get(id).deps) {
+      if (d.dep_kinds.some((k) => k.kind === null || k.kind === "build")) stack.push(d.pkg);
+    }
+  }
+  seen.delete(meta.resolve.root);
+  return [...seen].map((id) => {
+    const p = byId.get(id);
+    return {
+      name: p.name,
+      version: p.version,
+      license: p.license ?? "",
+      source: p.repository ?? "",
+    };
+  });
+}
+
+/** npm packages of the workspaces; `prod` leaves devDependencies out. */
+function npmPackages(prod) {
+  const args = ["ls", "--all", "--json", ...(prod ? ["--omit=dev"] : [])];
+  let tree;
+  try {
+    tree = JSON.parse(run("npm", args, ROOT));
+  } catch (e) {
+    tree = JSON.parse(e.stdout); // npm ls exits 1 on peer warnings; the tree is still there
+  }
+  const found = new Map();
+  const walk = (t) => {
+    for (const [name, d] of Object.entries(t.dependencies ?? {})) {
+      if (!name.startsWith("@clash-tester/") && d.version) found.set(name, d.version);
+      walk(d);
+    }
+  };
+  walk(tree);
+  return [...found].map(([name, version]) => {
+    const file = path.join(ROOT, "node_modules", name, "package.json");
+    const pkg = existsSync(file) ? JSON.parse(readFileSync(file, "utf-8")) : {};
+    let license = pkg.license ?? pkg.licenses ?? "";
+    if (Array.isArray(license)) license = license.map((l) => l.type ?? l).join(" OR ");
+    else if (typeof license === "object") license = license.type ?? "";
+    const repo = typeof pkg.repository === "string" ? pkg.repository : (pkg.repository?.url ?? "");
+    return { name, version, license, source: repo };
+  });
+}
+
+const byName = (a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version);
+const rust = rustCrates().sort(byName);
+const npmProd = npmPackages(true).sort(byName);
+const prodNames = new Set(npmProd.map((p) => p.name));
+const npmDev = npmPackages(false)
+  .filter((p) => !prodNames.has(p.name))
+  .sort(byName);
+
+const counts = (list) => {
+  const c = new Map();
+  for (const p of list) c.set(p.license || "UNKNOWN", (c.get(p.license || "UNKNOWN") ?? 0) + 1);
+  return [...c]
+    .sort((a, b) => b[1] - a[1])
+    .map(([l, n]) => `| ${l} | ${n} |`)
+    .join("\n");
+};
+const table = (list) =>
+  ["| Package | Version | Licence |", "|---|---|---|"]
+    .concat(list.map((p) => `| ${p.name} | ${p.version} | ${p.license || "**UNKNOWN**"} |`))
+    .join("\n");
+
+const rejected = [...rust, ...npmProd, ...npmDev].filter((p) => !allowed(p.license));
+
+const checkLine =
+  rejected.length === 0
+    ? "every licence below is known and on the allowlist in the script."
+    : `${rejected.length} package(s) with an unknown or not-allowed licence: ` +
+      `${rejected.map((p) => p.name).join(", ")}.`;
+
+const md = `# Third-party licences
+
+Generated by \`npm run licenses\` (\`scripts/third-party-licenses.mjs\`) from
+the installed dependency graph. Do not edit by hand. Attribution for code
+we copied or adapted and the MPL-2.0 note for
+ifc-lite are in [\`NOTICE\`](NOTICE).
+
+Clash Tester itself: Apache-2.0 (see [\`LICENSE\`](LICENSE)).
+
+**Check:** ${checkLine}
+
+## Rust crates shipped in the engine (${rust.length})
+
+Normal and build dependencies of \`engine/\` for every target platform
+(dev-dependencies left out).
+
+| Licence | Crates |
+|---|---|
+${counts(rust)}
+
+${table(rust)}
+
+## npm packages shipped (${npmProd.length})
+
+Production dependencies of the workspaces (CLI, MCP server, desktop app).
+
+| Licence | Packages |
+|---|---|
+${counts(npmProd)}
+
+${table(npmProd)}
+
+## Development-only npm packages (${npmDev.length})
+
+Build, test and lint tools — not shipped, listed for completeness. Some
+of them still end up in the desktop app's renderer bundle when it is
+built (e.g. React from \`dependencies\` above, Tailwind's generated CSS);
+the packaged Electron runtime brings its own Chromium licence file.
+
+| Licence | Packages |
+|---|---|
+${counts(npmDev)}
+`;
+
+writeFileSync(path.join(ROOT, "THIRD_PARTY_LICENSES.md"), md);
+console.log(
+  `THIRD_PARTY_LICENSES.md: ${rust.length} crates, ` +
+    `${npmProd.length} shipped + ${npmDev.length} dev npm packages`,
+);
+if (rejected.length) {
+  for (const p of rejected)
+    console.error(`not allowed: ${p.name}@${p.version} (${p.license || "unknown"})`);
+  process.exit(1);
+}

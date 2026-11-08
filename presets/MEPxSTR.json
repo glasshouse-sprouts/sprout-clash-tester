@@ -1,0 +1,12 @@
+{
+  "name": "MEPxSTR",
+  "description": "MEP equipment & piping vs structural elements. Critical — pipes through beams or columns block construction. Includes pumps, valves, tanks, sanitary terminals and the full flow-segment chain on side A; beams, columns, foundations, piles and footings on side B.",
+  "sideA": {
+    "selector": "IfcPipe*|IfcPump*|IfcValve*|IfcTank*|IfcSanitaryTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcFlowController*|IfcFlowStorageDevice*|IfcHeatExchanger|IfcInterceptor",
+    "discipline": "MEP"
+  },
+  "sideB": {
+    "selector": "IfcBeam*|IfcColumn*|IfcFoundation*|IfcPile|IfcFooting*",
+    "discipline": "STR"
+  }
+}

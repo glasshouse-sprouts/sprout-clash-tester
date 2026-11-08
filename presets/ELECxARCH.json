@@ -1,0 +1,12 @@
+{
+  "name": "ELECxARCH",
+  "description": "Cables, lighting and outlets vs walls, slabs, doors, windows and stairs. Catches outlet placement conflicts, light fixtures inside doors, and tray routes that cross architectural partitions without coordination.",
+  "sideA": {
+    "selector": "IfcCable*|IfcCableCarrier*|IfcElectric*|IfcLightFixture|IfcOutlet|IfcSwitchingDevice*|IfcProtectiveDevice*|IfcCommunicationsAppliance|IfcDistributionControlElement",
+    "discipline": "ELEC"
+  },
+  "sideB": {
+    "selector": "IfcWall*|IfcSlab*|IfcRoof|IfcCurtainWall*|IfcDoor*|IfcWindow*|IfcStair*|IfcRailing|IfcCovering",
+    "discipline": "ARCH"
+  }
+}

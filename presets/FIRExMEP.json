@@ -1,0 +1,12 @@
+{
+  "name": "FIRExMEP",
+  "description": "Fire-suppression piping vs domestic plumbing and MEP equipment. Often routed in the same shafts; routing conflicts are common.",
+  "sideA": {
+    "selector": "IfcPipe*|IfcFireSuppressionTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcValve*",
+    "discipline": "FIRE"
+  },
+  "sideB": {
+    "selector": "IfcPipe*|IfcPump*|IfcValve*|IfcTank*|IfcSanitaryTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcFlowController*|IfcFlowStorageDevice*",
+    "discipline": "MEP"
+  }
+}

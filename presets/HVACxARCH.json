@@ -1,0 +1,12 @@
+{
+  "name": "HVACxARCH",
+  "description": "HVAC equipment & ductwork vs architectural envelope and openings. Penetration sleeves and headroom. Side B includes walls, slabs, roofs, curtain walls, doors, windows, stairs and railings — so a duct hitting a door or running through a roof both fire.",
+  "sideA": {
+    "selector": "IfcDuct*|IfcAirTerminal*|IfcUnitaryEquipment|IfcFan|IfcCompressor|IfcCoil|IfcHumidifier|IfcChiller|IfcBoiler|IfcDamper*|IfcFilter*|IfcSpaceHeater|IfcHeatExchanger",
+    "discipline": "HVAC"
+  },
+  "sideB": {
+    "selector": "IfcWall*|IfcSlab*|IfcRoof|IfcCurtainWall*|IfcDoor*|IfcWindow*|IfcStair*|IfcRailing|IfcCovering",
+    "discipline": "ARCH"
+  }
+}

@@ -1,0 +1,405 @@
+{
+  "instructions": "Use clash-tester-ui when the user talks about what they see in the Clash Tester app (the open project, the results on screen, 'show me clash 3', 'run it'); use clash-tester for background runs without the app. Clash numbers are the # column / BCF title prefix of the current run; group keys come from ui_get_results with kind=groups. Edits (ui_add_*, ui_update_*, ui_toggle_rule, ui_remove_*, ui_set_settings) show in the app with an Undo for the user and are not saved — tell the user to Save when they are happy.",
+  "tools": [
+    {
+      "name": "ui_get_state",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Returns what the app shows right now: project name/path, unsaved-changes flag, files, rules, current view, whether a run is in progress, a summary of the last run and the current selection (the clash or group the user clicked).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "ui_get_results",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Returns the live last run, one page at a time: kind=clashes (default; each with its number = BCF title prefix), kind=groups (biggest first; use the key with ui_select_group) or kind=warnings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "clashes",
+              "groups",
+              "warnings"
+            ],
+            "description": "What to list. Default clashes."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Skip this many items. Default 0."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "description": "Page size. Default 50."
+          }
+        }
+      }
+    },
+    {
+      "name": "ui_show_view",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Switches the app to the Files, Rules or Results view.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "view": {
+            "type": "string",
+            "enum": [
+              "files",
+              "rules",
+              "results"
+            ]
+          }
+        },
+        "required": [
+          "view"
+        ]
+      }
+    },
+    {
+      "name": "ui_select_clash",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Shows one clash to the user: switches to Results, highlights and scrolls to the row and opens its double-modelling detail. `number` is the clash number (the # column / BCF topic title prefix).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "number"
+        ]
+      }
+    },
+    {
+      "name": "ui_select_group",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Shows one clash group to the user: switches to Results, highlights the group row and its clashes. Pass `key` (from ui_get_results kind=groups) or `number` (the Groups table #, 1 = biggest).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "ui_run",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Presses Run on the open project (unsaved edits included), waits until detection finishes and returns the summary. Progress shows in the app. Refuses with the same reason the Run button shows when the project can't run.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "timeoutMs": 1800000
+    },
+    {
+      "name": "ui_list_presets",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Lists the built-in preset rule sets (name, description, sides) — the same list the Rules view offers.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "ui_add_file",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Adds an IFC file (absolute path on this computer) to the open project (no project open ⇒ starts a new, unsaved one, like dropping a file on the window). The discipline is guessed from the file name like drag-and-drop unless given. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Absolute path to an .ifc file."
+          },
+          "discipline": {
+            "type": "string",
+            "description": "e.g. ARCH, STR, HVAC, MEP, ELEC, FIRE."
+          }
+        },
+        "required": [
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "ui_remove_file",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Removes a file from the open project, together with the custom rules that use it. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "ui_add_preset_rule",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Adds a built-in preset rule (see ui_list_presets). Presets match files by discipline. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "preset": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "preset"
+        ]
+      }
+    },
+    {
+      "name": "ui_auto_add_presets",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Adds every preset whose two disciplines are both among the project's files — the Rules view's Auto-add presets button. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "ui_add_self_check",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Adds a self check for one file (the model tested against itself: internal clashes and double modelling), named SELF-<fileId>. Spaces, spatial zones and openings are ignored unless ignoreSpacesAndOpenings is false. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string"
+          },
+          "ignoreSpacesAndOpenings": {
+            "type": "boolean",
+            "description": "Default true."
+          }
+        },
+        "required": [
+          "fileId"
+        ]
+      }
+    },
+    {
+      "name": "ui_add_custom_rule",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Adds a custom rule: elements of side a tested against side b (the same file on both sides = a self check). The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "a": {
+            "type": "object",
+            "properties": {
+              "fileId": {
+                "type": "string",
+                "description": "Id of a file in the project (see ui_get_state)."
+              },
+              "selector": {
+                "type": "string",
+                "description": "IFC type selector: exact (IfcBeam), prefix (IfcDuct*), list (IfcWall|IfcSlab), * = all. Default *."
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "i",
+                  "e"
+                ],
+                "description": "i = elements matching the selector (default), e = everything except them."
+              },
+              "exclude": {
+                "type": "string",
+                "description": "Optional selector of elements to drop afterwards, e.g. IfcSpace|IfcOpeningElement. Empty string removes it."
+              }
+            },
+            "required": [
+              "fileId"
+            ]
+          },
+          "b": {
+            "type": "object",
+            "properties": {
+              "fileId": {
+                "type": "string",
+                "description": "Id of a file in the project (see ui_get_state)."
+              },
+              "selector": {
+                "type": "string",
+                "description": "IFC type selector: exact (IfcBeam), prefix (IfcDuct*), list (IfcWall|IfcSlab), * = all. Default *."
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "i",
+                  "e"
+                ],
+                "description": "i = elements matching the selector (default), e = everything except them."
+              },
+              "exclude": {
+                "type": "string",
+                "description": "Optional selector of elements to drop afterwards, e.g. IfcSpace|IfcOpeningElement. Empty string removes it."
+              }
+            },
+            "required": [
+              "fileId"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "name": "ui_update_custom_rule",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Edits a custom rule (presets can't be edited). Only the fields given change; newName renames it. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "newName": {
+            "type": "string"
+          },
+          "a": {
+            "type": "object",
+            "properties": {
+              "fileId": {
+                "type": "string",
+                "description": "Id of a file in the project (see ui_get_state)."
+              },
+              "selector": {
+                "type": "string",
+                "description": "IFC type selector: exact (IfcBeam), prefix (IfcDuct*), list (IfcWall|IfcSlab), * = all. Default *."
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "i",
+                  "e"
+                ],
+                "description": "i = elements matching the selector (default), e = everything except them."
+              },
+              "exclude": {
+                "type": "string",
+                "description": "Optional selector of elements to drop afterwards, e.g. IfcSpace|IfcOpeningElement. Empty string removes it."
+              }
+            }
+          },
+          "b": {
+            "type": "object",
+            "properties": {
+              "fileId": {
+                "type": "string",
+                "description": "Id of a file in the project (see ui_get_state)."
+              },
+              "selector": {
+                "type": "string",
+                "description": "IFC type selector: exact (IfcBeam), prefix (IfcDuct*), list (IfcWall|IfcSlab), * = all. Default *."
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "i",
+                  "e"
+                ],
+                "description": "i = elements matching the selector (default), e = everything except them."
+              },
+              "exclude": {
+                "type": "string",
+                "description": "Optional selector of elements to drop afterwards, e.g. IfcSpace|IfcOpeningElement. Empty string removes it."
+              }
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "ui_toggle_rule",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Enables or disables a rule (enabled = true/false; omitted = flip). The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "ui_remove_rule",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Removes a rule from the open project. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "ui_set_settings",
+      "description": "Acts on the Clash Tester desktop app that is open on screen. Changes project settings; only the fields given change. toleranceMeters (0 = hard intersection, > 0 = clearance), minPenetrationMeters, grouping { minElementClashes, proximity { enabled, radiusMetres }, duplicate { maxVolumeDifference, maxCentroidDistanceMetres } }, bcfTopics (clash | group), skipRelatedElements (default true), narrowPhase (parry | ifclite, default parry), reportTouch (default false). A grouping object replaces the whole grouping setting. The change shows in the app at once, marks the project unsaved and offers the user an Undo; nothing is saved to disk.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "toleranceMeters": {
+            "type": "number",
+            "minimum": 0
+          },
+          "minPenetrationMeters": {
+            "type": "number",
+            "minimum": 0
+          },
+          "grouping": {
+            "type": "object"
+          },
+          "bcfTopics": {
+            "type": "string",
+            "enum": [
+              "clash",
+              "group"
+            ]
+          },
+          "skipRelatedElements": {
+            "type": "boolean",
+            "description": "Skip pairs that belong together in the IFC (door/window in its wall, opening in its host, parts of an assembly). Default true."
+          },
+          "narrowPhase": {
+            "type": "string",
+            "enum": [
+              "parry",
+              "ifclite"
+            ],
+            "description": "Narrow phase that decides a clash. parry (default) or ifclite (touch is not a clash; real contact points)."
+          },
+          "reportTouch": {
+            "type": "boolean",
+            "description": "ifclite only: also list touching pairs and unconfirmed box estimates. Default false."
+          }
+        }
+      }
+    }
+  ]
+}

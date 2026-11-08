@@ -1,0 +1,40 @@
+{
+  "name": "@clash-tester/core",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "description": "Shared logic: rule presets, project files, spawning the Rust engine, parsing results.",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./discipline": {
+      "types": "./dist/discipline.d.ts",
+      "import": "./dist/discipline.js"
+    },
+    "./grouping": {
+      "types": "./dist/grouping.d.ts",
+      "import": "./dist/grouping.js"
+    },
+    "./settings": {
+      "types": "./dist/settings.d.ts",
+      "import": "./dist/settings.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

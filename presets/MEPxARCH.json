@@ -1,0 +1,12 @@
+{
+  "name": "MEPxARCH",
+  "description": "MEP equipment & piping vs architectural envelope and openings. Penetration sleeves needed where pipes cross walls/slabs/roofs; conflicts with doors/windows are real issues too.",
+  "sideA": {
+    "selector": "IfcPipe*|IfcPump*|IfcValve*|IfcTank*|IfcSanitaryTerminal|IfcFlowFitting*|IfcFlowSegment*|IfcFlowController*|IfcFlowStorageDevice*|IfcHeatExchanger|IfcInterceptor",
+    "discipline": "MEP"
+  },
+  "sideB": {
+    "selector": "IfcWall*|IfcSlab*|IfcRoof|IfcCurtainWall*|IfcDoor*|IfcWindow*|IfcStair*|IfcRailing|IfcCovering",
+    "discipline": "ARCH"
+  }
+}

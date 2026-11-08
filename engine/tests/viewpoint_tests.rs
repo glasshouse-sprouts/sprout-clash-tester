@@ -1,0 +1,134 @@
+// Derived from Clashero (MIT). See NOTICE.
+use clash::bcf_reporter::{ClashInfo, generate_bcf};
+use std::fs::File;
+use std::io::Read;
+use tempfile::tempdir;
+use zip::ZipArchive;
+
+#[test]
+fn test_viewpoint_calculation() {
+    let temp_dir = tempdir().unwrap();
+    let bcf_path = temp_dir.path().join("viewpoint_test.bcfzip");
+
+    let clash = ClashInfo {
+        guid_a: "GUID_A".to_string(),
+        guid_b: "GUID_B".to_string(),
+        description: "Test clash".to_string(),
+        position: [10.0, 10.0, 10.0],
+        camera_eye: Some([0.0, 0.0, 0.0]),
+        file_a: String::new(),
+        file_b: String::new(),
+        mode: String::new(),
+        depth_metres: None,
+        gap_metres: None,
+        aabb_overlap_extents: None,
+        aabb_overlap_volume: None,
+        aabb_match: None,
+        volume_a: None,
+        volume_b: None,
+        centroid_distance: None,
+        status: None,
+        distance_kind: None,
+        type_class_a: None,
+        type_class_b: None,
+        predefined_type_a: None,
+        predefined_type_b: None,
+    };
+
+    generate_bcf(&bcf_path, &[clash]).expect("Failed to generate BCF");
+
+    let file = File::open(&bcf_path).unwrap();
+    let mut archive = ZipArchive::new(file).unwrap();
+
+    // Find the bcfv file
+    let mut bcfv_content = String::new();
+    let mut found = false;
+    for i in 0..archive.len() {
+        let mut file = archive.by_index(i).unwrap();
+        if file.name().ends_with(".bcfv") {
+            file.read_to_string(&mut bcfv_content).unwrap();
+            found = true;
+            break;
+        }
+    }
+    assert!(found, "BCFv file not found in archive");
+
+    // Check camera viewpoint (eye)
+    assert!(
+        bcfv_content.contains("<CameraViewPoint>"),
+        "Missing CameraViewPoint"
+    );
+    assert!(bcfv_content.contains("<X>0</X>"), "Wrong Camera X");
+    assert!(bcfv_content.contains("<Y>0</Y>"), "Wrong Camera Y");
+    assert!(bcfv_content.contains("<Z>0</Z>"), "Wrong Camera Z");
+
+    // Check camera direction (normalized vector from eye 0,0,0 to target 10,10,10)
+    // Vector is [10, 10, 10], length is sqrt(300) = 17.3205
+    // Normalized is [0.57735, 0.57735, 0.57735]
+    assert!(
+        bcfv_content.contains("<CameraDirection>"),
+        "Missing CameraDirection"
+    );
+    // quick-xml text might not have all decimals, but let's check for the prefix
+    assert!(bcfv_content.contains("0.57735"), "Wrong Direction X");
+}
+
+#[test]
+fn test_viewpoint_calculation_default() {
+    let temp_dir = tempdir().unwrap();
+    let bcf_path = temp_dir.path().join("viewpoint_default.bcfzip");
+
+    let clash = ClashInfo {
+        guid_a: "GUID_A".to_string(),
+        guid_b: "GUID_B".to_string(),
+        description: "Test clash".to_string(),
+        position: [10.0, 10.0, 10.0],
+        camera_eye: None,
+        file_a: String::new(),
+        file_b: String::new(),
+        mode: String::new(),
+        depth_metres: None,
+        gap_metres: None,
+        aabb_overlap_extents: None,
+        aabb_overlap_volume: None,
+        aabb_match: None,
+        volume_a: None,
+        volume_b: None,
+        centroid_distance: None,
+        status: None,
+        distance_kind: None,
+        type_class_a: None,
+        type_class_b: None,
+        predefined_type_a: None,
+        predefined_type_b: None,
+    };
+
+    generate_bcf(&bcf_path, &[clash]).expect("Failed to generate BCF");
+
+    let file = File::open(&bcf_path).unwrap();
+    let mut archive = ZipArchive::new(file).unwrap();
+
+    let mut bcfv_content = String::new();
+    let mut found = false;
+    for i in 0..archive.len() {
+        let mut file = archive.by_index(i).unwrap();
+        if file.name().ends_with(".bcfv") {
+            file.read_to_string(&mut bcfv_content).unwrap();
+            found = true;
+            break;
+        }
+    }
+    assert!(found);
+
+    // Engine default for camera_eye = None (see bcf_reporter.rs):
+    //   eye = [pos.x - 5, pos.y - 5, pos.z + 5]
+    //       = [10 - 5, 10 - 5, 10 + 5]
+    //       = [5, 5, 15]
+    // direction = [0.57735, 0.57735, -0.57735] (looking diagonally down at clash)
+    assert!(bcfv_content.contains("<X>5</X>"), "Wrong default eye X: {}", bcfv_content);
+    assert!(bcfv_content.contains("<Y>5</Y>"), "Wrong default eye Y: {}", bcfv_content);
+    assert!(bcfv_content.contains("<Z>15</Z>"), "Wrong default eye Z: {}", bcfv_content);
+
+    // Default direction's Z is negative (camera looks down toward clash).
+    assert!(bcfv_content.contains("-0.577"));
+}

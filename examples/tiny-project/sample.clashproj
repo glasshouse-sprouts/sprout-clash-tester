@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "name": "Tiny project — HVAC vs Structural",
+  "createdAt": "2026-05-16T10:00:00Z",
+  "files": [
+    {
+      "id": "hvac",
+      "path": "../../engine/tests/models/Building-Hvac.ifc",
+      "discipline": "HVAC"
+    },
+    {
+      "id": "str",
+      "path": "../../engine/tests/models/Building-Structural.ifc",
+      "discipline": "STR"
+    }
+  ],
+  "rules": [
+    {
+      "name": "HVACxSTR",
+      "preset": null,
+      "enabled": true,
+      "a": { "fileId": "hvac", "selector": "*", "mode": "i" },
+      "b": { "fileId": "str", "selector": "*", "mode": "i" }
+    }
+  ],
+  "settings": {
+    "toleranceMeters": 0.1,
+    "minPenetrationMeters": 0.005
+  }
+}

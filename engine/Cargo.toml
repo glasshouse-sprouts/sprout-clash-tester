@@ -1,0 +1,25 @@
+[package]
+name = "clash"
+version = "0.2.0"
+license = "Apache-2.0"
+edition = "2024"
+
+[dependencies]
+ifc-lite-core = "=27.0.0"
+ifc-lite-geometry = "=27.0.0"
+ifc-lite-clash = "=27.0.0"
+rustc-hash = "2.1"
+parry3d-f64 = "0.26.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+tempfile = "3.27.0"
+clap = { version = "4.6", features = ["derive"] }
+quick-xml = "0.39"
+zip = "8.4.0"
+uuid = { version = "1.23", features = ["v4"] }
+chrono = "0.4"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1.4"

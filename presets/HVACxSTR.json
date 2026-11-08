@@ -1,0 +1,12 @@
+{
+  "name": "HVACxSTR",
+  "description": "HVAC equipment & ductwork vs structural elements. Critical — ducts through beams force expensive rework. Side A includes ducts, air terminals, fans, coils, chillers, boilers, dampers and the full HVAC equipment family.",
+  "sideA": {
+    "selector": "IfcDuct*|IfcAirTerminal*|IfcUnitaryEquipment|IfcFan|IfcCompressor|IfcCoil|IfcHumidifier|IfcChiller|IfcBoiler|IfcDamper*|IfcFilter*|IfcSpaceHeater|IfcHeatExchanger",
+    "discipline": "HVAC"
+  },
+  "sideB": {
+    "selector": "IfcBeam*|IfcColumn*|IfcFoundation*|IfcPile|IfcFooting*",
+    "discipline": "STR"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "name": "Self check — each model against itself",
+  "createdAt": "2026-10-29T12:00:00Z",
+  "files": [
+    {
+      "id": "ark",
+      "path": "../../engine/tests/models/Building-Architecture.ifc",
+      "discipline": "ARCH"
+    },
+    {
+      "id": "str",
+      "path": "../../engine/tests/models/Building-Structural.ifc",
+      "discipline": "STR"
+    }
+  ],
+  "rules": [
+    {
+      "name": "SELF-ark",
+      "preset": null,
+      "enabled": true,
+      "a": {
+        "fileId": "ark",
+        "selector": "*",
+        "mode": "i",
+        "exclude": "IfcSpace|IfcSpatialZone|IfcOpeningElement|IfcOpeningStandardCase"
+      },
+      "b": {
+        "fileId": "ark",
+        "selector": "*",
+        "mode": "i",
+        "exclude": "IfcSpace|IfcSpatialZone|IfcOpeningElement|IfcOpeningStandardCase"
+      }
+    },
+    {
+      "name": "SELF-str",
+      "preset": null,
+      "enabled": true,
+      "a": {
+        "fileId": "str",
+        "selector": "*",
+        "mode": "i",
+        "exclude": "IfcSpace|IfcSpatialZone|IfcOpeningElement|IfcOpeningStandardCase"
+      },
+      "b": {
+        "fileId": "str",
+        "selector": "*",
+        "mode": "i",
+        "exclude": "IfcSpace|IfcSpatialZone|IfcOpeningElement|IfcOpeningStandardCase"
+      }
+    }
+  ],
+  "settings": {
+    "toleranceMeters": 0,
+    "minPenetrationMeters": 0.005
+  }
+}
