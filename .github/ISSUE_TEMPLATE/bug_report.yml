@@ -1,0 +1,53 @@
+name: Bug report
+description: Something doesn't work, or a clash result looks wrong.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Security problems: please don't use an issue —
+        see SECURITY.md. Only attach models you are allowed to share.
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      options:
+        - CLI
+        - Desktop app
+        - MCP server (headless, clash-tester)
+        - Desktop MCP (clash-tester-ui)
+        - Engine / detection result
+        - Docs
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      description: For a wrong result, which elements (GUIDs or clash numbers) and why you think it's wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The command or clicks, and the `.clashproj` if you can share it.
+      placeholder: |
+        1. node packages/cli/dist/index.js run my.clashproj
+        2. …
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output, warnings or errors
+      description: The CLI summary, the warnings, or the error message.
+      render: text
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Clash Tester commit, OS, Node, Rust.
+      placeholder: "main @ abc1234, macOS 15, Node 22, Rust 1.94"
+    validations:
+      required: true

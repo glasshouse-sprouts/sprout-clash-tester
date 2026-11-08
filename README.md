@@ -136,6 +136,15 @@ Tests: `cargo test --release` in `engine/`, and `npm test` at the root
 (set `CLASH_BINARY=engine/target/release/clash` to include the end-to-end
 tests). `npm run typecheck` and `npm run lint` check the TypeScript.
 
+## Contributing
+
+Issues and pull requests are welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md)
+for how to build, test and propose a change, and
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for how we work together.
+Security problems: please report them privately, as described in
+[`SECURITY.md`](SECURITY.md). Changes are listed in
+[`CHANGELOG.md`](CHANGELOG.md).
+
 ## Origins and credits
 
 Clash Tester stands on the shoulders of
