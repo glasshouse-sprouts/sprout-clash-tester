@@ -185,6 +185,11 @@ pub fn clash_detect_with_options(
             let total = elements.len();
             let translation = group.translation.unwrap_or([0.0, 0.0, 0.0]);
             let elements = translate_elements(elements, translation)?;
+            // The file's placement box covers every loaded element (after
+            // translation), not just what this rule selects: a rule that
+            // picks ducts on one side and beams on the other would
+            // otherwise compare two unrelated sub-boxes.
+            update_file_aabb(&mut file_aabbs, &group.file, &elements);
             let selector_str = group.selector.as_deref().unwrap_or("*");
             let file_name = group.file.file_name()
                 .and_then(|n| n.to_str()).unwrap_or("?");
@@ -196,8 +201,6 @@ pub fn clash_detect_with_options(
                 group.exclude.as_deref(),
             );
             println!("  Side A  {}  total={} selector='{}' matched={} excluded={}", file_name, total, selector_str, filtered.len(), excluded);
-            // Record the file's AABB from the (possibly translated) matched elements.
-            update_file_aabb(&mut file_aabbs, &group.file, &filtered);
             group_a_elements.extend(filtered);
         }
 
@@ -211,6 +214,8 @@ pub fn clash_detect_with_options(
             let total = elements.len();
             let translation = group.translation.unwrap_or([0.0, 0.0, 0.0]);
             let elements = translate_elements(elements, translation)?;
+            // Whole-file placement box, as for side A.
+            update_file_aabb(&mut file_aabbs, &group.file, &elements);
             let selector_str = group.selector.as_deref().unwrap_or("*");
             let file_name = group.file.file_name()
                 .and_then(|n| n.to_str()).unwrap_or("?");
@@ -222,7 +227,6 @@ pub fn clash_detect_with_options(
                 group.exclude.as_deref(),
             );
             println!("  Side B  {}  total={} selector='{}' matched={} excluded={}", file_name, total, selector_str, filtered.len(), excluded);
-            update_file_aabb(&mut file_aabbs, &group.file, &filtered);
             group_b_elements.extend(filtered);
         }
 

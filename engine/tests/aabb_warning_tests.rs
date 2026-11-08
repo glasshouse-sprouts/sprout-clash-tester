@@ -137,3 +137,35 @@ fn test_aabb_overlap_warning_when_files_disjoint() {
         warning.message
     );
 }
+
+#[test]
+fn test_placement_uses_whole_file_box_not_selected_subset() {
+    // Regression: the placement boxes used to be built from the elements
+    // a rule *selects*. With the HVACxSTR preset on these two aligned
+    // models, the ducts' box and the beams' box have centres far apart,
+    // and the run said the files sit in two placement groups. The boxes
+    // now cover every loaded element of the file, so aligned models
+    // give no placement warning whatever the rule selects.
+    let hvac = fixture("Building-Hvac.ifc");
+    let stru = fixture("Building-Structural.ifc");
+    let json = format!(
+        r#"[
+            {{
+                "name": "HVACxSTR",
+                "a": [{{ "file": {:?}, "selector": "IfcDuct*|IfcAirTerminal*", "mode": "i" }}],
+                "b": [{{ "file": {:?}, "selector": "IfcBeam*|IfcColumn*", "mode": "i" }}]
+            }}
+        ]"#,
+        hvac.to_string_lossy(),
+        stru.to_string_lossy()
+    );
+    let result = clash_detect_with_config(&json, 0.0, 0.005, &None, &None).unwrap();
+    assert!(
+        result
+            .warnings
+            .iter()
+            .all(|w| w.kind != "placement_mismatch" && w.kind != "no_aabb_overlap"),
+        "Aligned files should not get a placement warning: {:?}",
+        result.warnings
+    );
+}

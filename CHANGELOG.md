@@ -52,6 +52,14 @@ contain.
 - **Docs:** architecture, how detection works, the project file format,
   MCP setup.
 
+### Fixed
+
+- The placement checks after loading compare whole-file bounding boxes.
+  They used the elements a rule selects, so two well-aligned models
+  could get a false "fix the alignment" warning (e.g. the HVAC-vs-
+  structure preset, where the ducts and the beams sit in different parts
+  of the building).
+
 ### Security
 
 - The desktop app runs on Electron 45, with the renderer sandboxed; the

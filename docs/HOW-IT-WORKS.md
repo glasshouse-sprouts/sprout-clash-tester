@@ -58,8 +58,10 @@ the run would silently report nothing. So:
   only some carry `IfcMapConversion`, or with different map conversions,
   get `mapconversion_split` — clash detection still works, but
   georeferencing viewers will place them apart.
-- **After loading**, between files that meet in a rule:
-  `placement_mismatch` when their bounding-box centres split into more
+- **After loading**, between files that meet in a rule, using each
+  file's **whole-file bounding box** (every loaded element, after the
+  file's translation — not only what a rule selects):
+  `placement_mismatch` when the box centres split into more
   than one group (more than 0.5 m apart on every axis), and
   `no_aabb_overlap` when two files' bounding boxes don't touch at all.
 
