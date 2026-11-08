@@ -3,7 +3,7 @@
 // server (docs/MCP.md#desktop-live-ui--clash-tester-ui). This is what Claude Desktop / Cowork /
 // Claude Code spawn; they only load stdio servers.
 //
-// Adapted from Model Viewer (`bin/mv-mcp.mjs`), Copyright
+// Adapted from Sprout · Fragments (`bin/mv-mcp.mjs`), Copyright
 // 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache License,
 // Version 2.0 — http://www.apache.org/licenses/LICENSE-2.0
 // Differences: Streamable HTTP upstream, no auto-launch yet (comes with

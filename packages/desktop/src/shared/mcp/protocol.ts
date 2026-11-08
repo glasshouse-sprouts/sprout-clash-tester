@@ -1,6 +1,6 @@
 // Shared MCP protocol shapes — main ⇄ renderer IPC (docs/MCP.md#desktop-live-ui--clash-tester-ui).
 //
-// Adapted from Model Viewer (`src/shared/mcp/protocol.ts`),
+// Adapted from Sprout · Fragments (`src/shared/mcp/protocol.ts`),
 // Copyright 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache
 // License, Version 2.0 — http://www.apache.org/licenses/LICENSE-2.0
 //
@@ -39,7 +39,7 @@ export const MCP_CHANNELS = {
   response: "mcp:response",
 } as const;
 
-/** Default port of the desktop MCP server (Model Viewer owns 7711). */
+/** Default port of the desktop MCP server (Sprout · Fragments uses 7711). */
 export const UI_MCP_DEFAULT_PORT = 7712;
 
 /** One tool as listed to MCP clients (`ui-tools.json`). */

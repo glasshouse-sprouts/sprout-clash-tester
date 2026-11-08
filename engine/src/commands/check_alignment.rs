@@ -111,7 +111,7 @@ pub fn run(input: PathBuf, output: Option<PathBuf>) -> Result<()> {
     // doesn't (OR all have it but eastings/northings differ
     // substantially) — flag it. Clash detection ignores
     // IfcMapConversion, so the engine still finds real overlaps,
-    // but georef-aware viewers (like Model Viewer) will place
+    // but georef-aware viewers (like Sprout · Fragments) will place
     // these files in different positions.
     let with_mc: Vec<&PathBuf> = files
         .iter()
@@ -174,7 +174,7 @@ pub fn run(input: PathBuf, output: Option<PathBuf>) -> Result<()> {
         warnings.push(EngineWarning {
             kind: "mapconversion_split".to_string(),
             message: format!(
-                "{} Clash detection ignores IfcMapConversion and will find real overlaps correctly — but georef-aware viewers (Model Viewer, BIMcollab, …) may place these files in different positions. Re-export from Revit with consistent Shared Coordinates for visual consistency too.",
+                "{} Clash detection ignores IfcMapConversion and will find real overlaps correctly — but georef-aware viewers (Sprout · Fragments, BIMcollab, …) may place these files in different positions. Re-export from Revit with consistent Shared Coordinates for visual consistency too.",
                 detail
             ),
             files: names,

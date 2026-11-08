@@ -1,6 +1,7 @@
 # Clash Tester
 
-Find where the geometry in your IFC models collides. Give Clash Tester one
+A [Sprout](https://sprouts.glasshouse.app/) from Glasshouse: find where
+the geometry in your IFC models collides. Give Clash Tester one
 or more IFC files and a set of clash rules; it writes the clashes as
 **BCF** (for BIM viewers), **JSON** (for scripts and AI agents) and
 **CSV** (for spreadsheets).
@@ -172,6 +173,9 @@ Clashero are not part of this tool.
 Licence and copyright notice for Clashero: see [`NOTICE`](NOTICE). Where
 the copy came from and how we maintain it: see
 [`engine/VENDORED.md`](engine/VENDORED.md).
+
+The desktop app's MCP server follows the pattern of Sprout · Fragments,
+our open IFC viewer, which is also where the alignment hints point you.
 
 The engine reads and meshes IFC with
 [ifc-lite](https://crates.io/crates/ifc-lite-core). The test models come

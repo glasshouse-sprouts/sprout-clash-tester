@@ -20,7 +20,7 @@ the desktop app. Works on its own working project,
 | `auto_add_presets` | Add presets matching the files' disciplines |
 | `run_clash_detection` | Run; writes BCF + JSON + CSV (`bcf_topics`: clash / group) |
 | `get_results` | A run's full result (this server's or the desktop's last run) |
-| `open_in_viewer` | Latest BCF path, to open in Model Viewer or any BIM viewer |
+| `open_in_viewer` | Latest BCF path, to open in Sprout · Fragments or any BIM viewer |
 
 On start it writes one line to stderr — version, engine path (and whether
 it exists), state file — which ends up in Claude's MCP log.

@@ -1,7 +1,7 @@
 // Embedded MCP server — "clash-tester-ui" (docs/MCP.md#desktop-live-ui--clash-tester-ui). Runs in
 // the Electron main process and lets AI clients see and drive the open app.
 //
-// Pattern adapted from Model Viewer (`src/main/mcp/server.ts`),
+// Pattern adapted from Sprout · Fragments (`src/main/mcp/server.ts`),
 // Copyright 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache
 // License, Version 2.0 — http://www.apache.org/licenses/LICENSE-2.0
 // Differences: Streamable HTTP (stateless) instead of SSE, Host/Origin

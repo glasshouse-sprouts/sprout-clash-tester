@@ -91,10 +91,10 @@ parry3d-f64 0.26 (collision detection in engine/)
   Source:  https://github.com/dimforge/parry
   Used as an unmodified dependency.
 
-Model Viewer (an internal 3dbyggeri app) — desktop MCP server pattern
+Sprout · Fragments (3dbyggeri's open IFC viewer) — desktop MCP server pattern
   packages/desktop/src/main/mcp/{server,bridge}.ts,
   packages/desktop/src/shared/mcp/protocol.ts and
   packages/desktop/bin/clashtester-ui-mcp.mjs are adapted from
-  Model Viewer.
+  Sprout · Fragments.
   Copyright 2025-2026 3DBYGGERI DANMARK ApS
   Licence: Apache License 2.0 — http://www.apache.org/licenses/LICENSE-2.0

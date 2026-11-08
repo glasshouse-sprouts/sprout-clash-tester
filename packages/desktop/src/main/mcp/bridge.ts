@@ -1,7 +1,7 @@
 // Main-side IPC bridge: MCP tool calls → renderer ops
 // (docs/MCP.md#desktop-live-ui--clash-tester-ui).
 //
-// Adapted from Model Viewer (`src/main/mcp/bridge.ts`),
+// Adapted from Sprout · Fragments (`src/main/mcp/bridge.ts`),
 // Copyright 2025-2026 3DBYGGERI DANMARK ApS, licensed under the Apache
 // License, Version 2.0 — http://www.apache.org/licenses/LICENSE-2.0
 //

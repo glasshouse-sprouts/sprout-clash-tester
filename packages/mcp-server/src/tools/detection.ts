@@ -67,7 +67,7 @@ export function detectionTools(): ToolDef[] {
     {
       name: "open_in_viewer",
       description:
-        "Report the path to the most recent BCF so the caller can open it in Model Viewer (or any BIM viewer).",
+        "Report the path to the most recent BCF so the caller can open it in Sprout · Fragments (or any BIM viewer).",
       inputSchema: {
         type: "object",
         properties: {
@@ -241,6 +241,6 @@ async function openInViewer(args: Args | undefined): Promise<ToolResponse> {
   }
   return ok(
     `Latest BCF: ${bcf}\n` +
-      `Open this file in Model Viewer (or any BIM viewer like BIMcollab / Solibri).`,
+      `Open this file in Sprout · Fragments (or any BIM viewer like BIMcollab / Solibri).`,
   );
 }

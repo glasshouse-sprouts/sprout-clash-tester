@@ -22,8 +22,8 @@ export function WarningsNotice({ warnings }: { warnings: LastRun["warnings"] }) 
 
 /** Special-case nudge for the placement-mismatch warning — the single most
  * common cause of zero clashes on real Danish/Nordic projects (Revit
- * export-origin mismatch). See Model Viewer's
- * docs/coord-frames-and-federation.md. */
+ * export-origin mismatch). Same check as Sprout · Fragments' federation
+ * view. */
 export function AlignmentNotice() {
   return (
     <section className="space-y-1 rounded border border-blue-800 bg-blue-950/40 p-3 text-xs text-blue-100">
@@ -37,7 +37,7 @@ export function AlignmentNotice() {
         <strong>Recommended workflow:</strong>
       </p>
       <ol className="ml-4 list-decimal space-y-0.5">
-        <li>Open all the IFCs in <strong>Model Viewer</strong>.</li>
+        <li>Open all the IFCs in <strong>Sprout · Fragments</strong>.</li>
         <li>
           Use its <em>Placement comparison</em> table to pick a reference
           model, then <em>auto-align</em> the others to it.

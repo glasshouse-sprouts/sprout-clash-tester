@@ -27,7 +27,7 @@ clashtester run examples/tiny-project/sample.clashproj
 Outputs land in `examples/tiny-project/outputs/`:
 
 ```
-report.bcf      — open in Model Viewer / BIMcollab / Solibri
+report.bcf      — open in Sprout · Fragments / BIMcollab / Solibri
 clashes.json    — full structured run result (for agents / scripts)
 clashes.csv     — one row per clash (spreadsheet-friendly)
 ```

@@ -5,7 +5,7 @@
 // The panel shows three states:
 //   1. running     — "Checking alignment…"
 //   2. one cluster — green, "Files placement looks consistent"
-//   3. >1 cluster  — yellow, with per-group breakdown + Model Viewer hint
+//   3. >1 cluster  — yellow, with per-group breakdown + Sprout · Fragments hint
 //
 // On <2 files the panel hides itself entirely.
 
@@ -157,7 +157,7 @@ export function AlignmentPanel({ project }: Props) {
             <p className="mt-2 text-xs text-yellow-200/80">
               Your IFCs likely have different Revit "Export Origin" settings
               (Shared Coordinates vs Project Base Point). Open them in{" "}
-              <strong>Model Viewer</strong>, align there, then set each
+              <strong>Sprout · Fragments</strong>, align there, then set each
               file's{" "}
               <code className="rounded bg-yellow-900/50 px-1">translation</code>{" "}
               field in the <code>.clashproj</code>. Re-running this panel
@@ -175,7 +175,7 @@ export function AlignmentPanel({ project }: Props) {
           placement_mismatch because clash detection works correctly
           here — but a georef-aware viewer would show the same set in
           different places. This is the case where "Clash Tester says
-          one group, Model Viewer says two" — both apps are right for
+          one group, Sprout · Fragments says two" — both apps are right for
           the question they're answering. */}
       {mcSplit && (
         <div className="rounded border border-blue-800 bg-blue-950/30 p-3 text-xs text-blue-100">
@@ -187,7 +187,7 @@ export function AlignmentPanel({ project }: Props) {
               </div>
               <p className="whitespace-pre-line">{mcSplit.message}</p>
               <p className="text-blue-200/70">
-                If Model Viewer shows these in different placement groups but
+                If Sprout · Fragments shows these in different placement groups but
                 clash detection here finds real overlaps, this is why. Both
                 apps are correct — they answer different questions.
               </p>

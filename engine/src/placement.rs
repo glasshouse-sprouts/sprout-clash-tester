@@ -40,7 +40,7 @@ pub(crate) fn update_file_aabb(
 /// Default tolerance for the post-detection placement-mismatch check.
 /// Operates on real AABB centres (i.e. derived from actual geometry),
 /// so we can afford tight clustering — 0.5 m matches the algorithm
-/// Model Viewer uses (see `docs/coord-frames-and-federation.md`).
+/// Sprout · Fragments uses for its federation check.
 /// Tight enough to flag real export-origin mismatches, loose enough to
 /// ignore sub-cm float noise from the geometry parser.
 const CLUSTER_TOLERANCE_METRES: f64 = 0.5;
@@ -76,8 +76,8 @@ fn aabb_centre(a: &Aabb) -> [f64; 3] {
 /// Generic over the position source — used both for AABB centres (post-
 /// detection check) and for IFCSITE origins (pre-detection quick check).
 ///
-/// Mirrors the federation-detection algorithm of Model Viewer, a companion
-/// BIM viewer. See docs/HOW-IT-WORKS.md#placement-checks for the user-facing description.
+/// Mirrors the federation-detection algorithm of Sprout · Fragments, our
+/// IFC viewer. User-facing description: docs/HOW-IT-WORKS.md#placement-checks.
 pub fn cluster_origins(
     origins: Vec<(PathBuf, [f64; 3])>,
 ) -> Vec<(Vec<PathBuf>, [f64; 3])> {
@@ -189,7 +189,7 @@ pub fn build_quick_placement_warning(
         })
         .collect();
     let message = format!(
-        "Files split into {} placement groups by IFCSITE origin (>{:.0} m apart). They likely have different IFC export origins — align them in Model Viewer before clash detection.\n{}",
+        "Files split into {} placement groups by IFCSITE origin (>{:.0} m apart). They likely have different IFC export origins — align them in Sprout · Fragments before clash detection.\n{}",
         clusters.len(),
         QUICK_CLUSTER_TOLERANCE_METRES,
         group_descriptions.join("\n")
@@ -257,7 +257,7 @@ pub(crate) fn placement_mismatch_warnings(
         })
         .collect();
     let message = format!(
-        "Files split into {} placement groups (>{:.1} m apart by AABB centre). They likely have different IFC export origins — align them in Model Viewer before clash detection.\n{}",
+        "Files split into {} placement groups (>{:.1} m apart by AABB centre). They likely have different IFC export origins — align them in Sprout · Fragments before clash detection.\n{}",
         clusters.len(),
         CLUSTER_TOLERANCE_METRES,
         group_descriptions.join("\n")
