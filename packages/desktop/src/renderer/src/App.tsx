@@ -144,6 +144,12 @@ export default function App() {
     }
   }, [state.project, state.projectPath, patch]);
 
+  // Main shows the Save / Discard / Cancel prompt on close only when it
+  // knows the project is unsaved (main/window.ts), so report every change.
+  useEffect(() => {
+    void window.api?.setDirty?.(state.dirty);
+  }, [state.dirty]);
+
   // Listen for the "save before closing" event from the main process.
   // After we attempt the save (success or failure), tell main it's
   // safe to destroy the window — we already had the user's intent

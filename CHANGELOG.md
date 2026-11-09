@@ -62,6 +62,10 @@ contain.
   could get a false "fix the alignment" warning (e.g. the HVAC-vs-
   structure preset, where the ducts and the beams sit in different parts
   of the building).
+- Closing the desktop app with unsaved changes now asks Save / Discard /
+  Cancel. The prompt was built but never shown, because the window was
+  never told the project had changed, so unsaved edits were lost without
+  a warning.
 
 ### Security
 

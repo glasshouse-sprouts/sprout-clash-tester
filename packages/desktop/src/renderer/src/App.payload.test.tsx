@@ -249,4 +249,22 @@ describe("desktop payloads — what reaches the main process", () => {
     const sent = await runPayload(user, calls);
     expect(sent.settings.bcfTopics).toBe("group");
   });
+
+  // The close prompt (main/window.ts) only asks when main has been told
+  // the project is unsaved; nothing else reports it.
+  it("Close prompt: unsaved changes are reported to main, and cleared by Save", async () => {
+    const calls = installFakeApi(baseProject());
+    const user = userEvent.setup();
+    render(<App />);
+    await openProject(user);
+    const lastDirty = () => calls.filter((c) => c.name === "setDirty").at(-1)?.args[0];
+    await waitFor(() => expect(lastDirty()).toBe(false));
+
+    await user.click(screen.getByRole("button", { name: "Rules" }));
+    await user.click(screen.getByRole("button", { name: "Add self check" }));
+    await waitFor(() => expect(lastDirty()).toBe(true));
+
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() => expect(lastDirty()).toBe(false));
+  });
 });
