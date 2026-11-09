@@ -14,21 +14,40 @@ Start the app with `npm run dev` in `packages/desktop`. The models are in
    lists both with disciplines **HVAC** and **STR**; the placement panel
    says **"Placement check OK"**.
 2. Rules → **Auto-add presets**: `HVACxSTR` appears as _preset_.
-3. Rules → Self check: leave **"Ignore spaces, zones and openings"**
-   ticked, click **Add self check**. The rule shows as _self check_ with
+3. Rules → Self check: pick **`building-hvac`** in the file list (the
+   first file, so it's chosen already), leave **"Ignore spaces, zones and
+   openings"** ticked, click **Add self check**. The rule
+   `SELF-building-hvac` shows as _self check_ with
    `not IfcSpace|IfcSpatialZo…` on both sides; the button now says
-   **Already added**. Hover the detail for the full exclude list.
+   **Already added**. Hover the detail for the full exclude list. Add only
+   this one: a self check on `building-structural` adds 24 clashes of its
+   own and the numbers in step 7 no longer match.
 4. Click the pencil on the self check: the form shows both sides with the
    exclude filled in. **Cancel** closes it.
-5. Add a custom rule "HVAC all vs STR all": side A `building-hvac` `*`,
-   side B `building-structural` `*`.
+5. Add a custom rule with these fields, then **Add custom rule**:
+
+   | Field             | Value                 |
+   | ----------------- | --------------------- |
+   | Name              | `HVAC all vs STR all` |
+   | Side A — file     | `building-hvac`       |
+   | Side A — selector | `*`                   |
+   | Side B — file     | `building-structural` |
+   | Side B — selector | `*`                   |
+
+   The selector is only the IFC type (`*` = every type); the file is
+   picked in its own field. A selector like `building-hvac *` matches no
+   type and the rule finds nothing.
+
+   The Rules view now has three rules: `HVACxSTR` (preset),
+   `SELF-building-hvac` (self check) and `HVAC all vs STR all` (custom).
 
 ## 2. Run, numbers and groups
 
 6. Set the tolerance to 0.1 m (project file `"toleranceMeters": 0.1`, or
    the desktop MCP's `ui_set_settings` — there is no field for it yet) and
    click **Run**.
-7. Results: **6 clashes, 4 groups**. The Clashes table's `#` column runs
+7. Results: **6 clashes, 4 groups**. Per rule: `HVAC all vs STR all` 5,
+   `SELF-building-hvac` 1, `HVACxSTR` 0. The Clashes table's `#` column runs
    1–6; **Export…** the BCF and check the topic titles start with the same
    numbers ("1 - Clash between …"), and the CSV's first column `no` too.
 8. The amber callout **"Possible double modelling (2) · experimental"**
