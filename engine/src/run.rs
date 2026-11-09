@@ -11,7 +11,7 @@ use crate::{
     SelectionGroup, frame_warnings, ifc_adapter,
 };
 use anyhow::Result;
-use ifc_adapter::{IfcElement, LoadedIfc, load_ifc_file_cutting};
+use ifc_adapter::{IfcElement, LoadedIfc, geometry_failed_warning, load_ifc_file_cutting};
 use parry3d_f64::bounding_volume::Aabb;
 use parry3d_f64::math::Vector;
 use parry3d_f64::shape::TriMesh;
@@ -155,6 +155,20 @@ fn untyped_generic_warnings(cache: &HashMap<PathBuf, LoadedIfc>) -> Vec<EngineWa
         .collect()
 }
 
+/// One `geometry_failed` warning per file whose elements' geometry
+/// couldn't be read (docs/HOW-IT-WORKS.md#geometry-that-cant-be-read).
+fn geometry_failed_warnings(cache: &HashMap<PathBuf, LoadedIfc>) -> Vec<EngineWarning> {
+    let mut files: Vec<_> = cache.iter().collect();
+    files.sort_by_key(|(path, _)| *path);
+    files
+        .into_iter()
+        .filter_map(|(path, loaded)| {
+            let name = path.file_name().map_or(String::new(), |n| n.to_string_lossy().into());
+            geometry_failed_warning(&name, &loaded.geometry_failed)
+        })
+        .collect()
+}
+
 pub fn clash_detect_with_options(
     config_json: &str,
     tolerance: f64,
@@ -268,6 +282,7 @@ pub fn clash_detect_with_options(
     warnings.extend(frame_warnings::bcf_frame_warnings(&clash_sets));
     warnings.extend(opening_cut_warnings(&opening_cuts));
     warnings.extend(untyped_generic_warnings(&cache));
+    warnings.extend(geometry_failed_warnings(&cache));
     // Print warnings to stderr so the CLI surfaces them prominently and
     // the Node runner can capture them by line. Format is stable:
     //     WARNING: <kind>: <message>

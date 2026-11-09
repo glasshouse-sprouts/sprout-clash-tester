@@ -86,6 +86,21 @@ warnings that name the elements:
 - `opening_cut_open_mesh` — ifc-lite returned a cut that isn't a closed
   mesh. It is kept as cut; this is a note, not a failure.
 
+## Geometry that can't be read
+
+An element whose 3D body can't be meshed would simply be missing from
+every rule. So the loader counts each element that **has a body** — a
+shape representation labelled `Body` (or `Facetation`, or with no label)
+— but gives no usable mesh: meshing errors, fewer than three points, or
+no triangles. Each file with such elements gets one warning,
+`geometry_failed`, with the count and the first five as
+`GUID (IFC type, reason)`; they are not checked.
+
+Not counted, because they were never 3D geometry: elements without a
+representation (e.g. an `IfcRoof` that only aggregates its parts) and
+elements with only 2D or axis representations (`IfcAnnotation` plan
+symbols, `IfcGrid` lines).
+
 ## Related elements
 
 A door sits in an opening in its wall, the opening cuts the wall, and the

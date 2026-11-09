@@ -40,6 +40,9 @@ contain.
   against many, double modelling, optional nearby areas).
 - **Outputs:** BCF 2.1 (one topic per clash or per group), `clashes.json`
   and `clashes.csv`; every clash numbered the same way in all three.
+- **Unreadable geometry is reported:** an element with a 3D body that
+  can't be meshed gets a `geometry_failed` warning naming it, instead of
+  silently dropping out of the check.
 - **Placement checks:** warnings when models don't share a placement,
   before detection (from `IFCSITE`, plus `IfcMapConversion` mismatches)
   and after it.

@@ -3,6 +3,7 @@
 //! with its openings cut out. The metadata pass, relations, units and raw
 //! STEP-text readers live in the submodules.
 
+mod geometry_failures;
 mod metadata;
 mod relations;
 mod step_text;
@@ -27,6 +28,8 @@ use crate::type_objects::{
     OCCURRENCE_PREDEFINED_TYPE_ATTR, apply_type_objects, is_generic_distribution_class,
     predefined_enum,
 };
+pub use geometry_failures::{GeometryFailure, geometry_failed_warning};
+use geometry_failures::has_body_representation;
 use metadata::{extract_basic_metadata, extract_properties};
 use parry3d_f64::math::Vector as Point;
 use parry3d_f64::shape::TriMesh;
@@ -76,6 +79,9 @@ pub struct LoadedIfc {
     /// give them a specific class (or that have none): presets can't
     /// classify them (docs/PROJECT-FILE.md#ifc2x3-type-objects).
     pub untyped_generic: usize,
+    /// Elements with a body representation that gave no usable mesh; they
+    /// are not checked (docs/HOW-IT-WORKS.md#geometry-that-cant-be-read).
+    pub geometry_failed: Vec<GeometryFailure>,
 }
 
 /// Loads an IFC file and extracts all geometry elements and their metadata.
@@ -143,68 +149,81 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
     let to_metres = unit_scale_metres_per(&active_length_unit);
     let mut opening_cuts = OpeningCutStats::default();
     let mut untyped_generic = 0;
+    let mut geometry_failed = Vec::new();
     let mut elements = Vec::new();
     let mut index_by_id: HashMap<u32, usize> = HashMap::new();
     let mut scanner = EntityScanner::new(&content);
     while let Some((id, _type_name, _start, _end)) = scanner.next_entity() {
         if let Some(metadata) = metadata_map.get(&(id as u64)) {
             if let Ok(decoded) = decoder.decode_by_id(id as u32) {
-                if let Ok(mesh) = mesh_element(
+                let meshed = mesh_element(
                     &router,
                     &decoded,
                     &mut decoder,
                     &voids,
                     &metadata.guid,
                     &mut opening_cuts,
-                ) {
-                    // Filter out very small meshes that might be artifacts
-                    if mesh.positions.len() < 9 {
+                );
+                // Fewer than 3 vertices or no triangles: nothing to test.
+                let mesh = match meshed {
+                    Ok(m) if m.positions.len() >= 9 && m.indices.len() >= 3 => m,
+                    other => {
+                        let reason = match other {
+                            Err(_) => "error",
+                            Ok(m) if m.positions.len() < 9 => "too small",
+                            Ok(_) => "no triangles",
+                        };
+                        if has_body_representation(&decoded, &mut decoder) {
+                            geometry_failed.push(GeometryFailure {
+                                guid: metadata.guid.clone(),
+                                ifc_type: metadata.ifc_type.clone(),
+                                reason,
+                            });
+                        }
                         continue;
                     }
+                };
 
-                    // Positions are relative to `mesh.origin` (zero on the
-                    // plain path, the element centre on the opening-cut
-                    // path), in the file's unit. The engine works in metres
-                    // from here on — this is the one conversion
-                    // (docs/HOW-IT-WORKS.md#coordinates-and-units).
-                    let (o, s) = (mesh.origin, to_metres);
-                    let anchor = [rtc.0, rtc.1, rtc.2];
-                    let vertices: Vec<Point> = mesh
-                        .positions
-                        .chunks(3)
-                        .map(|v| {
-                            let at = |k: usize| (anchor[k] + o[k] + v[k] as f64) * s;
-                            Point::new(at(0), at(1), at(2))
-                        })
-                        .collect();
+                // Positions are relative to `mesh.origin` (zero on the
+                // plain path, the element centre on the opening-cut
+                // path), in the file's unit. The engine works in metres
+                // from here on — this is the one conversion
+                // (docs/HOW-IT-WORKS.md#coordinates-and-units).
+                let (o, s) = (mesh.origin, to_metres);
+                let anchor = [rtc.0, rtc.1, rtc.2];
+                let vertices: Vec<Point> = mesh
+                    .positions
+                    .chunks(3)
+                    .map(|v| {
+                        let at = |k: usize| (anchor[k] + o[k] + v[k] as f64) * s;
+                        Point::new(at(0), at(1), at(2))
+                    })
+                    .collect();
 
-                    let indices: Vec<[u32; 3]> = mesh
-                        .indices
-                        .chunks(3)
-                        .map(|c| [c[0] as u32, c[1] as u32, c[2] as u32])
-                        .collect();
+                let indices: Vec<[u32; 3]> = mesh
+                    .indices
+                    .chunks(3)
+                    .map(|c| [c[0] as u32, c[1] as u32, c[2] as u32])
+                    .collect();
 
-                    if !indices.is_empty() {
-                        let mut metadata = metadata.clone();
-                        let own = decoded.attributes.get(OCCURRENCE_PREDEFINED_TYPE_ATTR);
-                        if let Some(p) = predefined_enum(own) {
-                            metadata.predefined_type = Some(p);
-                        }
-                        let generic = is_generic_distribution_class(&metadata.ifc_type);
-                        // Unclassified: no type object, or one that doesn't
-                        // say what the element is (e.g. `IfcFlowSegmentType`).
-                        let classified = metadata
-                            .type_class
-                            .as_deref()
-                            .is_some_and(|c| !is_generic_distribution_class(c));
-                        untyped_generic += (generic && !classified) as usize;
-                        index_by_id.insert(id as u32, elements.len());
-                        elements.push(IfcElement {
-                            metadata,
-                            mesh: TriMesh::new(vertices, indices)?,
-                        });
-                    }
+                let mut metadata = metadata.clone();
+                let own = decoded.attributes.get(OCCURRENCE_PREDEFINED_TYPE_ATTR);
+                if let Some(p) = predefined_enum(own) {
+                    metadata.predefined_type = Some(p);
                 }
+                let generic = is_generic_distribution_class(&metadata.ifc_type);
+                // Unclassified: no type object, or one that doesn't
+                // say what the element is (e.g. `IfcFlowSegmentType`).
+                let classified = metadata
+                    .type_class
+                    .as_deref()
+                    .is_some_and(|c| !is_generic_distribution_class(c));
+                untyped_generic += (generic && !classified) as usize;
+                index_by_id.insert(id as u32, elements.len());
+                elements.push(IfcElement {
+                    metadata,
+                    mesh: TriMesh::new(vertices, indices)?,
+                });
             }
         }
     }
@@ -215,5 +234,8 @@ pub fn load_ifc_file_cutting<P: AsRef<Path>>(
     if untyped_generic > 0 {
         println!("  {untyped_generic} generic MEP element(s) without a type object that says what they are");
     }
-    Ok(LoadedIfc { elements, related_pairs, opening_cuts, untyped_generic })
+    if !geometry_failed.is_empty() {
+        println!("  {} element(s) with geometry that could not be read", geometry_failed.len());
+    }
+    Ok(LoadedIfc { elements, related_pairs, opening_cuts, untyped_generic, geometry_failed })
 }
