@@ -594,7 +594,7 @@ function TopBar({
   return (
     <header className="drag flex items-center gap-2 border-b border-neutral-800 bg-neutral-900 px-3 py-2">
       <span className="ml-16 text-sm font-semibold tracking-tight">
-        Clash Tester
+        Sprout · Clash Tester
       </span>
       <span className="ml-2 text-xs text-neutral-400">
         {state.projectPath ? state.projectPath.split(/[\\/]/).pop() : "no project"}

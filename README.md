@@ -1,7 +1,7 @@
-# Clash Tester
+# Sprout · Clash Tester
 
 A [Sprout](https://sprouts.glasshouse.app/) from Glasshouse: find where
-the geometry in your IFC models collides. Give Clash Tester one
+the geometry in your IFC models collides. Give Sprout · Clash Tester one
 or more IFC files and a set of clash rules; it writes the clashes as
 **BCF** (for BIM viewers), **JSON** (for scripts and AI agents) and
 **CSV** (for spreadsheets).
@@ -55,8 +55,8 @@ You need [Rust](https://rustup.rs) 1.89 or newer,
 CI runs on macOS and Linux; Windows should work but is not tested yet.
 
 ```bash
-git clone https://github.com/3dbyggeri/clash-tester.git
-cd clash-tester
+git clone https://github.com/glasshouse-sprouts/sprout-clash-tester.git
+cd sprout-clash-tester
 ```
 
 Build the Rust engine (the first build takes a few minutes):
@@ -132,6 +132,9 @@ starts with it, and it is the first CSV column. Details:
   same place, same size; it misses shifted copies, copies of a different
   length and copies modelled as another type, and its thresholds may
   change.
+- **The placement warning can be a false alarm.** The warning after loading
+  can also fire for models that do line up, when the disciplines cover
+  different heights — check in a viewer.
 - **No installers yet.** The desktop app runs from source
   (`npm run dev`).
 

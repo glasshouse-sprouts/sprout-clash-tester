@@ -131,7 +131,7 @@ fn test_bcf_author_is_clash_tester() {
         }
     }
     assert!(
-        markup.contains("<CreationAuthor>Clash Tester</CreationAuthor>"),
+        markup.contains("<CreationAuthor>Sprout · Clash Tester</CreationAuthor>"),
         "{markup}"
     );
     assert!(!markup.contains("Clashero"));

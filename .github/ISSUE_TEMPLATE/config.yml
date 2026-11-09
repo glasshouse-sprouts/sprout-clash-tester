@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Report a security problem
-    url: https://github.com/3dbyggeri/clash-tester/blob/main/SECURITY.md
+    url: https://github.com/glasshouse-sprouts/sprout-clash-tester/blob/main/SECURITY.md
     about: Please report vulnerabilities privately, as described here — not in a public issue.

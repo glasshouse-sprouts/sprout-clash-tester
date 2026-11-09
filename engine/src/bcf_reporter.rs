@@ -26,7 +26,7 @@ const PLACEHOLDER_PNG: &[u8] = &[
 
 
 /// Author of every topic and comment this engine writes.
-const BCF_AUTHOR: &str = "Clash Tester";
+const BCF_AUTHOR: &str = "Sprout · Clash Tester";
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct ClashInfo {
     pub guid_a: String,

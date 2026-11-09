@@ -13,7 +13,7 @@ a public issue — see [SECURITY.md](SECURITY.md).
 
 ## Reporting a bug or asking for a feature
 
-Use [GitHub Issues](https://github.com/3dbyggeri/clash-tester/issues) (the
+Use [GitHub Issues](https://github.com/glasshouse-sprouts/sprout-clash-tester/issues) (the
 templates ask for the details below). For a bug, please include:
 
 - what you ran (CLI command, desktop steps or MCP tool call) and the
@@ -30,8 +30,8 @@ You need Rust 1.89 or newer, Node.js 20.19 or newer (22 recommended), and
 git.
 
 ```bash
-git clone https://github.com/3dbyggeri/clash-tester.git
-cd clash-tester
+git clone https://github.com/glasshouse-sprouts/sprout-clash-tester.git
+cd sprout-clash-tester
 cd engine && cargo build --release && cd ..
 npm install
 npm run build

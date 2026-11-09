@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Clash Tester are documented in this file.
+All notable changes to Sprout · Clash Tester are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -77,5 +77,5 @@ First public release, source only.
   for `project_path`, and `get_results` only returns Clash Tester result
   files.
 
-[Unreleased]: https://github.com/3dbyggeri/clash-tester/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/3dbyggeri/clash-tester/releases/tag/v0.1.0
+[Unreleased]: https://github.com/glasshouse-sprouts/sprout-clash-tester/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/glasshouse-sprouts/sprout-clash-tester/releases/tag/v0.1.0
