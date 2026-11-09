@@ -8,8 +8,9 @@ While the version is 0.x, minor versions may contain breaking changes.
 
 ## [Unreleased]
 
-First public release in preparation. Everything below is what it will
-contain.
+## [0.1.0] - 2026-11-09
+
+First public release, source only.
 
 ### Added
 
@@ -75,3 +76,6 @@ contain.
 - The headless MCP server only uses project files (`.clashproj`, `.json`)
   for `project_path`, and `get_results` only returns Clash Tester result
   files.
+
+[Unreleased]: https://github.com/3dbyggeri/clash-tester/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/3dbyggeri/clash-tester/releases/tag/v0.1.0
