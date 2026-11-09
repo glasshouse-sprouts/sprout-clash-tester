@@ -69,8 +69,9 @@ Start the app with `npm run dev` in `packages/desktop`. The models are in
 
 12. Drop `AC20-FZK-Haus.ifc`; add a custom rule `IfcDoor` × `IfcWall*` on
     that file; set the tolerance back to 0 and **Run**.
-13. Results header: **"Geometry: opening cuts: 8 hosts cut, 16 openings,
-    0 failed, 0 not cut"**. Per rule: the doors × walls rule has **0**
+13. Scroll to the top of Results. The small grey line under the numbers
+    reads **"Geometry: opening cuts: 8 hosts cut, 16 openings, 0 failed,
+    0 not cut"**. Per rule: the doors × walls rule has **0**
     clashes and **5** in "Skipped (belong together)".
 14. Rules → untick **"Skip elements that belong together in the IFC"**,
     **Run**: the doors × walls rule now has **5** clashes.
