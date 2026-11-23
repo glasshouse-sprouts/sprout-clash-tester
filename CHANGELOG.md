@@ -8,6 +8,16 @@ While the version is 0.x, minor versions may contain breaking changes.
 
 ## [Unreleased]
 
+### Added
+
+- **Elements fully inside another are reported** (e.g. a pipe cast inside a
+  slab): their surfaces don't cross, so they were never found. They come
+  as mode `inside` (JSON, CSV, a "Fully inside" BCF topic, an **inside**
+  badge in the desktop app) and are counted per rule. On by default, per
+  rule: `reportInside: false` in the project file or the rule's **Inside**
+  checkbox turns it off where that is intended. A pair whose outer mesh
+  isn't closed is counted as not checked, never guessed.
+
 ## [0.1.0] - 2026-11-09
 
 First public release, source only.

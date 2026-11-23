@@ -26,8 +26,10 @@ fn run(ducts: &str, slab: &str, tol: f64, min_pen: f64, phase: NarrowPhase) -> D
         d = fixture(ducts),
         s = fixture(slab)
     );
-    let options =
-        DetectOptions { narrow: NarrowConfig { phase, report_touch: false }, ..Default::default() };
+    let options = DetectOptions {
+        narrow: NarrowConfig { phase, ..NarrowConfig::default() },
+        ..Default::default()
+    };
     clash_detect_with_options(&config, tol, min_pen, &None, &None, &options).unwrap()
 }
 

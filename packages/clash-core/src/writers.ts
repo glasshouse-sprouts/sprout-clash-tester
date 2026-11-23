@@ -26,8 +26,10 @@ export async function writeResultJson(result: RunResult, filePath: string): Prom
  *
  * `no` is the clash's 1-based number — the prefix of its BCF topic title
  * (`clash.number`, or row position + 1 for results without it).
- * Position is in metres. `mode` is "intersection" or "clearance".
- * `depthM` is set in intersection mode (approximate, AABB-min-dim proxy).
+ * Position is in metres. `mode` is "intersection", "clearance" or "inside"
+ * (one element fully inside the other).
+ * `depthM` is set in intersection and inside mode (approximate: the
+ * AABB-min-dim proxy, for inside the inner element's smallest box side).
  * `gapM` is set in clearance mode (real distance). AABB extents and
  * volume are bounding-box overlap (not true geometric volume).
  * `aabbMatch` is bounding-box similarity 0..1 (informational). Volumes

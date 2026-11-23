@@ -23,6 +23,12 @@ export function PerRuleTable({
             >
               Skipped (belong together)
             </th>
+            <th
+              className="py-2 font-normal"
+              title="Of the clashes, elements fully inside another. Not checked: pairs whose outer mesh isn't closed."
+            >
+              Fully inside
+            </th>
             {ifclite && (
               <th
                 className="py-2 font-normal"
@@ -39,6 +45,10 @@ export function PerRuleTable({
               <td className="py-2 font-mono text-xs">{r.name}</td>
               <td className="py-2">{r.clashes}</td>
               <td className="py-2 text-neutral-400">{r.skippedByRelations ?? "–"}</td>
+              <td className="py-2 text-neutral-400">
+                {r.insideCount ?? "–"}
+                {r.insideOpenMeshCount ? ` (${r.insideOpenMeshCount} not checked: open mesh)` : ""}
+              </td>
               {ifclite && (
                 <td className="py-2 text-neutral-400">
                   {r.touchCount ?? 0} / {r.unconfirmedCount ?? 0}

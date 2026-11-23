@@ -48,7 +48,7 @@ export function ClashesTable({
               </th>
               <th
                 className="px-2 py-2 font-normal"
-                title="Penetration depth (intersection mode) or clearance gap (clearance mode), in metres"
+                title="Penetration depth (intersection mode), clearance gap (clearance mode), or for an element fully inside the other its smallest size, in metres"
               >
                 Severity
               </th>
@@ -94,6 +94,12 @@ export function ClashesTable({
                 </td>
                 <td className="px-2 py-1 font-mono">
                   {fmtSeverity(c)}
+                  {c.mode === "inside" && (
+                    <>
+                      {" "}
+                      <InsideBadge />
+                    </>
+                  )}
                   {duplicateRows.has(i) && (
                     <>
                       {" "}
@@ -140,5 +146,18 @@ function IfcClassCell({
       {formatIfcClass(ifcType, typeClass)}
       {predefinedType && <span className="text-neutral-500"> · {predefinedType}</span>}
     </td>
+  );
+}
+
+/** Marks a clash where one element lies fully inside the other
+ * (docs/HOW-IT-WORKS.md#elements-fully-inside). */
+function InsideBadge() {
+  return (
+    <span
+      className="rounded bg-violet-900 px-1.5 py-0.5 font-sans text-[10px] text-violet-100"
+      title="One element lies fully inside the other; the size shown is the inner element's smallest side (an estimate)"
+    >
+      inside
+    </span>
   );
 }

@@ -320,6 +320,33 @@ describe("validateProject — rule side exclude", () => {
   });
 });
 
+describe("rule reportInside (elements fully inside another)", () => {
+  function withInside(reportInside: unknown, preset = false): unknown {
+    const p = sampleProject();
+    const rule = preset
+      ? { name: "P", preset: "HVACxARCH", reportInside }
+      : { ...p.rules[0], reportInside };
+    return { ...p, rules: [rule] };
+  }
+
+  it("keeps only an explicit false; true and omitted mean on", () => {
+    expect(validateProject(withInside(false)).rules[0]).toHaveProperty("reportInside", false);
+    expect(validateProject(withInside(false, true)).rules[0]).toHaveProperty("reportInside", false);
+    expect(validateProject(withInside(true)).rules[0]).not.toHaveProperty("reportInside");
+    expect(validateProject(sampleProject()).rules[0]).not.toHaveProperty("reportInside");
+  });
+
+  it("rejects non-booleans", () => {
+    expect(() => validateProject(withInside("no"))).toThrow(/rules\[0\]\.reportInside/);
+  });
+
+  it("sends report_inside: false to the engine only when off", () => {
+    expect(expandProjectToRules(sampleProject())[0]).not.toHaveProperty("report_inside");
+    const off = validateProject(withInside(false));
+    expect(expandProjectToRules(off)[0]).toHaveProperty("report_inside", false);
+  });
+});
+
 describe("validateProject — settings.grouping", () => {
   function withGrouping(grouping: unknown): unknown {
     const p = sampleProject();

@@ -6,6 +6,7 @@ import { homedir } from "node:os";
 import path from "node:path";
 import {
   expandProjectToRules,
+  formatInside,
   formatNotClashes,
   formatOpeningCuts,
   run as runEngine,
@@ -147,6 +148,7 @@ async function runClashDetection(args: Args | undefined): Promise<ToolResponse> 
           .map(
             (r) =>
               `  - ${r.name}: ${r.clashes}` +
+              formatInside(r) +
               (r.skippedByRelations ? ` (${r.skippedByRelations} related pair(s) skipped)` : "") +
               formatNotClashes(r),
           )

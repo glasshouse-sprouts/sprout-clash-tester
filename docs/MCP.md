@@ -85,7 +85,7 @@ that file unless `output_dir` is given.
 | `register_model` | Add an IFC with a discipline tag |
 | `remove_model` | Remove a file |
 | `list_clash_rules` | The saved rules |
-| `save_clash_rules` | Replace the rules (presets and custom rules, incl. `exclude`) |
+| `save_clash_rules` | Replace the rules (presets and custom rules, incl. `exclude` and `reportInside`) |
 | `list_presets` | The shipped presets |
 | `auto_add_presets` | Add every preset whose two disciplines are both present |
 | `run_clash_detection` | Run; write BCF + JSON + CSV; return counts, groups, warnings (`bcf_topics`: clash / group) |

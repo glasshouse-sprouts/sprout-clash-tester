@@ -1,6 +1,8 @@
 // Derived from Clashero (MIT). See NOTICE.
 pub mod bcf_reporter;
 pub mod clash_engine;
+mod clash_record;
+mod containment;
 mod frame_warnings;
 pub mod ifc_adapter;
 pub mod ifclite_narrow;
@@ -35,6 +37,14 @@ pub struct ClashSet {
     pub name: String,
     pub a: Vec<SelectionGroup>,
     pub b: Vec<SelectionGroup>,
+    /// Also report elements fully inside another (docs/HOW-IT-WORKS.md#elements-fully-inside).
+    /// Default true; false behaves as v0.1.0.
+    #[serde(default = "default_true")]
+    pub report_inside: bool,
+}
+
+fn default_true() -> bool {
+    true
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -97,6 +107,10 @@ pub struct RuleStat {
     pub touch_count: usize,
     #[serde(default)]
     pub unconfirmed_count: usize,
+    /// Pairs that might be "fully inside" but whose outer mesh isn't
+    /// closed, so they were not checked (docs/HOW-IT-WORKS.md#elements-fully-inside).
+    #[serde(default)]
+    pub inside_open_mesh_count: usize,
 }
 
 /// Options for `clash_detect_with_options`.
@@ -130,6 +144,10 @@ pub struct NarrowConfig {
     /// List touching pairs and unconfirmed box estimates as records
     /// (status `"touch"` / `"unconfirmed"`). ifc-lite phase only.
     pub report_touch: bool,
+    /// Report elements fully inside another as clashes (mode `"inside"`,
+    /// docs/HOW-IT-WORKS.md#elements-fully-inside). Set per rule from `ClashSet::report_inside`;
+    /// `false` here (the `Default`) keeps the library calls as in v0.1.0.
+    pub report_inside: bool,
 }
 
 /// Per-rule counts besides the clashes themselves.
@@ -140,4 +158,6 @@ pub struct RuleCounts {
     pub touch: usize,
     /// ifc-lite: hard by box estimate, no surface crossing (not clashes).
     pub unconfirmed: usize,
+    /// Possibly inside, but the outer mesh isn't closed: not checked.
+    pub inside_open_mesh: usize,
 }

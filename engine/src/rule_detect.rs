@@ -1,15 +1,14 @@
 // Derived from Clashero (MIT). See NOTICE.
 //! Clash detection between the two sides of one rule: broad phase,
 //! self / mirror / relation skips, narrow phase (parry or ifc-lite) and
-//! the clash records.
+//! elements fully inside; the records are built in `clash_record`.
 
 use crate::bcf_reporter::ClashInfo;
 use crate::clash_engine::CollisionEngine;
+use crate::clash_record::{Hit, clash_info};
+use crate::containment::{Containment, containment, one_box_within};
 use crate::ifc_adapter::{IfcElement, ordered_pair};
-use crate::ifclite_narrow::{
-    self, NarrowPhase, Outcome, Verdict, classify, kind_label, record_noun, status_label,
-};
-use crate::measure::{aabb_match, duplicate_measures};
+use crate::ifclite_narrow::{self, NarrowPhase, Outcome, classify, status_label};
 use crate::{NarrowConfig, RelatedPairs, RuleCounts};
 use anyhow::Result;
 use parry3d_f64::bounding_volume::BoundingVolume;
@@ -35,23 +34,34 @@ fn element_identity(el: &IfcElement) -> Option<String> {
     }
 }
 
-/// A clash the narrow phase found: depth (hard) or gap (clearance) in
-/// metres, plus what ifc-lite adds (status, distance kind, contact point).
-struct Hit {
-    metres: f64,
-    status: Option<&'static str>,
-    kind: Option<&'static str>,
-    point: Option<[f64; 3]>,
-}
-
-impl Hit {
-    fn from_ifclite(v: &Verdict, status: &'static str) -> Hit {
-        Hit {
-            metres: v.distance,
-            status: Some(status),
-            kind: Some(kind_label(v.kind)),
-            point: Some(v.point),
+/// A pair the narrow phase did not report, as an `inside` clash when one
+/// element lies fully inside the other (docs/HOW-IT-WORKS.md#elements-fully-inside). The
+/// depth is the inner element's smallest box side; in hard mode it must
+/// reach `min_penetration` like any other clash.
+fn inside_hit(
+    el1: &IfcElement,
+    el2: &IfcElement,
+    clearance: bool,
+    min_penetration: f64,
+    counts: &mut RuleCounts,
+) -> Option<Hit> {
+    match containment(&el1.mesh, &el2.mesh) {
+        Containment::Inside { a_inside_b, depth }
+            if clearance || deep_enough(depth, min_penetration) =>
+        {
+            Some(Hit {
+                metres: depth,
+                status: None,
+                kind: None,
+                point: None,
+                a_inside_b: Some(a_inside_b),
+            })
         }
+        Containment::OpenMesh => {
+            counts.inside_open_mesh += 1;
+            None
+        }
+        _ => None,
     }
 }
 
@@ -161,6 +171,14 @@ pub fn clash_detect_rule(
                 }
             }
             aabb_candidates += 1;
+            let clearance = tolerance > 0.0;
+            let inside = |counts: &mut RuleCounts| {
+                if narrow.report_inside {
+                    inside_hit(el1, el2, clearance, min_penetration, counts)
+                } else {
+                    None
+                }
+            };
 
             let hit = match &ifclite {
                 // Compute the depth-or-gap once so we can both decide
@@ -183,12 +201,17 @@ pub fn clash_detect_rule(
                         )?;
                         (deep_enough(depth, min_penetration), depth)
                     };
-                    is_clash.then_some(Hit {
-                        metres: depth_or_gap,
-                        status: None,
-                        kind: None,
-                        point: None,
-                    })
+                    if is_clash {
+                        Some(Hit {
+                            metres: depth_or_gap,
+                            status: None,
+                            kind: None,
+                            point: None,
+                            a_inside_b: None,
+                        })
+                    } else {
+                        inside(&mut counts)
+                    }
                 }
                 Some(verdicts) => {
                     let surfaces_cross =
@@ -197,89 +220,38 @@ pub fn clash_detect_rule(
                     let outcome =
                         classify(verdict, tolerance > 0.0, min_penetration, surfaces_cross)?;
                     match outcome {
-                        Outcome::Nothing => None,
+                        Outcome::Nothing => inside(&mut counts),
+                        // ifc-lite calls a closed element inside another a
+                        // hard clash; with the option on it is reported as
+                        // `inside`, as with parry.
+                        Outcome::Clash(v)
+                            if narrow.report_inside
+                                && one_box_within(&el1.mesh, &el2.mesh)
+                                && !CollisionEngine::intersect(
+                                    &el1.mesh, &identity, &el2.mesh, &identity,
+                                )? =>
+                        {
+                            inside(&mut counts)
+                                .or_else(|| Some(Hit::from_ifclite(&v, status_label(v.status))))
+                        }
                         Outcome::Clash(v) => Some(Hit::from_ifclite(&v, status_label(v.status))),
                         Outcome::Touch(v) => {
                             counts.touch += 1;
                             narrow.report_touch.then(|| Hit::from_ifclite(&v, "touch"))
                         }
-                        Outcome::Unconfirmed(v) => {
+                        // A box estimate without crossing surfaces is often
+                        // an element inside the other.
+                        Outcome::Unconfirmed(v) => inside(&mut counts).or_else(|| {
                             counts.unconfirmed += 1;
                             narrow.report_touch.then(|| Hit::from_ifclite(&v, "unconfirmed"))
-                        }
+                        }),
                     }
                 }
             };
 
             if let Some(hit) = hit {
                 clash_count += 1;
-                let (vol_a, vol_b, centroid_dist) = duplicate_measures(el1, el2);
-                let aabb1 = el1.mesh.compute_aabb(&identity);
-                let aabb2 = el2.mesh.compute_aabb(&identity);
-                let intersection_opt = aabb1.intersection(&aabb2);
-                let intersection = intersection_opt.unwrap_or(aabb1);
-                let center = intersection.center();
-                let pos = [center.x, center.y, center.z];
-
-                // World metres. ifc-lite gives a real contact point — aim there.
-                let world_pos = hit.point.unwrap_or(pos);
-
-                // Camera pulled back 5 m diagonally (X-5, Y-5, Z+5) from clash midpoint.
-                // Z-up: camera is above and to the side, looking down toward the clash.
-                let camera_eye = [
-                    world_pos[0] - 5.0,
-                    world_pos[1] - 5.0,
-                    world_pos[2] + 5.0,
-                ];
-
-                // AABB-overlap extents + volume, in metres / m³.
-                // `intersection_opt` is None when the AABBs don't
-                // overlap — only reachable in clearance mode (in
-                // intersection mode we'd already have `continue`d).
-                let (aabb_extents, aabb_volume) =
-                    if let Some(o) = intersection_opt {
-                        let e = o.extents();
-                        (Some([e.x, e.y, e.z]), Some(e.x * e.y * e.z))
-                    } else {
-                        (None, None)
-                    };
-
-                let mode_str = if tolerance > 0.0 { "clearance" } else { "intersection" };
-                let depth_m = if tolerance > 0.0 { None } else { Some(hit.metres) };
-                let gap_m = if tolerance > 0.0 { Some(hit.metres) } else { None };
-
-                clash_infos.push(ClashInfo {
-                    guid_a: el1.metadata.guid.clone(),
-                    guid_b: el2.metadata.guid.clone(),
-                    description: format!(
-                        "[{}] {} between {} ({}) and {} ({})",
-                        clash_set_name,
-                        record_noun(hit.status),
-                        el1.metadata.ifc_type,
-                        el1.metadata.guid,
-                        el2.metadata.ifc_type,
-                        el2.metadata.guid
-                    ),
-                    position: world_pos,
-                    camera_eye: Some(camera_eye),
-                    file_a: el1.metadata.source_file.clone(),
-                    file_b: el2.metadata.source_file.clone(),
-                    mode: mode_str.to_string(),
-                    depth_metres: depth_m,
-                    gap_metres: gap_m,
-                    aabb_overlap_extents: aabb_extents,
-                    aabb_overlap_volume: aabb_volume,
-                    aabb_match: aabb_match(&aabb1, &aabb2),
-                    volume_a: vol_a,
-                    volume_b: vol_b,
-                    centroid_distance: centroid_dist,
-                    status: hit.status.map(str::to_string),
-                    distance_kind: hit.kind.map(str::to_string),
-                    type_class_a: el1.metadata.type_class.clone(),
-                    type_class_b: el2.metadata.type_class.clone(),
-                    predefined_type_a: el1.metadata.predefined_type.clone(),
-                    predefined_type_b: el2.metadata.predefined_type.clone(),
-                });
+                clash_infos.push(clash_info(clash_set_name, &hit, el1, el2, clearance));
             }
         }
     }

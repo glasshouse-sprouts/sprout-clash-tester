@@ -7,7 +7,11 @@
 // the renderer if accidentally bundled). See clash-core's package.json
 // `exports` map for the sub-paths we expose.
 import { inferDisciplineFromFilename } from "@clash-tester/core/discipline";
-import { SELF_CHECK_DEFAULT_EXCLUDE, type OpeningCuts } from "@clash-tester/core/types";
+import {
+  SELF_CHECK_DEFAULT_EXCLUDE,
+  type ClashMode,
+  type OpeningCuts,
+} from "@clash-tester/core/types";
 import type {
   ClashGroup,
   Project,
@@ -104,6 +108,9 @@ export interface LastRun {
     /** ifc-lite narrow phase only (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). */
     touchCount?: number;
     unconfirmedCount?: number;
+    /** Elements fully inside another (docs/HOW-IT-WORKS.md#elements-fully-inside). */
+    insideCount?: number;
+    insideOpenMeshCount?: number;
   }[];
   warnings: { kind: string; message: string; files: string[] }[];
   /** Openings cut out of their hosts (docs/HOW-IT-WORKS.md#opening-cuts); absent in older results.
@@ -120,7 +127,7 @@ export interface LastRun {
     guidA: string;
     guidB: string;
     position: [number, number, number];
-    mode: "intersection" | "clearance" | "";
+    mode: ClashMode;
     depthMetres: number | null;
     gapMetres: number | null;
     aabbOverlapExtents: [number, number, number] | null;
@@ -507,6 +514,20 @@ export function toggleRule(project: Project, name: string): Project {
     rules: project.rules.map((r) =>
       r.name === name ? { ...r, enabled: r.enabled === false ? true : false } : r,
     ),
+  };
+}
+
+/** Turn "report elements fully inside another" on or off for one rule
+ * (docs/HOW-IT-WORKS.md#elements-fully-inside). On is the default, so it is stored only as
+ * `reportInside: false`. Pure. */
+export function setReportInside(project: Project, name: string, on: boolean): Project {
+  return {
+    ...project,
+    rules: project.rules.map((r) => {
+      if (r.name !== name) return r;
+      const { reportInside: _old, ...rest } = r;
+      return on ? rest : { ...rest, reportInside: false };
+    }),
   };
 }
 

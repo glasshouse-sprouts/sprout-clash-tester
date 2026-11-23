@@ -250,6 +250,36 @@ describe("desktop payloads — what reaches the main process", () => {
     expect(sent.settings.bcfTopics).toBe("group");
   });
 
+  it("Rules: the per-rule inside checkbox is sent with Run", async () => {
+    const rule: ProjectRuleCustom = {
+      name: "R1",
+      preset: null,
+      enabled: true,
+      a: { fileId: "ark", selector: "*", mode: "i" },
+      b: { fileId: "kon", selector: "*", mode: "i" },
+    };
+    const calls = installFakeApi(baseProject([rule]));
+    const user = userEvent.setup();
+    render(<App />);
+    await openProject(user);
+    await user.click(screen.getByRole("button", { name: "Rules" }));
+    const label = "Report elements fully inside another (R1)";
+    const box = screen.getByLabelText<HTMLInputElement>(label);
+    expect(box.checked).toBe(true); // on by default
+
+    await user.click(box);
+    expect(customRule(await runPayload(user, calls), "R1").reportInside).toBe(false);
+
+    await user.click(screen.getByRole("button", { name: "Rules" }));
+    await user.click(screen.getByLabelText("Report elements fully inside another (R1)"));
+    const runs = () => calls.filter((c) => c.name === "runDetection");
+    const before = runs().length;
+    await user.click(screen.getByRole("button", { name: "Run" }));
+    await waitFor(() => expect(runs().length).toBe(before + 1));
+    const sent = (runs().at(-1)!.args[0] as RunDetectionArgs).project;
+    expect(customRule(sent, "R1")).not.toHaveProperty("reportInside");
+  });
+
   // The close prompt (main/window.ts) only asks when main has been told
   // the project is unsaved; nothing else reports it.
   it("Close prompt: unsaved changes are reported to main, and cleared by Save", async () => {

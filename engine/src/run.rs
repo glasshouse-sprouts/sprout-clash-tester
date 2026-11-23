@@ -7,7 +7,7 @@ use crate::placement::update_file_aabb;
 use crate::rule_detect::clash_detect_rule;
 use crate::selector::{select_elements, side_selects};
 use crate::{
-    ClashSet, DetectOptions, DetectionResult, EngineWarning, RelatedPairs, RuleStat,
+    ClashSet, DetectOptions, DetectionResult, EngineWarning, NarrowConfig, RelatedPairs, RuleStat,
     SelectionGroup, frame_warnings, ifc_adapter,
 };
 use anyhow::Result;
@@ -255,7 +255,7 @@ pub fn clash_detect_with_options(
             discipline_b_override,
             &set.name,
             if options.skip_related { Some(&related) } else { None },
-            options.narrow,
+            NarrowConfig { report_inside: set.report_inside, ..options.narrow },
         )?;
         println!("  → {} clash(es) found", infos.len());
         all_clash_infos.extend(infos);
@@ -264,6 +264,7 @@ pub fn clash_detect_with_options(
             skipped_by_relations: counts.skipped_by_relations,
             touch_count: counts.touch,
             unconfirmed_count: counts.unconfirmed,
+            inside_open_mesh_count: counts.inside_open_mesh,
         });
     }
 

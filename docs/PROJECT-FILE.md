@@ -65,7 +65,9 @@ Runnable examples: [`examples/`](../examples).
 ## Rules
 
 A rule is either a **preset** reference or a **custom** rule. `enabled:
-false` keeps it in the file but skips it.
+false` keeps it in the file but skips it. `reportInside: false` (either
+kind) stops the rule reporting elements fully inside another; the
+default is on ([details](HOW-IT-WORKS.md#elements-fully-inside)).
 
 **Preset rule** — `{ "name": …, "preset": "HVACxSTR" }`. The preset says
 "these IFC types of discipline X against those of discipline Y"; every

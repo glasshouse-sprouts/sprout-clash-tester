@@ -18,6 +18,7 @@ import {
   CURRENT_PROJECT_SCHEMA_VERSION,
   compareNarrowPhases,
   expandProjectToRules,
+  formatInside,
   formatNotClashes,
   formatOpeningCuts,
   getPreset,
@@ -93,7 +94,8 @@ function printRunSummary(result: RunResult, durationMs: number): void {
       const skipped = r.skippedByRelations
         ? `  (${r.skippedByRelations} related pair(s) skipped)`
         : "";
-      process.stdout.write(`  - ${r.name.padEnd(20)} ${r.clashes}${skipped}${formatNotClashes(r)}\n`);
+      const notes = `${formatInside(r)}${skipped}${formatNotClashes(r)}`;
+      process.stdout.write(`  - ${r.name.padEnd(20)} ${r.clashes}${notes}\n`);
     }
   }
   if (result.warnings.length > 0) {

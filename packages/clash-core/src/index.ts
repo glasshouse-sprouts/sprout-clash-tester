@@ -37,6 +37,7 @@ export {
 export {
   SELF_CHECK_DEFAULT_EXCLUDE,
   formatIfcClass,
+  formatInside,
   formatNotClashes,
   formatOpeningCuts,
 } from "./types.js";

@@ -40,6 +40,11 @@ struct RuleCount<'a> {
     /// not clashes (docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase). 0 with parry.
     touch_count: usize,
     unconfirmed_count: usize,
+    /// Of `clashes`, the elements fully inside another (mode `inside`), and
+    /// the pairs not checked for it because the outer mesh isn't closed
+    /// (docs/HOW-IT-WORKS.md#elements-fully-inside).
+    inside_count: usize,
+    inside_open_mesh_count: usize,
 }
 
 #[derive(Serialize)]
@@ -56,9 +61,9 @@ struct ClashSummaryEntry {
     file_b: String,
     /// World position of the clash midpoint in metres.
     position: [f64; 3],
-    /// Detection mode: "intersection" or "clearance".
+    /// Detection mode: "intersection", "clearance" or "inside".
     mode: String,
-    /// Approximate penetration depth in metres (intersection mode only).
+    /// Approximate penetration depth in metres (intersection and inside mode).
     depth_metres: Option<f64>,
     /// Clearance gap in metres (clearance mode only).
     gap_metres: Option<f64>,
@@ -111,7 +116,8 @@ fn split_description(desc: &str) -> (String, String, String) {
     };
     // After the rule, the format is "Clash between <typeA> (...) and <typeB> (...)"
     // ("Touch between" / "Unconfirmed clash between" for listed ifc-lite
-    // non-clashes, docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase).
+    // non-clashes, docs/HOW-IT-WORKS.md#ifc-lite-narrow-phase; "Fully inside between … and
+    // …: X is inside Y" for an element inside the other).
     let body = rest.split_once(" between ").map_or(rest.as_str(), |(_, b)| b);
     let parts: Vec<&str> = body.splitn(2, " and ").collect();
     let type_a = parts
@@ -155,7 +161,7 @@ pub fn run(args: DetectArgs) -> Result<()> {
         let options = DetectOptions {
             skip_related: !no_relation_skip,
             cut_openings: !no_opening_cuts,
-            narrow: NarrowConfig { phase: narrow_phase, report_touch },
+            narrow: NarrowConfig { phase: narrow_phase, report_touch, ..NarrowConfig::default() },
         };
         clash_detect_with_options(&config_json, tolerance, min_penetration, &discipline_a, &discipline_b, &options)?
     } else if let Some(files) = file {
@@ -240,9 +246,14 @@ pub fn run(args: DetectArgs) -> Result<()> {
         // Per-rule counts derived from the same structured data.
         let mut per_rule_map: std::collections::BTreeMap<String, usize> =
             std::collections::BTreeMap::new();
+        let mut inside_map: std::collections::HashMap<&str, usize> =
+            std::collections::HashMap::new();
         for e in &entries {
             if !e.rule.is_empty() {
                 *per_rule_map.entry(e.rule.clone()).or_insert(0) += 1;
+                if e.mode == "inside" {
+                    *inside_map.entry(e.rule.as_str()).or_insert(0) += 1;
+                }
             }
         }
         // A rule whose every overlap was a related pair (or only
@@ -251,7 +262,8 @@ pub fn run(args: DetectArgs) -> Result<()> {
         let stats: std::collections::HashMap<&str, &clash::RuleStat> =
             result.rule_stats.iter().map(|r| (r.name.as_str(), r)).collect();
         for r in &result.rule_stats {
-            if r.skipped_by_relations + r.touch_count + r.unconfirmed_count > 0 {
+            let not_clashes = r.touch_count + r.unconfirmed_count + r.inside_open_mesh_count;
+            if r.skipped_by_relations + not_clashes > 0 {
                 per_rule_map.entry(r.name.clone()).or_insert(0);
             }
         }
@@ -265,6 +277,8 @@ pub fn run(args: DetectArgs) -> Result<()> {
                     skipped_by_relations: stat.map_or(0, |s| s.skipped_by_relations),
                     touch_count: stat.map_or(0, |s| s.touch_count),
                     unconfirmed_count: stat.map_or(0, |s| s.unconfirmed_count),
+                    inside_count: inside_map.get(name.as_str()).copied().unwrap_or(0),
+                    inside_open_mesh_count: stat.map_or(0, |s| s.inside_open_mesh_count),
                 }
             })
             .collect();
@@ -280,4 +294,21 @@ pub fn run(args: DetectArgs) -> Result<()> {
         println!("Summary written: {:?}", sum_path);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::split_description;
+
+    #[test]
+    fn types_come_back_in_side_order_for_every_description_shape() {
+        let want = ("R".to_string(), "IFCSLAB".to_string(), "IFCPIPESEGMENT".to_string());
+        for desc in [
+            "[R] Clash between IFCSLAB (S1) and IFCPIPESEGMENT (P1)",
+            "[R] Touch between IFCSLAB (S1) and IFCPIPESEGMENT (P1)",
+            "[R] Fully inside between IFCSLAB (S1) and IFCPIPESEGMENT (P1): P1 is inside S1",
+        ] {
+            assert_eq!(split_description(desc), want, "{desc}");
+        }
+    }
 }

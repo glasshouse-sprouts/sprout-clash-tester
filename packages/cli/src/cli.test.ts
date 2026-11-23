@@ -237,7 +237,15 @@ describe.skipIf(!ENGINE_AVAILABLE)("clashtester run — tiny-project", () => {
     expect(on.exitCode, on.stderr).toBe(0);
     const onJson = JSON.parse(on.stdout) as { totalClashes: number; perRule: { name: string; skippedByRelations?: number }[] };
     expect(onJson.totalClashes).toBe(0);
-    expect(onJson.perRule).toEqual([{ name: "DOORxWALL", clashes: 0, skippedByRelations: 5 }]);
+    expect(onJson.perRule).toEqual([
+      {
+        name: "DOORxWALL",
+        clashes: 0,
+        skippedByRelations: 5,
+        insideCount: 0,
+        insideOpenMeshCount: 0,
+      },
+    ]);
 
     const pretty = await runCli(["run", "--no-bcf", "--out", path.join(dir, "p"), proj], { CLASH_BINARY: ENGINE });
     expect(pretty.stdout).toMatch(/DOORxWALL\s+0\s+\(5 related pair\(s\) skipped\)/);

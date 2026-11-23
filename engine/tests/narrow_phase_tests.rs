@@ -65,7 +65,8 @@ fn run(a: &[IfcElement], b: &[IfcElement], narrow: NarrowConfig) -> (Clashes, Ru
     (infos, counts)
 }
 
-const IFCLITE: NarrowConfig = NarrowConfig { phase: NarrowPhase::Ifclite, report_touch: false };
+const IFCLITE: NarrowConfig =
+    NarrowConfig { phase: NarrowPhase::Ifclite, report_touch: false, report_inside: false };
 
 #[test]
 fn test_touch_is_counted_not_a_clash() {
@@ -162,7 +163,7 @@ fn test_fixture_gives_the_same_clashes_in_both_phases() {
         f = ifc.to_string_lossy()
     );
     let guids = |phase: NarrowPhase| {
-        let narrow = NarrowConfig { phase, report_touch: false };
+        let narrow = NarrowConfig { phase, ..NarrowConfig::default() };
         let options = DetectOptions { narrow, ..Default::default() };
         let r = clash_detect_with_options(&config, 0.0, 0.005, &None, &None, &options).unwrap();
         r.clashes.iter().map(|c| (c.guid_a.clone(), c.guid_b.clone())).collect::<Vec<_>>()
@@ -201,7 +202,7 @@ fn test_min_depth_is_at_least_in_both_phases() {
     // binary) against a 0.5 m minimum — kept (the rule used to be `>`).
     let a = vec![cube("A", [0.0; 3], [1.0; 3])];
     let b = vec![cube("B", [0.5, 0.0, 0.0], [1.5, 1.0, 1.0])];
-    let parry = NarrowConfig { phase: NarrowPhase::Parry, report_touch: false };
+    let parry = NarrowConfig::default();
     let at = |min: f64| {
         clash_detect_rule(&a, &b, 0.0, min, &None, &None, "R", None, parry).unwrap().1.len()
     };

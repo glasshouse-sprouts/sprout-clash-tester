@@ -2,6 +2,7 @@
 //! clash detection (docs/HOW-IT-WORKS.md#opening-cuts). Without the cut a wall with a door hole is
 //! meshed as a solid box, and anything standing in the hole is inside it.
 
+use crate::containment::is_inside;
 use crate::ifc_adapter::{IfcElement, IfcMetadata};
 use anyhow::Result;
 use ifc_lite_core::DecodedEntity;
@@ -214,40 +215,6 @@ fn shrink(mesh: &TriMesh, by: f64) -> Option<TriMesh> {
     let (c, s) = (bounds.center(), 1.0 - by / thinnest);
     let vertices = mesh.vertices().iter().map(|v| c + (*v - c) * s).collect();
     TriMesh::new(vertices, mesh.indices().to_vec()).ok()
-}
-
-/// Point-in-mesh by ray parity, majority of three skew directions so a
-/// ray grazing an edge can't decide alone.
-fn is_inside(mesh: &TriMesh, p: Point) -> bool {
-    const DIRS: [[f64; 3]; 3] =
-        [[0.577, 0.578, 0.577], [0.267, 0.535, 0.802], [-0.707, 0.013, 0.707]];
-    let odd = DIRS
-        .iter()
-        .filter(|d| ray_crossings(mesh, p, Point::new(d[0], d[1], d[2])) % 2 == 1)
-        .count();
-    odd >= 2
-}
-
-/// Möller–Trumbore: how many triangles the ray `p + t·d` (t > 0) crosses.
-fn ray_crossings(mesh: &TriMesh, p: Point, d: Point) -> usize {
-    let v = mesh.vertices();
-    mesh.indices()
-        .iter()
-        .filter(|t| {
-            let (p0, p1, p2) = (v[t[0] as usize], v[t[1] as usize], v[t[2] as usize]);
-            let (e1, e2) = (p1 - p0, p2 - p0);
-            let h = d.cross(e2);
-            let a = e1.dot(h);
-            if a.abs() < 1e-12 {
-                return false;
-            }
-            let s = p - p0;
-            let u = s.dot(h) / a;
-            let q = s.cross(e1);
-            let w = d.dot(q) / a;
-            (0.0..=1.0).contains(&u) && w >= 0.0 && u + w <= 1.0 && e2.dot(q) / a > 1e-9
-        })
-        .count()
 }
 
 #[cfg(test)]

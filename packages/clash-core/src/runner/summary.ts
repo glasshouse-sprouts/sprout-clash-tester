@@ -3,7 +3,14 @@
 
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import type { ClashEntry, EngineWarning, OpeningCuts, RuleCount, RunOptions } from "../types.js";
+import type {
+  ClashEntry,
+  ClashMode,
+  EngineWarning,
+  OpeningCuts,
+  RuleCount,
+  RunOptions,
+} from "../types.js";
 
 /** What `readSummary` returns: the parts of a `RunResult` from the summary. */
 export interface SummaryData {
@@ -38,6 +45,8 @@ export async function readSummary(
           skipped_by_relations?: number;
           touch_count?: number;
           unconfirmed_count?: number;
+          inside_count?: number;
+          inside_open_mesh_count?: number;
         }[];
         clashes: {
           rule: string;
@@ -85,6 +94,9 @@ export async function readSummary(
         ...(narrowPhase === "ifclite"
           ? { touchCount: r.touch_count ?? 0, unconfirmedCount: r.unconfirmed_count ?? 0 }
           : {}),
+        ...(typeof r.inside_count === "number"
+          ? { insideCount: r.inside_count, insideOpenMeshCount: r.inside_open_mesh_count ?? 0 }
+          : {}),
       }));
       warnings = parsed.warnings ?? [];
       if (parsed.opening_cuts) {
@@ -110,7 +122,7 @@ export async function readSummary(
         fileA: c.file_a ?? "",
         fileB: c.file_b ?? "",
         position: c.position,
-        mode: (c.mode as "intersection" | "clearance" | undefined) ?? "",
+        mode: (c.mode as ClashMode | undefined) ?? "",
         depthMetres: c.depth_metres ?? null,
         gapMetres: c.gap_metres ?? null,
         aabbOverlapExtents: c.aabb_overlap_extents ?? null,

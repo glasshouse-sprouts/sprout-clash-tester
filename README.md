@@ -124,9 +124,11 @@ starts with it, and it is the first CSV column. Details:
 - **IFC2X3 MEP** elements are classified through their type objects
   (`IfcFlowSegment` typed as a duct counts as a duct). Elements without a
   type object can't be classified, and the run warns about them.
-- **Elements fully inside another element are not reported** (e.g. a pipe
-  cast completely inside a slab): only surfaces that cross are detected.
-  Planned for 0.1.1.
+- **Elements fully inside another are reported** (e.g. a pipe cast inside
+  a slab), as mode `inside`, on by default per rule. Turn it off on a rule
+  where that is intended. It needs the outer element's mesh to be closed;
+  pairs where it isn't are counted, not guessed
+  ([details](docs/HOW-IT-WORKS.md#elements-fully-inside)).
 - **Depth is an estimate** with the default narrow phase: the smallest
   side of the bounding-box overlap, not the true penetration.
 - **The ifc-lite narrow phase is experimental** (`--narrow-phase ifclite`).

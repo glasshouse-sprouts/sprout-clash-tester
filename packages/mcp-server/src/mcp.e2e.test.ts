@@ -268,6 +268,28 @@ describe.skipIf(!ENGINE_AVAILABLE)("MCP server — full run flow", () => {
     expect(viewer.text).toContain("report.bcf");
   });
 
+  it("save_clash_rules keeps reportInside: false, list_clash_rules shows it", async () => {
+    const models = path.join(ROOT, "engine", "tests", "models");
+    const hvac = path.join(models, "Building-Hvac.ifc");
+    const str = path.join(models, "Building-Structural.ifc");
+    await client.callTool("register_model", { name: "hvac", path: hvac, discipline: "HVAC" });
+    await client.callTool("register_model", { name: "str", path: str, discipline: "STR" });
+    const saved = await client.callTool("save_clash_rules", {
+      rules: [
+        {
+          name: "CAST_IN_OK",
+          preset: null,
+          reportInside: false,
+          a: { fileId: "hvac", selector: "*" },
+          b: { fileId: "str", selector: "*" },
+        },
+      ],
+    });
+    expect(saved.isError, saved.text).toBe(false);
+    const listed = await client.callTool("list_clash_rules", {});
+    expect(listed.text).toContain("CAST_IN_OK (enabled) (fully inside: off)");
+  });
+
   it("run summary shows pairs skipped by IFC relations", async () => {
     const haus = path.join(ROOT, "engine", "tests", "models", "AC20-FZK-Haus.ifc");
     await client.callTool("register_model", { name: "haus", path: haus, discipline: "ARCH" });

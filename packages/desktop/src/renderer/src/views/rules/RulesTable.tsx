@@ -2,7 +2,13 @@
 
 import { Pencil, Trash2 } from "lucide-react";
 import type { Project, ProjectRule } from "@clash-tester/core/types";
-import { customRuleFields, removeRule, toggleRule, updateCustomRule } from "../../state";
+import {
+  customRuleFields,
+  removeRule,
+  setReportInside,
+  toggleRule,
+  updateCustomRule,
+} from "../../state";
 import { CustomRuleForm } from "./CustomRuleForm";
 import { describeCustomRule, describeCustomRuleFull } from "./describeRule";
 
@@ -27,6 +33,12 @@ export function RulesTable({
           <th className="py-2 pr-2 font-normal">Name</th>
           <th className="py-2 pr-2 font-normal">Kind</th>
           <th className="py-2 pr-2 font-normal">Detail</th>
+          <th
+            className="py-2 pr-2 font-normal"
+            title="Report elements fully inside another, e.g. a pipe cast inside a slab. Untick when that is intended."
+          >
+            Inside
+          </th>
           <th className="w-16"></th>
         </tr>
       </thead>
@@ -38,7 +50,7 @@ export function RulesTable({
           if (editing === r.name && fields) {
             return (
               <tr key={r.name} className="border-b border-neutral-900">
-                <td colSpan={5} className="py-2">
+                <td colSpan={6} className="py-2">
                   <CustomRuleForm
                     files={realFiles}
                     initial={fields}
@@ -82,6 +94,17 @@ export function RulesTable({
                 {isPreset
                   ? `preset: ${(r as { preset: string }).preset}`
                   : describeCustomRule(r)}
+              </td>
+              <td className="py-2 pr-2">
+                <input
+                  type="checkbox"
+                  aria-label={`Report elements fully inside another (${r.name})`}
+                  title="Report elements fully inside another"
+                  checked={r.reportInside !== false}
+                  onChange={(e) =>
+                    updateProject((p) => setReportInside(p, r.name, e.target.checked))
+                  }
+                />
               </td>
               <td className="py-2 text-right whitespace-nowrap">
                 {!isPreset && (

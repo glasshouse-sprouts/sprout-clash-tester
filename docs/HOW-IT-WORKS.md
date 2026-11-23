@@ -12,7 +12,9 @@ A run, in order:
    translation).
 3. Check every A × B pair: bounding boxes first, then skip pairs that are
    the same element, already tested, or belong together in the IFC.
-4. Decide hard clash / clearance / nothing on the meshes.
+4. Decide hard clash / clearance / nothing on the meshes; where the
+   surfaces don't cross, check whether one element lies fully inside the
+   other.
 5. Number the clashes, group them, and write BCF, JSON and CSV, plus
    warnings.
 
@@ -136,6 +138,36 @@ these pairs.
 
 The desktop Results table shows depth or gap as "Severity": ↕ for an
 overlap, ↔ for a clearance gap, ≈ for an estimated ifc-lite depth.
+
+## Elements fully inside
+
+An element that lies completely inside another, such as a pipe cast into
+a slab, has no surfaces that cross the slab's, so the clash test above
+never sees it. For such a pair, each rule also checks:
+
+1. Does one element's bounding box lie within the other's?
+2. Is a vertex of that element inside the other's mesh (ray parity)? The
+   surfaces don't cross, so one vertex decides for the whole element.
+
+If so, the pair is reported with mode **`inside`**: in JSON and CSV, as a
+BCF topic titled "Fully inside: …", with a description saying which
+element is inside which, and with an **inside** badge in the desktop
+app. Its depth is the inner element's smallest bounding-box side — an
+estimate, like the other depths. It passes the same filters as any
+clash: the minimum penetration (in hard mode), the
+[related elements](#related-elements) skip, and the
+[self check](#self-check) rules. Both narrow phases report it; ifc-lite
+otherwise lists such a pair as a hard clash (option off: as before) or as
+"unconfirmed".
+
+Ray parity only means something for a **closed** mesh. When the outer
+element's mesh is not closed, the pair is not guessed at: it is counted
+per rule as "not checked for inside: open mesh".
+
+**It is on by default, per rule.** Sometimes being inside is intended
+(conduits or pipes cast in on purpose): set `reportInside: false` on the
+rule ([project file](PROJECT-FILE.md#rules)), or untick **Inside** on the
+rule in the desktop app. Off, the rule behaves as in 0.1.0.
 
 ## Self check
 

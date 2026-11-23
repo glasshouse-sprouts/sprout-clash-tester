@@ -47,6 +47,8 @@ export interface ProjectRulePreset {
   name: string;
   preset: string;
   enabled?: boolean;
+  /** See `ProjectRuleCustom.reportInside`. */
+  reportInside?: boolean;
 }
 
 /** A fully-specified custom rule. */
@@ -54,6 +56,11 @@ export interface ProjectRuleCustom {
   name: string;
   preset?: null;
   enabled?: boolean;
+  /**
+   * Also report elements fully inside another (docs/HOW-IT-WORKS.md#elements-fully-inside).
+   * Default `true`; `false` leaves out e.g. pipes cast into a slab on purpose.
+   */
+  reportInside?: boolean;
   a: ProjectRuleSide;
   b: ProjectRuleSide;
 }

@@ -69,6 +69,11 @@ export interface ClashRule {
   name: string;
   a: SelectionGroup[];
   b: SelectionGroup[];
+  /**
+   * Report elements fully inside another (docs/HOW-IT-WORKS.md#elements-fully-inside). The
+   * engine defaults to `true`; absent = on.
+   */
+  report_inside?: boolean;
 }
 
 /** Structured warning emitted by the engine. */
@@ -98,6 +103,13 @@ export interface RuleCount {
    */
   touchCount?: number;
   unconfirmedCount?: number;
+  /**
+   * Of `clashes`, elements fully inside another (mode `inside`), and pairs
+   * not checked for it because the outer mesh isn't closed —
+   * docs/HOW-IT-WORKS.md#elements-fully-inside. Absent from older engines.
+   */
+  insideCount?: number;
+  insideOpenMeshCount?: number;
 }
 
 /**
@@ -135,6 +147,18 @@ export function formatNotClashes(r: RuleCount): string {
     : "";
 }
 
+/** `" (2 fully inside)"` — of the rule's clashes, those of mode `inside`,
+ * plus pairs not checked for it (open mesh); `""` when there are none
+ * (docs/HOW-IT-WORKS.md#elements-fully-inside). */
+export function formatInside(r: RuleCount): string {
+  const open = r.insideOpenMeshCount ?? 0;
+  if (!r.insideCount && !open) return "";
+  const notChecked = open ? `, ${open} not checked for inside: open mesh` : "";
+  return ` (${r.insideCount ?? 0} fully inside${notChecked})`;
+}
+
+export type ClashMode = "intersection" | "clearance" | "inside" | "";
+
 /** A single clash, broken down for downstream consumers (CSV, agents). */
 export interface ClashEntry {
   /**
@@ -156,12 +180,16 @@ export interface ClashEntry {
   fileB: string;
   /** World position of the clash midpoint in metres. */
   position: [number, number, number];
-  /** Detection mode that fired the clash. */
-  mode: "intersection" | "clearance" | "";
   /**
-   * Approximate penetration depth in metres. Set only in intersection
-   * mode. **Caveat:** this is the AABB-overlap minimum dimension
-   * (proxy), not true geometric depth. Monotonic with truth.
+   * Detection mode that fired the clash. `inside`: one element lies fully
+   * inside the other (docs/HOW-IT-WORKS.md#elements-fully-inside).
+   */
+  mode: ClashMode;
+  /**
+   * Approximate penetration depth in metres. Set in intersection and
+   * inside mode. **Caveat:** this is the AABB-overlap minimum dimension
+   * (proxy), not true geometric depth; for `inside` the inner element's
+   * smallest box side. Monotonic with truth.
    */
   depthMetres: number | null;
   /**

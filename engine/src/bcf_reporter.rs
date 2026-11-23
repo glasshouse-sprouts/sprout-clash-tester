@@ -40,13 +40,15 @@ pub struct ClashInfo {
     /// Basename of the IFC file element B came from. Empty if unknown.
     #[serde(default)]
     pub file_b: String,
-    /// Detection mode that fired the clash: `"intersection"` (hard) or
-    /// `"clearance"` (within tolerance). Empty when constructed manually
+    /// Detection mode that fired the clash: `"intersection"` (hard),
+    /// `"clearance"` (within tolerance) or `"inside"` (one element fully
+    /// inside the other; `depth_metres` is then the inner element's
+    /// smallest box side). Empty when constructed manually
     /// in tests.
     #[serde(default)]
     pub mode: String,
-    /// Approximate penetration depth in metres. Set only in
-    /// `intersection` mode. **Caveat:** this is the AABB-overlap minimum
+    /// Approximate penetration depth in metres. Set in `intersection`
+    /// and `inside` mode. **Caveat:** this is the AABB-overlap minimum
     /// dimension (same proxy `penetration_depth` returns), not true
     /// geometric depth. Monotonic with truth — accurate within ~10% on
     /// duct/beam/wall-shaped elements; can over-estimate for elements
@@ -131,11 +133,17 @@ impl BcfTopic {
     /// The topic for one clash; `number` is its 1-based position in the
     /// clash list ("1 - Clash between …") — the same number the CSV `no`
     /// column and the JSON `number` field carry.
-    /// Listed ifc-lite non-clashes say what they are ("Touch between …").
+    /// Listed ifc-lite non-clashes say what they are ("Touch between …"),
+    /// an element inside the other "Fully inside: …".
     pub fn from_clash(number: usize, clash: &ClashInfo) -> Self {
-        let what = crate::ifclite_narrow::record_noun(clash.status.as_deref());
+        let title = if clash.mode == "inside" {
+            format!("{} - Fully inside: {} and {}", number, clash.guid_a, clash.guid_b)
+        } else {
+            let what = crate::ifclite_narrow::record_noun(clash.status.as_deref());
+            format!("{} - {} between {} and {}", number, what, clash.guid_a, clash.guid_b)
+        };
         BcfTopic {
-            title: format!("{} - {} between {} and {}", number, what, clash.guid_a, clash.guid_b),
+            title,
             description: clash.description.clone(),
             position: clash.position,
             camera_eye: clash.camera_eye,

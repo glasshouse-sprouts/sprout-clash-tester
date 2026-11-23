@@ -88,12 +88,12 @@ export function expandProjectToRules(
         );
         continue;
       }
-      rules.push({ name: rl.name, a: aGroups, b: bGroups });
+      rules.push({ name: rl.name, a: aGroups, b: bGroups, ...insideFlag(rl) });
       continue;
     }
     const a = sideToSelectionGroup(rl.a, filesById, rl.name, "a");
     const b = sideToSelectionGroup(rl.b, filesById, rl.name, "b");
-    rules.push({ name: rl.name, a: [a], b: [b] });
+    rules.push({ name: rl.name, a: [a], b: [b], ...insideFlag(rl) });
   }
 
   return rules;
@@ -112,6 +112,11 @@ function filesForDiscipline(
       if (f.translation) g.translation = f.translation;
       return g;
     });
+}
+
+/** The engine reports elements fully inside by default; only "off" is sent. */
+function insideFlag(r: ProjectRule): Pick<ClashRule, "report_inside"> {
+  return r.reportInside === false ? { report_inside: false } : {};
 }
 
 function isPresetRule(r: ProjectRule): r is ProjectRulePreset {

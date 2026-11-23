@@ -73,6 +73,12 @@ export function ruleTools(): ToolDef[] {
                   description: "Preset name for a preset rule; null (or omitted) for a custom rule.",
                 },
                 enabled: { type: "boolean" },
+                reportInside: {
+                  type: "boolean",
+                  description:
+                    "Report elements fully inside another (e.g. a pipe cast in a slab). " +
+                    "Default true; false when that is intended.",
+                },
                 a: RULE_SIDE_SCHEMA,
                 b: RULE_SIDE_SCHEMA,
               },
@@ -118,7 +124,9 @@ async function listClashRules(args: Args | undefined): Promise<ToolResponse> {
   }
   const lines = ["Current rules:"];
   for (const r of project.rules) {
-    const status = r.enabled === false ? "(disabled)" : "(enabled)";
+    const status =
+      (r.enabled === false ? "(disabled)" : "(enabled)") +
+      (r.reportInside === false ? " (fully inside: off)" : "");
     if ("preset" in r && r.preset) {
       lines.push(`  - ${r.name} ${status} — preset: ${r.preset}`);
     } else if ("a" in r && r.a && "b" in r && r.b) {

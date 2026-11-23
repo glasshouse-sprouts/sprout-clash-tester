@@ -41,6 +41,7 @@ fn run(file: &str, a: &str, b: &str, exclude: &str, phase: NarrowPhase) -> Detec
     let narrow = NarrowConfig {
         phase,
         report_touch: true,
+        ..NarrowConfig::default()
     };
     let options = DetectOptions {
         narrow,

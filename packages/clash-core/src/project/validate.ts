@@ -106,16 +106,21 @@ export function validateProject(raw: unknown): Project {
         continue;
       }
       const enabled = ro.enabled === undefined ? true : ro.enabled === true;
+      // Default on; only an explicit `false` is kept (docs/PROJECT-FILE.md#rules).
+      if (ro.reportInside !== undefined && typeof ro.reportInside !== "boolean") {
+        issues.push(`rules[${i}].reportInside must be true or false when present`);
+      }
+      const inside = ro.reportInside === false ? { reportInside: false } : {};
       // Preset-shaped rule
       if (typeof ro.preset === "string") {
-        rules.push({ name: ro.name, preset: ro.preset, enabled });
+        rules.push({ name: ro.name, preset: ro.preset, enabled, ...inside });
         continue;
       }
       // Custom rule — needs a and b
       const a = validateSide(`rules[${i}].a`, ro.a, files, issues);
       const b = validateSide(`rules[${i}].b`, ro.b, files, issues);
       if (a && b) {
-        rules.push({ name: ro.name, preset: null, enabled, a, b });
+        rules.push({ name: ro.name, preset: null, enabled, ...inside, a, b });
       }
     }
   }
